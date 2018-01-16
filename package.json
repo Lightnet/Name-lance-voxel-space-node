@@ -17,6 +17,10 @@
     "babelify": "^7.3.0",
     "eslint": "^3.16.1",
     "eslint-config-google": "^0.7.1",
+    "gulp": "^3.9.1",
+    "gulp-bro": "^1.0.2",
+    "gulp-live-server": "0.0.31",
+    "gulp-rename": "^1.2.2",
     "watchify": "^3.7.0"
   },
   "scripts": {
