@@ -1,16 +1,23 @@
 'use strict';
 
-
-
 const Renderer = require('lance-gg').render.Renderer;
+
+require('aframe');
 
 class MyRenderer extends Renderer {
 
     constructor(gameEngine, clientEngine) {
         super(gameEngine, clientEngine);
         this.sprites = {};
+        
+        var self = this;
+        
+        setInterval(function(){
+            //self.objectlist();
+            //console.log(MyRenderer);
+            console.log(self.sprites);
 
-        //objectlist();
+          },  5000);  
     }
 
     objectlist(){ 
@@ -21,6 +28,8 @@ class MyRenderer extends Renderer {
 
     draw() {
         super.draw();
+
+        //this.objectlist();
 
         for (let objId of Object.keys(this.sprites)) {
 
