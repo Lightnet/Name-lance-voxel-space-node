@@ -39,6 +39,7 @@ class MyServerEngine extends ServerEngine {
         // attach newly connected player an available paddle
         if (this.players.player1 === null) {
             this.players.player1 = socket.id;
+            this.gameEngine.playeravatar.playerId = socket.playerId;
             //this.gameEngine.paddle1.playerId = socket.playerId;
         } else if (this.players.player2 === null) {
             this.players.player2 = socket.id;

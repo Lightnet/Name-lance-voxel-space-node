@@ -20,6 +20,8 @@ class Paddle extends DynamicObject {
         this.position.set(x, 0);
         this.playerId = playerId;
         this.class = Paddle;
+        //console.log("this.playerId");
+        //console.log(this.playerId);
     }
 
     onAddToWorld(gameEngine) {

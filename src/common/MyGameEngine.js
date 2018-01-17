@@ -15,6 +15,8 @@ const GameEngine = require('lance-gg').GameEngine;
 const ThreeVector = require('lance-gg').serialize.ThreeVector;
 
 //game objects
+const PlayerAvatar = require('./PlayerAvatar');
+
 const PlayerCube = require('./PlayerCube');
 const SphereCannon = require('./SphereCannon');
 const PlaneCannon = require('./PlaneCannon');
@@ -74,6 +76,15 @@ class MyGameEngine extends GameEngine {
             }
         });
         */
+
+        this.on('postStep', () => {
+
+        });
+        this.on('objectAdded', (object) => {
+            if (object.id == 1) {
+                this.playeravatar = object;
+            }
+        });
     }
 
     /*
@@ -104,16 +115,23 @@ class MyGameEngine extends GameEngine {
     processInput(inputData, playerId) {
 
         super.processInput(inputData, playerId);
+
+        //console.log(playerId);
     
         // get the player paddle tied to the player socket
         let playerPaddle = this.world.getPlayerObject(playerId);
+
+        //console.log(playerPaddle);
+
         if (playerPaddle) {
             if (inputData.input === 'up') {
-                playerPaddle.position.y -= 5;
+                //playerPaddle.position.y -= 5;
             } else if (inputData.input === 'down') {
-                playerPaddle.position.y += 5;
+                //playerPaddle.position.y += 5;
+                playerPaddle.test();
             }
         }
+
         //console.log("move?");
     }
 
@@ -123,13 +141,15 @@ class MyGameEngine extends GameEngine {
         //this.addObjectToWorld(new Paddle(++this.world.idCount, PADDING, 1));
         //this.addObjectToWorld(new Paddle(++this.world.idCount, WIDTH - PADDING, 2));
         //this.addObjectToWorld(new Ball(++this.world.idCount, WIDTH / 2, HEIGHT / 2));
-        let position = new ThreeVector(0, 100, 0);
+        let position = new ThreeVector(0, 0, 0);
+        this.addObjectToWorld(new PlayerAvatar(++this.world.idCount,this, position,1));
+        position = new ThreeVector(0, 100, 0);
         this.addObjectToWorld(new SphereCannon(++this.world.idCount,this, position));
         position = new ThreeVector(0, 0, 0);
         this.addObjectToWorld(new BoxCannon(++this.world.idCount,this, position));
+        
 
-        
-        
+
     }
 
     postStepHandleBall() {
@@ -184,6 +204,7 @@ class MyGameEngine extends GameEngine {
     registerClasses(serializer) {
         //serializer.registerClass(require('../common/Paddle'));
         //serializer.registerClass(require('../common/Ball'));
+        serializer.registerClass(require('../common/PlayerAvatar'));
         serializer.registerClass(require('../common/PlayerCube'));
         serializer.registerClass(require('../common/SphereCannon'));
         serializer.registerClass(require('../common/PlaneCannon'));

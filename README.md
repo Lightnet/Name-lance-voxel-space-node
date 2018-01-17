@@ -23,9 +23,10 @@ This will start server from packages.json script command.
 
 Notes:
  * It depend on the packages are out date tend to break setup and other things for testing.
+ * Refresh page tends to crash the server nodejs if code poor or place correct script file.
 
 
-#Idea designs:
+#Idea Designs:
  * Think of working decentralized peer to peer server
  * But required some main site for access or some form.
  * Zoning/stream mapping system got to build differently.

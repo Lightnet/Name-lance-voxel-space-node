@@ -27,7 +27,7 @@ class MyRenderer extends AFrameRenderer {
         
         var self = this;
 
-        console.log(gameEngine)
+        //console.log(gameEngine);
 
         //setInterval(function(){
             //self.objectlist();
@@ -119,7 +119,7 @@ class MyRenderer extends AFrameRenderer {
         this.sprites[obj.id] = {
             el: document.querySelector('.' + objName)
         };
-        console.log(objName);
+        //console.log(objName);
     }
 
 }

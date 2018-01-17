@@ -56,10 +56,14 @@ class SphereCannon extends PhysicalObject {
             el.setAttribute('geometry', `primitive: sphere; radius: ${RADIUS}; segmentsWidth: 32; segmentsHeight: 16`);
             el.setAttribute('game-object-id', this.id);
             //this.setupEmitters();
-
             console.log("a-entity ball");
         }
     }
+
+    reset(){
+        this.physicsObj.position.set(0,20,0);
+    }
+
 
     toString() {
         return `SphereCannon::${super.toString()}`;
