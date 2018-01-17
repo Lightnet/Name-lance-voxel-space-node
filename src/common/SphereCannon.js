@@ -9,7 +9,6 @@
 
 */
 
-
 'use strict';
 
 //const DynamicObject= require('lance-gg').serialize.DynamicObject;
@@ -35,10 +34,15 @@ class SphereCannon extends PhysicalObject {
         
         // create the physics body //important to add here 
         this.gameEngine = gameEngine;
-        CANNON = this.gameEngine.physicsEngine.CANNON;
+        //CANNON = this.gameEngine.physicsEngine.CANNON;
         this.physicsObj = gameEngine.physicsEngine.addSphere(RADIUS, MASS);
+        //console.log(gameEngine.physicsEngine);
+
         this.physicsObj.position.set(this.position.x, this.position.y, this.position.z);
         this.physicsObj.angularDamping = 0.1;
+        this.physicsObj.addEventListener("collide", function(e){
+            console.log("sphere collided"); 
+        });
 
         this.scene = gameEngine.renderer ? gameEngine.renderer.scene : null;
 

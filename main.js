@@ -26,7 +26,8 @@ const CannonPhysicsEngine = require('lance-gg').physics.CannonPhysicsEngine;
 //const physicsEngine = new SimplePhysicsEngine();
 const physicsEngine = new CannonPhysicsEngine();
 //const gameEngine = new MyGameEngine({ physicsEngine, traceLevel: 1 });
-const gameEngine = new MyGameEngine({ physicsEngine, traceLevel: 0 });
+//const gameEngine = new MyGameEngine({ physicsEngine, traceLevel: 0 });
+const gameEngine = new MyGameEngine({ physicsEngine });
 const serverEngine = new MyServerEngine(io, gameEngine, { debug: {}, updateRate: 6 });
 
 // start the game

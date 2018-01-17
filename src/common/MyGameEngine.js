@@ -17,6 +17,8 @@ const ThreeVector = require('lance-gg').serialize.ThreeVector;
 //game objects
 const PlayerCube = require('./PlayerCube');
 const SphereCannon = require('./SphereCannon');
+const PlaneCannon = require('./PlaneCannon');
+const BoxCannon = require('./BoxCannon');
 
 //const Paddle = require('./Paddle');
 //const Ball = require('./Ball');
@@ -121,8 +123,12 @@ class MyGameEngine extends GameEngine {
         //this.addObjectToWorld(new Paddle(++this.world.idCount, PADDING, 1));
         //this.addObjectToWorld(new Paddle(++this.world.idCount, WIDTH - PADDING, 2));
         //this.addObjectToWorld(new Ball(++this.world.idCount, WIDTH / 2, HEIGHT / 2));
-        let position = new ThreeVector(0, 10, 0);
+        let position = new ThreeVector(0, 100, 0);
         this.addObjectToWorld(new SphereCannon(++this.world.idCount,this, position));
+        position = new ThreeVector(0, 0, 0);
+        this.addObjectToWorld(new BoxCannon(++this.world.idCount,this, position));
+
+        
         
     }
 
@@ -180,6 +186,8 @@ class MyGameEngine extends GameEngine {
         //serializer.registerClass(require('../common/Ball'));
         serializer.registerClass(require('../common/PlayerCube'));
         serializer.registerClass(require('../common/SphereCannon'));
+        serializer.registerClass(require('../common/PlaneCannon'));
+        serializer.registerClass(require('../common/BoxCannon'));
     }
 }
 
