@@ -1,3 +1,14 @@
+/*
+    Project Name: lance-voxel-space-node
+    License: CC0
+    Multiples Licenses check the README.md file.
+
+    Created by: Lightnet
+
+    Information: Multiplayer Node Server Prototype Spaceship Game
+
+*/
+
 const ClientEngine = require('lance-gg').ClientEngine;
 const MyRenderer = require('../client/MyRenderer');
 
@@ -7,6 +18,7 @@ class MyClientEngine extends ClientEngine {
         super(gameEngine, options, MyRenderer);
 
         this.serializer.registerClass(require('../common/PlayerAvatar'));
+
         this.gameEngine.on('client__preStep', this.preStep.bind(this));
 
         // keep a reference for key press state

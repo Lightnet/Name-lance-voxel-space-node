@@ -3,7 +3,6 @@ var bro = require('gulp-bro');
 var rename = require('gulp-rename');
 var gls = require('gulp-live-server');
 
-
 var server = gls.new('main.js');
 
 // Basic usage 
@@ -13,22 +12,18 @@ gulp.task('scripts', function() {
         .pipe(bro())
         .pipe(rename('bundle.js'))
         .pipe(gulp.dest('./dist/'));
-    server.start.bind(server);
+    //server.start.bind(server);
 });
 
-//gulp.task('serverscripts', function() {
-    //server.start.bind(server);
-//});
-
-gulp.task('serverscripts',()=>{
-    server.start.bind(server)();
+gulp.task('serverrestart',()=>{
+    //console.log("server restart...");
+    //server.start.bind(server)();
 });
 
 //watch files changes and auto compile file.
 gulp.task('watch', () =>{
-    gulp.watch(['src/client/*.js','src/common/*.js'],['scripts']);
-
-    gulp.watch(['src/server/*.js'],['serverscripts']);
+    //gulp.watch(['src/client/clientMain.js'],['scripts']);
+    gulp.watch(['src/client/*.js','src/server/*.js','src/common/*.js'],['scripts','serverrestart']);
 });
 
 gulp.task('serve', function() {
@@ -36,13 +31,12 @@ gulp.task('serve', function() {
     server.start();
 
     //use gulp.watch to trigger server actions(notify, start or stop)
-    gulp.watch(['src/**/*.js','*.html'], function (file) {
+    gulp.watch(['src/client/*.js','src/common/*.js','src/server/*.js','*.html'], function (file) {
         server.notify.apply(server, [file]);
+        //server.notify();
+        console.log("files change?");
+        server.start.bind(server)();
     });
-    
-    gulp.watch('myapp.js', server.start.bind(server)); //restart my server
-
-    //gulp.watch('src/server/MyServerEngine.js', server.start.bind(server)); //restart my server
 
     // Note: try wrapping in a function if getting an error like `TypeError: Bad argument at TypeError (native) at ChildProcess.spawn`
     gulp.watch('main.js', function() {

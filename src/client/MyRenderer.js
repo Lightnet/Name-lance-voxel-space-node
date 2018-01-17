@@ -1,3 +1,14 @@
+/*
+    Project Name: lance-voxel-space-node
+    License: CC0
+    Multiples Licenses check the README.md file.
+
+    Created by: Lightnet
+
+    Information: Multiplayer Node Server Prototype Spaceship Game
+
+*/
+
 'use strict';
 
 //const Renderer = require('lance-gg').render.Renderer;
@@ -67,6 +78,8 @@ class MyRenderer extends AFrameRenderer {
 
         //this.objectlist();
 
+
+        /*
         for (let objId of Object.keys(this.sprites)) {
 
             //console.log(objId);
@@ -98,6 +111,7 @@ class MyRenderer extends AFrameRenderer {
                 entityEl.setAttribute('position', {x: pos.x, y: pos.y, z: 0});
             }
         }
+        */
     }
 
     addSprite(obj, objName) {

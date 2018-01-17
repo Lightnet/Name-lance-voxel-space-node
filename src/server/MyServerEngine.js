@@ -1,8 +1,15 @@
 /*
-    multiplayer node server
+    Project Name: lance-voxel-space-node
+    License: CC0
+    Multiples Licenses check the README.md file.
+
+    Created by: Lightnet
+
+    Information: Multiplayer Node Server Prototype Spaceship Game
+
 */
 
-console.log("server");
+//console.log("server");
 
 'use strict';
 
@@ -29,7 +36,6 @@ class MyServerEngine extends ServerEngine {
     onPlayerConnected(socket) {
         super.onPlayerConnected(socket);
 
-        
         // attach newly connected player an available paddle
         if (this.players.player1 === null) {
             this.players.player1 = socket.id;
@@ -40,7 +46,6 @@ class MyServerEngine extends ServerEngine {
         }
         
         //console.log(socket);
-
     }
 
     onPlayerDisconnected(socketId, playerId) {

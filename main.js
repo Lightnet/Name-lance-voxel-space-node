@@ -1,5 +1,6 @@
 'use strict';
 
+//main point entry
 
 const express = require('express');
 const socketIO = require('socket.io');
@@ -18,11 +19,14 @@ const io = socketIO(requestHandler);
 // Game Server
 const MyServerEngine = require(path.join(__dirname, 'src/server/MyServerEngine.js'));
 const MyGameEngine = require(path.join(__dirname, 'src/common/MyGameEngine.js'));
-const SimplePhysicsEngine = require('lance-gg').physics.SimplePhysicsEngine;
+//const SimplePhysicsEngine = require('lance-gg').physics.SimplePhysicsEngine;
+const CannonPhysicsEngine = require('lance-gg').physics.CannonPhysicsEngine;
 
 // Game Instances
-const physicsEngine = new SimplePhysicsEngine();
-const gameEngine = new MyGameEngine({ physicsEngine, traceLevel: 1 });
+//const physicsEngine = new SimplePhysicsEngine();
+const physicsEngine = new CannonPhysicsEngine();
+//const gameEngine = new MyGameEngine({ physicsEngine, traceLevel: 1 });
+const gameEngine = new MyGameEngine({ physicsEngine, traceLevel: 0 });
 const serverEngine = new MyServerEngine(io, gameEngine, { debug: {}, updateRate: 6 });
 
 // start the game

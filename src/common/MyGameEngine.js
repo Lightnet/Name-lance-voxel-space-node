@@ -1,6 +1,22 @@
+/*
+    Project Name: lance-voxel-space-node
+    License: CC0
+    Multiples Licenses check the README.md file.
+
+    Created by: Lightnet
+
+    Information: Multiplayer Node Server Prototype Spaceship Game
+
+*/
+
 'use strict';
 
 const GameEngine = require('lance-gg').GameEngine;
+const ThreeVector = require('lance-gg').serialize.ThreeVector;
+
+//game objects
+const PlayerCube = require('./PlayerCube');
+const SphereCannon = require('./SphereCannon');
 
 //const Paddle = require('./Paddle');
 //const Ball = require('./Ball');
@@ -105,6 +121,9 @@ class MyGameEngine extends GameEngine {
         //this.addObjectToWorld(new Paddle(++this.world.idCount, PADDING, 1));
         //this.addObjectToWorld(new Paddle(++this.world.idCount, WIDTH - PADDING, 2));
         //this.addObjectToWorld(new Ball(++this.world.idCount, WIDTH / 2, HEIGHT / 2));
+        let position = new ThreeVector(0, 10, 0);
+        this.addObjectToWorld(new SphereCannon(++this.world.idCount,this, position));
+        
     }
 
     postStepHandleBall() {
@@ -159,6 +178,8 @@ class MyGameEngine extends GameEngine {
     registerClasses(serializer) {
         //serializer.registerClass(require('../common/Paddle'));
         //serializer.registerClass(require('../common/Ball'));
+        serializer.registerClass(require('../common/PlayerCube'));
+        serializer.registerClass(require('../common/SphereCannon'));
     }
 }
 
