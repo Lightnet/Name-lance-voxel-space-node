@@ -1,23 +1,59 @@
 'use strict';
 
-const Renderer = require('lance-gg').render.Renderer;
+//const Renderer = require('lance-gg').render.Renderer;
+const AFrameRenderer = require('lance-gg').render.AFrameRenderer;
 
 require('aframe');
 
-class MyRenderer extends Renderer {
+const debugWireframes = true;
+
+//class MyRenderer extends Renderer {
+class MyRenderer extends AFrameRenderer {
 
     constructor(gameEngine, clientEngine) {
         super(gameEngine, clientEngine);
         this.sprites = {};
         
         var self = this;
-        
-        setInterval(function(){
+
+        console.log(gameEngine)
+
+        //setInterval(function(){
             //self.objectlist();
             //console.log(MyRenderer);
-            console.log(self.sprites);
+            //console.log(self.sprites);
+          //},  5000);
+    }
 
-          },  5000);  
+    // setup the 3D scene
+    init() {
+        console.log("init scene...");
+        return super.init().then(() =>{
+            // show cannon objects
+            if (debugWireframes) {
+                console.log("Debug Cannon");
+                window.CANNON = this.gameEngine.physicsEngine.CANNON;
+                let head = document.getElementsByTagName('head')[0];
+                let script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.src = '/src/lib/CannonDebugRenderer.js';
+                script.onload = () => {
+                    this.cannonDebugRenderer = new THREE.CannonDebugRenderer( this.scene.object3D, this.gameEngine.physicsEngine.world );
+                };
+                head.appendChild(script);
+            }
+
+            this.frameNum = 0;
+
+            document.querySelector('a-assets').addEventListener('loaded', ()=>{
+                console.log('assets loaded');
+                //document.body.classList.remove('loading');
+
+                this.emit('ready');
+                this.isReady = true;
+            });
+        });
+
     }
 
     objectlist(){ 

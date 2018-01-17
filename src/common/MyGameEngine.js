@@ -2,29 +2,49 @@
 
 const GameEngine = require('lance-gg').GameEngine;
 
-const Paddle = require('./Paddle');
-const Ball = require('./Ball');
-const PADDING = 20;
-const WIDTH = 400;
-const HEIGHT = 400;
-const PADDLE_WIDTH = 10;
-const PADDLE_HEIGHT = 50;
+//const Paddle = require('./Paddle');
+//const Ball = require('./Ball');
+//const PADDING = 20;
+//const WIDTH = 400;
+//const HEIGHT = 400;
+//const PADDLE_WIDTH = 10;
+//const PADDLE_HEIGHT = 50;
+/*
+var window = {
+    addEventListener:function(){}
+};
+global.window=window;
+
+var navigator= {
+    //addEventListener:function(){}
+};
+
+global.navigator=navigator;
+
+require('aframe');
+*/
+
+// todo check if this should be global
+let CANNON = null;
 
 class MyGameEngine extends GameEngine {
 
     constructor(options) {
         super(options);
+
+        CANNON = this.physicsEngine.CANNON;
     }
 
     start() {
 
         super.start();
 
-        this.worldSettings = {
-            width: 400,
-            height: 400
-        };
-
+        //this.worldSettings = {
+            //width: 400,
+            //height: 400
+        //};
+        
+        /*
         this.on('postStep', () => { this.postStepHandleBall(); });
         this.on('objectAdded', (object) => {
             if (object.id == 1) {
@@ -35,6 +55,7 @@ class MyGameEngine extends GameEngine {
                 this.ball = object;
             }
         });
+        */
     }
 
     /*
@@ -81,13 +102,13 @@ class MyGameEngine extends GameEngine {
     initGame() {
 
         // create the paddle objects
-        this.addObjectToWorld(new Paddle(++this.world.idCount, PADDING, 1));
-        this.addObjectToWorld(new Paddle(++this.world.idCount, WIDTH - PADDING, 2));
-        this.addObjectToWorld(new Ball(++this.world.idCount, WIDTH / 2, HEIGHT / 2));
+        //this.addObjectToWorld(new Paddle(++this.world.idCount, PADDING, 1));
+        //this.addObjectToWorld(new Paddle(++this.world.idCount, WIDTH - PADDING, 2));
+        //this.addObjectToWorld(new Ball(++this.world.idCount, WIDTH / 2, HEIGHT / 2));
     }
 
     postStepHandleBall() {
-        
+        /*
         if (!this.ball)
             return;
 
@@ -132,12 +153,12 @@ class MyGameEngine extends GameEngine {
             this.ball.position.y = HEIGHT - 1;
             this.ball.velocity.y *= -1;
         }
-        
+        */
     }
 
     registerClasses(serializer) {
-        serializer.registerClass(require('../common/Paddle'));
-        serializer.registerClass(require('../common/Ball'));
+        //serializer.registerClass(require('../common/Paddle'));
+        //serializer.registerClass(require('../common/Ball'));
     }
 }
 
