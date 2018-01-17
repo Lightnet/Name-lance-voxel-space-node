@@ -87,7 +87,7 @@ class MyGameEngine extends GameEngine {
     }
 
     postStepHandleBall() {
-        /*
+        
         if (!this.ball)
             return;
 
@@ -132,7 +132,7 @@ class MyGameEngine extends GameEngine {
             this.ball.position.y = HEIGHT - 1;
             this.ball.velocity.y *= -1;
         }
-        */
+        
     }
 
     registerClasses(serializer) {

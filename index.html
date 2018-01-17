@@ -12,16 +12,19 @@
     <body>
         
         <a-scene>
-            <a-camera wasd-controls-enabled="false" position="0 1 100"></a-camera>
+            <a-camera wasd-controls-enabled="false" position="200 200 400"></a-camera>
             
-            <a-box id="paddle1" position="1 0 0" rotation="0 0 0" color="#EF2D5E" class="paddle1"></a-box>
-            <a-box id="paddle2" position="-1 0 0" rotation="0 0 0" color="#EF2D5E" class="paddle2"></a-box>
+            <a-box id="paddle1" scale="5 50 1" position="5 0 0" rotation="0 0 0" color="#EF2DFF" class="paddle1"></a-box>
+            <a-box id="paddle2" scale="5 50 1" position="5 0 0" rotation="0 0 0" color="#EF2D5E" class="paddle2"></a-box>
+            <a-box id="ball" scale="5 5 1" position="0 0 0" rotation="0 0 0" color="#EF2D5E" class="ball"></a-box>
+
+            <a-plane position="200 200 -10" rotation="0 0 0" width="400" height="400" color="#7BC8A4"></a-plane>
             <!--
-            <a-box position="0 0 0" rotation="0 0 0" color="#4CC3D9" class="ball"></a-box>
             -->
-            <a-plane position="0 0 0" rotation="0 0 0" width="400" height="400" color="#7BC8A4"></a-plane>
-            <a-sky color="#ECECEC"></a-sky>
             <!--
+                <a-box position="0 0 0" rotation="0 0 0" color="#4CC3D9" class="ball"></a-box>
+                
+                <a-sky color="#ECECEC"></a-sky>
                 <a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
                 <a-sphere position="0 1.25 -5" radius="1.25" color="#EF2D5E"></a-sphere>
                 <a-cylinder position="1 0.75 -3" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>

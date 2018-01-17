@@ -39,7 +39,6 @@ class MyServerEngine extends ServerEngine {
         }
         //console.log(socket);
 
-
     }
 
     onPlayerDisconnected(socketId, playerId) {
