@@ -15,15 +15,26 @@ gulp.task('scripts', function() {
     //server.start.bind(server);
 });
 
-gulp.task('serverrestart',()=>{
-    //console.log("server restart...");
-    //server.start.bind(server)();
+gulp.task('voxelpainter',()=>{
+    gulp.src(['src/voxelpainter/voxelpainter.js'])
+        .pipe(bro())
+        .pipe(rename('voxelpainter.js'))
+        .pipe(gulp.dest('./dist/'));
+});
+
+gulp.task('spaceship',()=>{
+    gulp.src(['src/spaceship/spaceship.js'])
+        .pipe(bro())
+        .pipe(rename('spaceship.js'))
+        .pipe(gulp.dest('./dist/'));
 });
 
 //watch files changes and auto compile file.
 gulp.task('watch', () =>{
-    //gulp.watch(['src/client/clientMain.js'],['scripts']);
-    gulp.watch(['src/client/*.js','src/server/*.js','src/common/*.js'],['scripts','serverrestart']);
+    gulp.watch(['src/client/*.js','src/server/*.js','src/common/*.js'],['scripts']);
+    gulp.watch(['src/voxelpainter/voxelpainter.js'],['voxelpainter']);
+    gulp.watch(['src/spaceship/spaceship.js'],['spaceship']);
+
 });
 
 gulp.task('serve', function() {
@@ -33,7 +44,6 @@ gulp.task('serve', function() {
     //use gulp.watch to trigger server actions(notify, start or stop)
     gulp.watch(['src/client/*.js','src/common/*.js','src/server/*.js','*.html'], function (file) {
         server.notify.apply(server, [file]);
-        //server.notify();
         console.log("files change?");
         server.start.bind(server)();
     });
@@ -45,4 +55,4 @@ gulp.task('serve', function() {
 });
 
 //main entry call task or default task call
-gulp.task('default',['scripts','serve','watch']);
+gulp.task('default',['scripts','serve','watch','voxelpainter','spaceship']);
