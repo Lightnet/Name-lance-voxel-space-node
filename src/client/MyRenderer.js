@@ -15,6 +15,7 @@
 const AFrameRenderer = require('lance-gg').render.AFrameRenderer;
 
 require('aframe');
+require('aframe-physics-system');
 
 const debugWireframes = true;
 

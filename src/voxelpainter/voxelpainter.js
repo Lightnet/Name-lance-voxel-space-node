@@ -11,6 +11,8 @@
 
 
 require('aframe');
+require('aframe-physics-system');
+
 console.log("voxel painter");
 
 var pos =  new THREE.Vector3();
