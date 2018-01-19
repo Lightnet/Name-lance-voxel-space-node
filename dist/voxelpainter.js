@@ -113678,13 +113678,15 @@ console.log("voxel painter");
 //var pos =  new THREE.Vector3();
 //console.log(pos);
 
-
+/*
 AFRAME.registerComponent('camerapaint', {
   init: function () {},
   update: function (oldData) {},
   tick: function () {}
 });
 
+*/
+/*
 AFRAME.registerComponent('collider-check', {
   dependencies: ['raycaster'],
   init: function () {
@@ -113696,6 +113698,7 @@ AFRAME.registerComponent('collider-check', {
     });
   }
 });
+*/
 
 // Component to change to a sequential color on click.
 AFRAME.registerComponent('cursor-listener', {

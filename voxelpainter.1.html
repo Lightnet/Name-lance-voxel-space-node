@@ -1,0 +1,124 @@
+<html>
+    <head>
+        <title>voxel paint app</title>
+        <!--
+        <script src="/socket.io/socket.io.js"></script>
+        -->
+        <script src="dist/voxelpainter.js" type="text/javascript"></script>
+    </head>
+    <body>
+        
+        <a-scene>
+            <a-assets>
+            </a-assets>
+
+
+        <!--
+            <a-plane position="0 0 -1"  height="2" width="3" rotation="0 0 0" color="#ffffff" visible="true" >
+                <a-text value="Modal" position="0 0 0" align="center" color="black"></a-text>
+            </a-plane>
+        -->
+
+            <a-entity camera look-controls wasd-controls-enabled="true">
+                <!--
+                <a-entity cursor="fuse: false; fuseTimeout: 100; rayOrigin: mouse;"
+                          position="0 0 -1"
+                          geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+                          material="color: black; shader: flat">
+                </a-entity>
+            -->
+              </a-entity>
+              <!--
+              <a-entity id="box" cursor-listener geometry="primitive: box" material="color: blue"></a-entity>
+              -->
+
+              <a-entity id="box" cursor-listener geometry="primitive: box" position="0 0 -5" material="color: blue"></a-entity>
+
+
+
+            <!--
+            <a-entity camera look-controls></a-entity>
+            <a-entity class="collidable" geometry="primitive: box" position="0 5 -10"></a-entity>
+            -->
+
+            <!--
+            <a-entity camera look-controls>
+                <a-entity geometry="primitive: plane; height: 0.2; width: 0.2" position="0 0 -1"
+                          material="color: gray; opacity: 0.5"></a-entity>
+            </a-entity>
+
+            <a-entity class="collidable" geometry="primitive: box" position="0 5 -10"></a-entity>
+            -->
+
+
+
+            <!--
+                wasd-controls-enabled="true"
+            -->
+            <!--
+            <a-camera position="0 0 1" collider-check line="color: orange; opacity: 0.5">
+                
+                <a-entity cursor raycaster="far: 20; interval: 1000; objects: .clickable" line="color: orange; opacity: 0.5"></a-entity>
+                <a-entity  cursor
+                          raycaster="objects: .collidable;showLine: true; far: 10;"
+                          line="color: orange; opacity: 0.5"
+                          position="0 0 -1"
+                          
+                          rotation="0 0 0"
+                          >
+                </a-entity>
+            
+            </a-camera>
+
+            <a-entity id="player" collider-check>
+                <a-entity raycaster="far: 10; objects: .collidable" line="color: orange; opacity: 0.5" position="0 0 0" rotation="0 0 0"></a-entity>
+            </a-entity>
+
+            <a-entity class="collidable" geometry="primitive: box" position="0 5 -10"></a-entity>
+
+            -->
+            <!--
+                //geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+                material="color: black; shader: flat"
+            <a-entity class="collidable" geometry="primitive: box" position="2 200 0"></a-entity>
+            -->
+            
+
+            <!--
+            <a-camera wasd-controls-enabled="true" camera position="0 0 1">
+                <a-entity cursor="fuse: false; fuseTimeout: 500"
+                          position="0 0 -1"
+                          geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+                          material="color: black; shader: flat">
+                </a-entity>
+            </a-camera>
+            <a-entity id="box" position="0 0 0" cursor-listener geometry="primitive: box" material="color: blue"></a-entity>
+            -->
+
+            <!--
+            <a-entity camera position="0 0 1" >
+                <a-entity cursor="fuse: false; fuseTimeout: 500"
+                          position="0 0 1"
+                          geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+                          material="color: black; shader: flat">
+                </a-entity>
+              </a-entity>
+            -->
+            
+            
+            
+
+
+            <!--
+                <a-camera wasd-controls-enabled="true" position="0 0 1" raycaster="recursive: false; interval: 1000"></a-camera>
+                <a-entity geometry="primitive: box" material="color: #000" position="0 0 -2" raycast-blab></a-entity>
+            -->
+
+            <!--
+            <a-entity class="collidable" geometry="primitive: box" position="1 0 0"></a-entity>
+            <a-plane position="0 0 0" rotation="0 0 0" width="100" height="100" color="#7BC8A4"></a-plane>
+            -->
+        </a-scene>
+        
+    </body>
+</html>
