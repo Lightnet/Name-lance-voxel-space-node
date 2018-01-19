@@ -3,6 +3,15 @@ Notes:
  * Just looking correct way to make scripts works.
 
 Example files:
+ * https://github.com/aframevr/aframe/blob/master/docs/introduction/developing-with-threejs.md
+
+ Accessing an Entity's three.js Objects
+
+ * https://github.com/donmccurdy/aframe-physics-system#dynamic-body-and-static-body
+ * https://stackoverflow.com/questions/46246274/is-it-possible-to-remove-shapes-from-a-physics-body-in-cannon-js
+ * https://stackoverflow.com/questions/25766981/changing-a-three-js-objects-geometry
+
+
  * https://github.com/aframevr/aframe/blob/master/examples/test/raycaster/simple.html
  * https://www.npmjs.com/package/aframe-sticky-cursor-component
  * https://github.com/jujunjun110/aframe-crawling-cursor
