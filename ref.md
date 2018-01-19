@@ -12,6 +12,15 @@ Example files:
  * https://stackoverflow.com/questions/25766981/changing-a-three-js-objects-geometry
 
 
+ * https://aframe.io/docs/master/components/raycaster.html
+ * https://github.com/aframevr/aframe/blob/master/docs/components/raycaster.md
+ * https://glitch.com/edit/#!/a-frame-mouse-click-example?path=index.html:25:54
+ 
+
+ * https://aframe.io/docs/0.7.0/components/camera.html
+
+
+
  * https://github.com/aframevr/aframe/blob/master/examples/test/raycaster/simple.html
  * https://www.npmjs.com/package/aframe-sticky-cursor-component
  * https://github.com/jujunjun110/aframe-crawling-cursor

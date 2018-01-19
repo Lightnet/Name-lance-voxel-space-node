@@ -113762,7 +113762,8 @@ window.addEventListener("load", function () {
     //var entityEl = document.createElement('a-box');
 
     entityEl.setAttribute('geometry', "primitive: box; width: 0.5");
-    entityEl.setAttribute('position', "-1 10 -3");
+    //entityEl.setAttribute('position', "-1 10 -3");
+    //entityEl.setAttribute('position', "-1 10 -2");
     entityEl.setAttribute('material', "color: yellow");
     entityEl.setAttribute('dynamic-body', '');
 

@@ -14,9 +14,7 @@ require('aframe-physics-system');
 console.log("test");
 
 //console.log(this);
-
 //console.log(AFRAME);
-
 
 var self = this;
 
