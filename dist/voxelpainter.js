@@ -113677,44 +113677,25 @@ console.log("voxel painter");
 
 //var pos =  new THREE.Vector3();
 //console.log(pos);
-
-/*
-AFRAME.registerComponent('camerapaint', {
-  init: function () {},
-  update: function (oldData) {},
-  tick: function () {}
-});
-
-*/
-/*
-AFRAME.registerComponent('collider-check', {
-  dependencies: ['raycaster'],
-  init: function () {
-    this.el.addEventListener('raycaster-intersected', function (evt) {
-      //console.log('Player hit something!');
-      //console.log(obj);
-      //console.log(evt.detail);
-      //evt.detail.el.setAttribute('material', 'opacity', '0.5');
-    });
-  }
-});
-*/
+var id = 0;
+function createbox(pos) {
+  var sceneEl = document.querySelector('a-scene');
+  var entityEl = document.createElement('a-entity');
+  entityEl.setAttribute('geometry', "primitive: box;");
+  //entityEl.setAttribute('geometry', "primitive: box; width: 1");
+  //entityEl.setAttribute('position', "-1 10 -3");
+  //entityEl.setAttribute('position', "-1 10 -2");
+  entityEl.setAttribute('position', { x: pos.x, y: pos.y, z: pos.z });
+  entityEl.setAttribute('material', "color: yellow");
+  entityEl.setAttribute('id', id);
+  id = id + 1;
+  //entityEl.setAttribute('cursor-listener','');
+  entityEl.setAttribute('cursor-listener', '');
+  //entityEl.setAttribute('dynamic-body', '');
+  sceneEl.appendChild(entityEl);
+}
 
 // Component to change to a sequential color on click.
-AFRAME.registerComponent('cursor-listener', {
-  init: function () {
-    var lastIndex = -1;
-    var COLORS = ['red', 'green', 'blue'];
-    this.el.addEventListener('click', function (evt) {
-      lastIndex = (lastIndex + 1) % COLORS.length;
-      this.setAttribute('material', 'color', COLORS[lastIndex]);
-      console.log('I was clicked at: ', evt.detail.intersection.point);
-    });
-  }
-});
-
-// Component to change to a sequential color on click.
-/*
 AFRAME.registerComponent('cursor-listener', {
   init: function () {
     var lastIndex = -1;
@@ -113723,43 +113704,47 @@ AFRAME.registerComponent('cursor-listener', {
       lastIndex = (lastIndex + 1) % COLORS.length;
       this.setAttribute('material', 'color', COLORS[lastIndex]);
       //console.log('I was clicked at: ', evt.detail.intersection.point);
+
+
+      //console.log(this);
+      //console.log(evt.detail.intersection);
+      //console.log(evt.detail.intersection.face.normal);
+      var pos = new THREE.Vector3();
+      var currentpos = evt.detail.intersection.object.position;
+
+      currentpos = this.object3D.position;
+
+      if (evt.detail.intersection.face.normal.x != 0) {
+        pos.x = currentpos.x + 1 * evt.detail.intersection.face.normal.x;
+      } else {
+        pos.x = currentpos.x;
+      }
+
+      if (evt.detail.intersection.face.normal.y != 0) {
+        pos.y = currentpos.y + 1 * evt.detail.intersection.face.normal.y;
+      } else {
+        pos.y = currentpos.y;
+      }
+
+      if (evt.detail.intersection.face.normal.z != 0) {
+        pos.z = currentpos.z + 1 * evt.detail.intersection.face.normal.z;
+      } else {
+        pos.z = currentpos.z;
+      }
+
+      //console.log(this.object3D);
+      console.log(evt.detail.intersection);
+      console.log("normal:");
+      console.log(evt.detail.intersection.face.normal);
+      console.log("pos:");
+      console.log(currentpos);
+      //pos.z = currentpos.z + 1;
+      createbox(pos);
+      //console.log(this.object3D.position);
+
+      console.log(evt);
     });
   }
 });
-*/
-
-//https://github.com/aframevr/aframe/blob/master/examples/test/raycaster/simple.html
-
-/* //works
-AFRAME.registerComponent('raycast-blab', {
-  init: function () {
-    this.el.addEventListener('raycaster-intersected', function (evt) {
-      var el = evt.detail.target;
-// May get two intersection events per tick; same element, different faces.
-      console.log('raycaster-intersected ' + el.outerHTML);
-      el.setAttribute('material', 'color', '#7f7');
-    });
-    this.el.addEventListener('raycaster-intersected-cleared', function (evt) {
-      var el = evt.detail.target;
-// May get two intersection events per tick; same element, different faces.
-      console.log('raycaster-intersected-cleared ' + el.outerHTML);
-      el.setAttribute('material', 'color', '#f77');
-    });
-  }
-});
-*/
-
-/*
-AFRAME.registerComponent('collider-check', {
-  dependencies: ['raycaster'],
-
-  init: function () {
-    console.log("ray init");
-    this.el.addEventListener('raycaster-intersected', function () {
-      console.log('Player hit something!');
-    });
-  }
-});
-*/
 
 },{"aframe":79,"aframe-physics-system":1}]},{},[84]);
