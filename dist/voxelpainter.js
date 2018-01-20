@@ -124797,19 +124797,22 @@ function isEmptyObject(keys) {
   return true;
 }
 
+var bcreateblock = true;
+
 AFRAME.registerComponent('shortcut-build', {
   schema: {},
   init: function () {
     this.keys = {};
-
     this.onKeyDown = bind(this.onKeyDown, this);
     this.onKeyUp = bind(this.onKeyUp, this);
+    this.bbuild = true;
+    this.boldbuild = true;
+    this.bpress = false;
   },
   remove: function () {
     this.removeKeyEventListeners();
     //this.removeVisibilityEventListeners();
   },
-
   play: function () {
     this.attachKeyEventListeners();
   },
@@ -124821,7 +124824,6 @@ AFRAME.registerComponent('shortcut-build', {
     window.addEventListener('keydown', this.onKeyDown);
     window.addEventListener('keyup', this.onKeyUp);
   },
-
   removeKeyEventListeners: function () {
     window.removeEventListener('keydown', this.onKeyDown);
     window.removeEventListener('keyup', this.onKeyUp);
@@ -124834,22 +124836,41 @@ AFRAME.registerComponent('shortcut-build', {
     code = event.code || KEYCODE_TO_CODE[event.keyCode];
     if (KEYS.indexOf(code) !== -1) {
       this.keys[code] = true;
-      console.log(this.keys);
+      //console.log(this.keys);
       //console.log(this.keys[code]);
     }
   },
-
   onKeyUp: function (event) {
     var code;
     code = event.code || KEYCODE_TO_CODE[event.keyCode];
-    console.log(code);
+    //console.log(code);
 
     delete this.keys[code];
   },
   tick: function (time, delta) {
     var keys = this.keys;
     if (keys.KeyA) {
-      console.log("A press");
+      //console.log("A press");
+      this.bpress = true;
+    } else {
+      this.bpress = false;
+    }
+
+    if (this.bpress) {
+      if (this.bbuild == false) {
+        this.togglebuild();
+      }
+      this.bbuild = true;
+    } else {
+      this.bbuild = false;
+    }
+  },
+  togglebuild() {
+    console.log("toggle?");
+    if (bcreateblock) {
+      bcreateblock = false;
+    } else {
+      bcreateblock = true;
     }
   }
 });
@@ -124898,10 +124919,19 @@ AFRAME.registerComponent('cursor-listener', {
       console.log("pos:");
       console.log(currentpos);
       //pos.z = currentpos.z + 1;
-      createbox(pos);
-      //console.log(this.object3D.position);
+      if (bcreateblock) {
+        createbox(pos);
+      } else {
+        console.log("delete object");
+        //console.log(this.object3D);
+        //var entity = this.el;
+        //entity.parentNode.removeChild(entity);
 
-      console.log(evt);
+        var sceneEl = document.querySelector('a-scene');
+        sceneEl.removeChild(this);
+      }
+      //console.log(this.object3D.position);
+      //console.log(evt);
     });
   }
 });
