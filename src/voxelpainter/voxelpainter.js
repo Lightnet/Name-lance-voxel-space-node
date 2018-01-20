@@ -12,7 +12,11 @@
 
 require('aframe');
 require('aframe-physics-system');
+require('aframe-extras');
 console.log("voxel painter");
+
+var bind = AFRAME.utils.bind;
+var shouldCaptureKeyEvent = AFRAME.utils.shouldCaptureKeyEvent;
 
 //var pos =  new THREE.Vector3();
 //console.log(pos);
@@ -33,6 +37,77 @@ function createbox(pos){
   //entityEl.setAttribute('dynamic-body', '');
   sceneEl.appendChild(entityEl);
 }
+
+var KEYS = [
+  'KeyW', 'KeyA', 'KeyS', 'KeyD',
+  'ArrowUp', 'ArrowLeft', 'ArrowRight', 'ArrowDown'
+];
+
+function isEmptyObject (keys) {
+  var key;
+  for (key in keys) { return false; }
+  return true;
+}
+
+
+AFRAME.registerComponent('shortcut-build', {
+  schema: {
+
+  },
+  init: function () {
+    this.keys = {};
+
+
+    this.onKeyDown = bind(this.onKeyDown, this);
+    this.onKeyUp = bind(this.onKeyUp, this);
+
+  },
+  remove: function () {
+    this.removeKeyEventListeners();
+    //this.removeVisibilityEventListeners();
+  },
+
+  play: function () {
+    this.attachKeyEventListeners();
+  },
+  pause: function () {
+    this.keys = {};
+    this.removeKeyEventListeners();
+  },
+  attachKeyEventListeners: function () {
+    window.addEventListener('keydown', this.onKeyDown);
+    window.addEventListener('keyup', this.onKeyUp);
+  },
+
+  removeKeyEventListeners: function () {
+    window.removeEventListener('keydown', this.onKeyDown);
+    window.removeEventListener('keyup', this.onKeyUp);
+  },
+  onKeyDown: function (event) {
+    var code;
+    if (!shouldCaptureKeyEvent(event)) { return; }
+    code = event.code || KEYCODE_TO_CODE[event.keyCode];
+    if (KEYS.indexOf(code) !== -1) { 
+      this.keys[code] = true; 
+      console.log(this.keys);
+      //console.log(this.keys[code]);
+    }
+  },
+
+  onKeyUp: function (event) {
+    var code;
+    code = event.code || KEYCODE_TO_CODE[event.keyCode];
+    console.log(code);
+
+    delete this.keys[code];
+  },
+  tick: function (time, delta) {
+    var keys = this.keys;
+    if (keys.KeyA){
+      console.log("A press");
+    }
+  }
+});
 
 
 

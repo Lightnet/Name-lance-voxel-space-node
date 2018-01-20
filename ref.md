@@ -19,7 +19,15 @@ Example files:
 
  * https://aframe.io/docs/0.7.0/components/camera.html
 
+ * https://aframe.io/docs/0.7.0/components/stats.html#sidebar
 
+ * https://stackoverflow.com/questions/40709767/aframe-create-custom-wasd-controls-component
+
+
+
+
+
+ 
 
  * https://github.com/aframevr/aframe/blob/master/examples/test/raycaster/simple.html
  * https://www.npmjs.com/package/aframe-sticky-cursor-component
