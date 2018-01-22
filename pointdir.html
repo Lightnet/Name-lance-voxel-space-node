@@ -1,0 +1,67 @@
+<html>
+    <head>
+        <title>point dir</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no,user-scalable=no,maximum-scale=1">
+        <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
+    </head>
+    <body>
+      <script>
+          var rot = 0;
+AFRAME.registerComponent('rayplane', {
+    init: function () {
+      var sceneEl = this.el;
+
+      var box = document.querySelector('#box').object3D;
+
+      var point = document.querySelector('#point').object3D;
+      var cameraEL = document.querySelector('a-camera');
+      var camera = cameraEL.components.camera.camera;
+        window.addEventListener( 'mousemove',function ( event ) {
+          let vector = new THREE.Vector3(
+            ( event.clientX / window.innerWidth ) * 2 - 1,
+            - ( event.clientY / window.innerHeight ) * 2 + 1,
+            0.5 );
+
+            vector.unproject( camera );
+
+            //box.rotation.y ++;
+            //console.log(vector);
+            var dir = vector.sub( cameraEL.object3D.position ).normalize();
+            var distance = - cameraEL.object3D.position.y / dir.y; // y = 0
+            //var distance = - cameraEL.object3D.position.z / dir.z; // z = 0
+            let pos = cameraEL.object3D.position.clone().add( dir.multiplyScalar( distance ) );
+            //console.log(pos);
+
+            let targetdir = pos.clone().sub(box.position).normalize();
+
+            var mx = new THREE.Matrix4().lookAt(targetdir,new THREE.Vector3(0,0,0),new THREE.Vector3(0,1,0));
+            var qt = new THREE.Quaternion().setFromRotationMatrix(mx);
+            //console.log(targetdir);
+            //console.log(qt);
+            //console.log(point);
+
+            if(pos !=null){
+                //point.position.set(pos);
+                point.position.x = pos.x;
+                point.position.y = pos.y;
+                point.position.z = pos.z;
+
+                box.quaternion.set(qt.x,qt.y,qt.z,qt.w);
+            }
+        });
+    },
+    tick: function (time, delta) {}
+});
+    </script>
+      <a-scene>
+        <a-assets>
+        </a-assets>
+        <a-camera position="0 0 5" rayplane>
+        </a-camera>
+        <a-entity id="box" cursor-listener geometry="primitive: box;depth:0.5;width:0.5;height:0.5;" position="0 0 0" material="color: blue"></a-entity>
+        <a-entity id="point" geometry="primitive: box;depth:0.1;width:0.1;height:0.1;" position="0 0 0" material="color: green"></a-entity>
+      </a-scene>
+    </body>
+</html>

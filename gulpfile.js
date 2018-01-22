@@ -16,16 +16,16 @@ gulp.task('scripts', function() {
 });
 
 gulp.task('voxelpainter',()=>{
-    gulp.src(['src/voxelpainter/voxelpainter.js'])
+    gulp.src(['src/voxelpainter/*.js'])
         .pipe(bro())
-        .pipe(rename('voxelpainter.js'))
+        //.pipe(rename('voxelpainter.js'))
         .pipe(gulp.dest('./dist/'));
 });
 
 gulp.task('spaceship',()=>{
-    gulp.src(['src/spaceship/spaceship.js'])
+    gulp.src(['src/spaceship/*.js'])
         .pipe(bro())
-        .pipe(rename('spaceship.js'))
+        //.pipe(rename('spaceship.js'))
         .pipe(gulp.dest('./dist/'));
 });
 
@@ -33,7 +33,7 @@ gulp.task('spaceship',()=>{
 gulp.task('watch', () =>{
     gulp.watch(['src/client/*.js','src/server/*.js','src/common/*.js'],['scripts']);
     gulp.watch(['src/voxelpainter/voxelpainter.js'],['voxelpainter']);
-    gulp.watch(['src/spaceship/spaceship.js'],['spaceship']);
+    gulp.watch(['src/spaceship/*.js'],['spaceship']);
 
 });
 

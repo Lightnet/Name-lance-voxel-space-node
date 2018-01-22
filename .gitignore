@@ -7,3 +7,4 @@ npm-debug.log
 *.trace
 package-lock.json
 build.bat
+dist/*.js

@@ -128,8 +128,6 @@ AFRAME.registerComponent('shortcut-build', {
   }
 });
 
-
-
 // Component to change to a sequential color on click.
 AFRAME.registerComponent('cursor-listener', {
   init: function () {

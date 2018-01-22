@@ -113778,11 +113778,8 @@ window.addEventListener("load", function () {
             //console.log(this);
             //console.log(this.object3D);//does not work
             //console.log(this.components['dynamic-body'].body);
-
-
             var mesh = this.el.getOrCreateObject3D('mesh', THREE.Mesh); //works
-            console.log(mesh);
-
+            //console.log(mesh);
             this.el.body.shapes = [];
             var tetraShape = createTetra();
             this.el.body.addShape(tetraShape);
