@@ -55,6 +55,5 @@ document.querySelector('a-scene').systems['physics']
 ```
 
 
-
 * https://stackoverflow.com/questions/14813902/three-js-get-the-direction-in-which-the-camera-is-looking
 * https://stackoverflow.com/questions/32849600/direction-vector-to-a-rotation-three-js
