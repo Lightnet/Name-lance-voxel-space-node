@@ -39,6 +39,7 @@ class MyServerEngine extends ServerEngine {
         super.onPlayerConnected(socket);
         //console.log(PlayerController);
         //console.log(this.gameEngine);
+        //this.gameEngine.addObjectToWorld(new PlayerController(++this.gameEngine.world.idCount,this.gameEngine ,socket.playerId));
         this.gameEngine.addObjectToWorld(new PlayerController(++this.gameEngine.world.idCount, socket.playerId));
         //console.log(this.gameEngine.world.idCount);
         //console.log("socket.id:");
@@ -71,13 +72,14 @@ class MyServerEngine extends ServerEngine {
         }
         */
         //delete this.gameEngine.world.objects[playerId];
-        console.log("=================================:");
-        console.log(playerId);
-        console.log("objects count:");
+        //console.log("=================================:");
+        //console.log(playerId);
+        //console.log("objects count:");
         //console.log(this.gameEngine.world.objects);
         for (var key in this.gameEngine.world.objects){
-            console.log(key);
+            //console.log(key);
             //console.log(this.gameEngine.world.objects[key]);
+            //check for player id for delete in objects list
             if((this.gameEngine.world.objects[key].playerId !=null)&&(this.gameEngine.world.objects[key].playerId == playerId)){
                 delete this.gameEngine.world.objects[key];
                 break;

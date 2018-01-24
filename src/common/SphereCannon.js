@@ -27,7 +27,7 @@ class SphereCannon extends PhysicalObject {
     };
 
     onAddToWorld(gameEngine) {
-        console.log("add to world scene SphereCannon.");
+        //console.log("add to world scene SphereCannon.");
 
         // create the physics body
         this.gameEngine = gameEngine;
@@ -41,7 +41,7 @@ class SphereCannon extends PhysicalObject {
         this.physicsObj.position.set(this.position.x, this.position.y, this.position.z);
         this.physicsObj.angularDamping = 0.1;
         this.physicsObj.addEventListener("collide", function(e){
-            console.log("sphere collided"); 
+            //console.log("sphere collided");
         });
 
         this.scene = gameEngine.renderer ? gameEngine.renderer.scene : null;
@@ -56,7 +56,7 @@ class SphereCannon extends PhysicalObject {
             el.setAttribute('geometry', `primitive: sphere; radius: ${RADIUS}; segmentsWidth: 32; segmentsHeight: 16`);
             el.setAttribute('game-object-id', this.id);
             //this.setupEmitters();
-            console.log("a-entity ball");
+            //console.log("a-entity ball");
         }
     }
 

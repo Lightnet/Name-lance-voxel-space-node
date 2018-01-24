@@ -18,9 +18,7 @@ class MyClientEngine extends ClientEngine {
         super(gameEngine, options, MyRenderer);
 
         //this.serializer.registerClass(require('../common/PlayerAvatar'));
-
         this.gameEngine.on('client__preStep', this.preStep.bind(this));
-
         // keep a reference for key press state
         this.pressedKeys = {
             down: false,
@@ -73,6 +71,28 @@ class MyClientEngine extends ClientEngine {
         } else if (e.keyCode == '32') {
             this.pressedKeys.space = isDown;
         }
+    }
+
+    // extend ClientEngine connect to add own events
+    connect() {
+        return super.connect().then(() => {
+            console.log("client engine connected...")
+            //this.socket.on('scoreUpdate', (e) => {
+                //this.renderer.updateScore(e);
+            //});
+            console.log(this.playerId);
+
+            this.socket.on('disconnect', (e) => {
+                console.log('disconnected');
+                //document.body.classList.add('disconnected');
+                //document.body.classList.remove('gameActive');
+                //document.querySelector('#reconnect').disabled = false;
+            });
+
+            //if ('autostart' in Utils.getUrlVars()) {
+                //this.socket.emit('requestRestart');
+            //}
+        });
     }
 }
 

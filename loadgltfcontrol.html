@@ -1,0 +1,132 @@
+<html>
+    <head>
+        <title>voxel paint app</title>
+        <!--
+        <script src="/socket.io/socket.io.js"></script>
+        -->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no,user-scalable=no,maximum-scale=1">
+
+        <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
+        
+        
+        <!--
+            <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.js"></script>
+          // https://aframe.io/docs/0.7.0/components/gltf-model.html#why-use-gltf
+        -->
+    </head>
+    <body>
+        <script>
+var quat = new THREE.Quaternion();
+
+AFRAME.registerComponent('bonecontrol', {
+    init: function () {
+        //console.log(this.el.components['gltf-model'].model.children);
+        var self = this;
+        window.addEventListener( 'mousedown',function ( event ) {
+            //console.log(self.el.components['gltf-model'].model);
+            //console.log(self.el.components['gltf-model']);
+        });
+
+        window.addEventListener( 'mousemove',function ( event ) {            
+            //console.log(self.el.components['gltf-model'].model);
+            //console.log(self.el.components['gltf-model']);
+
+            //let model = self.el.components['gltf-model'].model;
+            //console.log(model.children[0].children[0].children[1].children[0]);
+            //think of tree node from scene to pitch joint/bone
+
+            //let pitch = model.children[0].children[0].children[1].children[0];
+            //console.log(pitch);
+            //pitch.quaternion.set(quat.x,quat.y,quat.z,quat.w);
+
+            //https://stackoverflow.com/questions/43645425/how-to-implement-complex-models-in-aframe
+            //console.log(self.el);
+
+
+            var mesh = self.el.getObject3D('mesh');
+
+            //console.log(mesh);
+
+            // With complex models, you may need to loop over `mesh.children`
+            // in case the mesh you want to animate is a child of another 
+            // object in your model file.
+            //if (!mesh || !mesh.isSkinnedMesh) { return; }
+            console.log("test");
+
+            mesh.traverse(function (node) {
+                //console.log("found!");
+                if (node.isBone && node.name === 'Armature_pitch') {
+                    //node.rotation.x += dt * Math.PI / 1000;
+                    node.quaternion.set(quat.x,quat.y,quat.z,quat.w);
+                }
+            });
+
+        });
+
+    }
+  });
+
+
+
+AFRAME.registerComponent('rayplane', {
+      init: function () {
+        var sceneEl = this.el;
+        var box = document.querySelector('#modelmesh').object3D;
+        var point = document.querySelector('#point').object3D;
+        var cameraEL = document.querySelector('a-camera');
+        var camera = cameraEL.components.camera.camera;
+          window.addEventListener( 'mousemove',function ( event ) {
+            let vector = new THREE.Vector3(
+              ( event.clientX / window.innerWidth ) * 2 - 1,
+              - ( event.clientY / window.innerHeight ) * 2 + 1,
+              0.5 );
+  
+              vector.unproject( camera );
+              //console.log(vector);
+              var dir = vector.sub( cameraEL.object3D.position ).normalize();
+              var distance = - cameraEL.object3D.position.y / dir.y; // y = 0
+              //var distance = - cameraEL.object3D.position.z / dir.z; // z = 0
+              let pos = cameraEL.object3D.position.clone().add( dir.multiplyScalar( distance ) );
+              let targetdir = pos.clone().sub(box.position).normalize();
+              var mx = new THREE.Matrix4().lookAt(targetdir,new THREE.Vector3(0,0,0),new THREE.Vector3(0,1,0));
+              var qt = new THREE.Quaternion().setFromRotationMatrix(mx);
+  
+              if(pos !=null){
+                  //point.position.set(pos);
+                  point.position.x = pos.x;
+                  point.position.y = pos.y;
+                  point.position.z = pos.z;
+                  //box.quaternion.set(qt.x,qt.y,qt.z,qt.w);
+                  quat = qt;
+              }
+          });
+      },
+      tick: function (time, delta) {}
+  });
+      </script>
+      <a-scene>
+        <a-assets>
+            <a-asset-item id="pointer" src="/assets/baseturret01.gltf"></a-asset-item>
+        </a-assets>
+
+        <a-camera rayplane universal-controls="movementControls: checkpoint" look-controls="pointerLockEnabled:true;" position="0 0 5" raycaster="recursive: false; interval: 1000">
+            <a-text text="anchor: left; width: 1.5; color: white; value: [LEFT ANCHOR] Hello, Worldd!" position="-1.5 0.5 -1" ></a-text>
+            <a-entity cursor="fuse: false; fuseTimeout: 100; rayOrigin: mouse;"
+                position="0 0 -1"
+                geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+                material="color: black; shader: flat">
+            </a-entity>
+        </a-camera>
+
+        <a-entity id="point" geometry="primitive: box;depth:0.1;width:0.1;height:0.1;" position="0 0 0" material="color: green"></a-entity>
+        <a-entity id="modelmesh" gltf-model="#pointer" bonecontrol></a-entity>
+
+        <!--
+            <a-entity id="box" cursor-listener geometry="primitive: box" position="0 0 0" material="color: blue"></a-entity>
+        -->
+      </a-scene>
+    
+    </body>
+</html>

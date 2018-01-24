@@ -24,12 +24,9 @@ class MyRenderer extends AFrameRenderer {
 
     constructor(gameEngine, clientEngine) {
         super(gameEngine, clientEngine);
-        this.sprites = {};
-        
-        var self = this;
-
+        //this.sprites = {};
+        //var self = this;
         //console.log(gameEngine);
-
         //setInterval(function(){
             //self.objectlist();
             //console.log(MyRenderer);
@@ -41,7 +38,7 @@ class MyRenderer extends AFrameRenderer {
     init() {
         console.log("init scene...");
         return super.init().then(() =>{
-            // show cannon objects
+            // show cannon objects wire frame
             if (debugWireframes) {
                 console.log("Debug Cannon");
                 window.CANNON = this.gameEngine.physicsEngine.CANNON;
@@ -54,18 +51,16 @@ class MyRenderer extends AFrameRenderer {
                 };
                 head.appendChild(script);
             }
-
+            //frame counter
             this.frameNum = 0;
-
+            //assets
             document.querySelector('a-assets').addEventListener('loaded', ()=>{
                 console.log('assets loaded');
                 //document.body.classList.remove('loading');
-
                 this.emit('ready');
                 this.isReady = true;
             });
         });
-
     }
 
     objectlist(){ 
@@ -76,10 +71,7 @@ class MyRenderer extends AFrameRenderer {
 
     draw() {
         super.draw();
-
         //this.objectlist();
-
-
         /*
         for (let objId of Object.keys(this.sprites)) {
 
@@ -115,13 +107,17 @@ class MyRenderer extends AFrameRenderer {
         */
     }
 
-    addSprite(obj, objName) {
-        if (objName === 'paddle') objName += obj.id;
-        this.sprites[obj.id] = {
-            el: document.querySelector('.' + objName)
-        };
-        //console.log(objName);
+    toggle_login(){
+        console.log("login...");
     }
+
+    //addSprite(obj, objName) {
+        //if (objName === 'paddle') objName += obj.id;
+        //this.sprites[obj.id] = {
+            //el: document.querySelector('.' + objName)
+        //};
+        //console.log(objName);
+    //}
 
 }
 

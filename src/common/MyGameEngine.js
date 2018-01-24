@@ -80,11 +80,11 @@ class MyGameEngine extends GameEngine {
         this.on('postStep', () => {
 
         });
-        this.on('objectAdded', (object) => {
-            if (object.id == 1) {
-                this.playeravatar = object;
-            }
-        });
+        //this.on('objectAdded', (object) => {
+            //if (object.id == 1) {
+                //this.playeravatar = object;
+            //}
+        //});
     }
 
     /*
@@ -124,25 +124,28 @@ class MyGameEngine extends GameEngine {
         //console.log(playercontrol);
 
         if (playercontrol) {
-            if (inputData.input === 'up') {
+            if(playercontrol.processInput !=null){
+                playercontrol.processInput(inputData);
+            }
+
+
+            //if (inputData.input === 'up') {
                 //playerPaddle.position.y -= 5;
-            } else if (inputData.input === 'down') {
+            //} else if (inputData.input === 'down') {
                 //playerPaddle.position.y += 5;
-                playercontrol.test();
-            } else if (inputData.input === 'left') {
+                //playercontrol.test();
+            //} else if (inputData.input === 'left') {
                 //playerPaddle.position.y += 5;
                 //console.log("left");
-            } else if (inputData.input === 'right') {
+            //} else if (inputData.input === 'right') {
                 //playerPaddle.position.y += 5;
                 //console.log("right");
-            }
-            if (inputData.input === 'space') {
+            //}
+            //if (inputData.input === 'space') {
                 //playerPaddle.position.y += 5;
                 //console.log("space");
-            }
-
+            //}
         }
-
         //console.log("move?");
     }
 
@@ -153,7 +156,7 @@ class MyGameEngine extends GameEngine {
         //this.addObjectToWorld(new Paddle(++this.world.idCount, WIDTH - PADDING, 2));
         //this.addObjectToWorld(new Ball(++this.world.idCount, WIDTH / 2, HEIGHT / 2));
         let position = new ThreeVector(0, 0, 0);
-        this.addObjectToWorld(new PlayerAvatar(++this.world.idCount,this, position,1));
+        //this.addObjectToWorld(new PlayerAvatar(++this.world.idCount,this, position,1));
         position = new ThreeVector(0, 100, 0);
         this.addObjectToWorld(new SphereCannon(++this.world.idCount,this, position));
         position = new ThreeVector(0, 0, 0);

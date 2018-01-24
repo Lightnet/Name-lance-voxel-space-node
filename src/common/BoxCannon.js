@@ -31,7 +31,7 @@ class BoxCannon extends PhysicalObject {
     };
 
     onAddToWorld(gameEngine) {
-        console.log("add to world scene BoxCannon.");
+        //console.log("add to world scene BoxCannon.");
 
         // create the physics body
         this.gameEngine = gameEngine;
@@ -57,8 +57,6 @@ class BoxCannon extends PhysicalObject {
             //el.addEventListener('physicscollided', function (event) { //nothing
                 //console.log('Entity collided with', event.detail.collidingEntity);
               //});
-
-
             this.scene.appendChild(el);
             let p = this.position;
             let q = this.quaternion;
@@ -67,7 +65,7 @@ class BoxCannon extends PhysicalObject {
             el.setAttribute('geometry', `primitive: box; width: ${_width}; height: ${_height}; depth: ${_depth}; segmentsWidth: 32; segmentsHeight: 16`);
             el.setAttribute('game-object-id', this.id);
             //this.setupEmitters();
-            console.log("a-entity ball");
+            //console.log("a-entity box");
         }
     }
 

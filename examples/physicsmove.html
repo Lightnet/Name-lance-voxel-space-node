@@ -66,6 +66,7 @@
             //CANNON.Vec3(dirmove.x, dirmove.y, dirmove.z),
             el.body.fixedRotation = true;
             el.body.updateMassProperties();
+            el.body.velocity.setZero();
             el.body.applyImpulse(
             /* impulse */        new CANNON.Vec3(dirmove.x, dirmove.y, dirmove.z),
             /* world position */ new CANNON.Vec3().copy(el.getComputedAttribute('position'))

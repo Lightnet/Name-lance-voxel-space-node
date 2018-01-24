@@ -30,23 +30,58 @@ class PlayerController extends GameObject {
         this.clientId = ""; // socket client id
         this.teamid = 0;//0 = free for all
         this.pawn = null; //object control
-        
+        this.state="spector";
     };
 
     onAddToWorld(gameEngine) {
-        console.log("====================================");
-        console.log("add to world scene PlayerController.");
-        console.log(this);
+        this.gameEngine = gameEngine;
+        //console.log("====================================");
+        //console.log("add to world scene PlayerController.");
+        //console.log(this);
     }
+
+    processInput(inputData){
+        if (inputData.input === 'up') {
+            //playerPaddle.position.y -= 5;
+        } else if (inputData.input === 'down') {
+            //playerPaddle.position.y += 5;
+            this.test();
+        } else if (inputData.input === 'left') {
+            //playerPaddle.position.y += 5;
+            //console.log("left");
+        } else if (inputData.input === 'right') {
+            //playerPaddle.position.y += 5;
+            //console.log("right");
+        }
+        if (inputData.input === 'space') {
+            //playerPaddle.position.y += 5;
+            //console.log("space");
+        }
+    }
+
 
     toString() {
         return `PlayerController::${super.toString()}`;
     }
 
+    jump(){
+
+    }
+
+    attack(){
+        
+    }
+
     test(){
         //console.log("test log player");
-
+        //console.log(this.gameEngine);
         this.scene = this.gameEngine.renderer ? this.gameEngine.renderer.scene : null;
+
+        if(this.gameEngine.renderer){//check if render is not null on client but on server is null I think.
+            this.gameEngine.renderer.toggle_login();
+        }
+        
+
         if (this.scene) {
             //console.log(this.gameEngine);
             //console.log(this.gameEngine.world.objects[2]);
@@ -60,6 +95,7 @@ class PlayerController extends GameObject {
             //console.log(sphereobject);
             //
         }
+        
     }
 
 }
