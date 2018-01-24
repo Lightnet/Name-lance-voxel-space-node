@@ -68,3 +68,5 @@ document.querySelector('a-scene').systems['physics']
 * https://github.com/donmccurdy/aframe-extras
 
 * https://stackoverflow.com/questions/43645425/how-to-implement-complex-models-in-aframe
+
+* https://github.com/tizzle/aframe-orbit-controls-component  orbit-controls
