@@ -39,7 +39,7 @@ function createbox(pos){
 }
 
 var KEYS = [
-  'KeyW', 'KeyA', 'KeyS', 'KeyD',
+  'KeyW', 'KeyA', 'KeyS', 'KeyD', 'KeyB',
   'ArrowUp', 'ArrowLeft', 'ArrowRight', 'ArrowDown'
 ];
 
@@ -54,7 +54,9 @@ var bcreateblock = true;
 
 AFRAME.registerComponent('shortcut-build', {
   schema: {
-
+    textbuild:{
+      type:'string'
+    }
   },
   init: function () {
     this.keys = {};
@@ -89,7 +91,7 @@ AFRAME.registerComponent('shortcut-build', {
     code = event.code || KEYCODE_TO_CODE[event.keyCode];
     if (KEYS.indexOf(code) !== -1) { 
       this.keys[code] = true; 
-      //console.log(this.keys);
+      console.log(this.keys);
       //console.log(this.keys[code]);
     }
   },
@@ -102,7 +104,7 @@ AFRAME.registerComponent('shortcut-build', {
   },
   tick: function (time, delta) {
     var keys = this.keys;
-    if (keys.KeyA){
+    if (keys.KeyB){
       //console.log("A press");
       this.bpress = true;
     }else{
@@ -119,12 +121,17 @@ AFRAME.registerComponent('shortcut-build', {
     }
   },
   togglebuild(){
-    console.log("toggle?");
+    //console.log("toggle?");
+    let text = "Build Mode: Create";
     if(bcreateblock){
       bcreateblock = false;
+      text = "Build Mode: Destory";
     }else{
       bcreateblock = true;
     }
+    var textEl = document.querySelector('a-text');
+    textEl.setAttribute('value',text);
+    //console.log(textEl);
   }
 });
 
@@ -137,16 +144,12 @@ AFRAME.registerComponent('cursor-listener', {
       lastIndex = (lastIndex + 1) % COLORS.length;
       this.setAttribute('material', 'color', COLORS[lastIndex]);
       //console.log('I was clicked at: ', evt.detail.intersection.point);
-
-
       //console.log(this);
       //console.log(evt.detail.intersection);
       //console.log(evt.detail.intersection.face.normal);
       var pos =  new THREE.Vector3();
       var currentpos = evt.detail.intersection.object.position;
-
       currentpos = this.object3D.position;
-
       if(evt.detail.intersection.face.normal.x != 0){
         pos.x = currentpos.x + (1 * evt.detail.intersection.face.normal.x)
       }else{
@@ -164,13 +167,12 @@ AFRAME.registerComponent('cursor-listener', {
       }else{
         pos.z = currentpos.z;
       }
-
       //console.log(this.object3D);
-      console.log(evt.detail.intersection);
-      console.log("normal:");
-      console.log(evt.detail.intersection.face.normal);
-      console.log("pos:");
-      console.log(currentpos);
+      //console.log(evt.detail.intersection);
+      //console.log("normal:");
+      //console.log(evt.detail.intersection.face.normal);
+      //console.log("pos:");
+      //console.log(currentpos);
       //pos.z = currentpos.z + 1;
       if(bcreateblock){
         createbox(pos);
@@ -179,13 +181,11 @@ AFRAME.registerComponent('cursor-listener', {
         //console.log(this.object3D);
         //var entity = this.el;
         //entity.parentNode.removeChild(entity);
-
         var sceneEl = document.querySelector('a-scene');
         sceneEl.removeChild(this);
       }
       //console.log(this.object3D.position);
       //console.log(evt);
-
     });
   }
 });

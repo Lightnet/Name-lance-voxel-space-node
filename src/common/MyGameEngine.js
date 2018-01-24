@@ -119,17 +119,28 @@ class MyGameEngine extends GameEngine {
         //console.log(playerId);
     
         // get the player paddle tied to the player socket
-        let playerPaddle = this.world.getPlayerObject(playerId);
+        let playercontrol = this.world.getPlayerObject(playerId);
 
-        //console.log(playerPaddle);
+        //console.log(playercontrol);
 
-        if (playerPaddle) {
+        if (playercontrol) {
             if (inputData.input === 'up') {
                 //playerPaddle.position.y -= 5;
             } else if (inputData.input === 'down') {
                 //playerPaddle.position.y += 5;
-                playerPaddle.test();
+                playercontrol.test();
+            } else if (inputData.input === 'left') {
+                //playerPaddle.position.y += 5;
+                //console.log("left");
+            } else if (inputData.input === 'right') {
+                //playerPaddle.position.y += 5;
+                //console.log("right");
             }
+            if (inputData.input === 'space') {
+                //playerPaddle.position.y += 5;
+                //console.log("space");
+            }
+
         }
 
         //console.log("move?");
@@ -148,8 +159,6 @@ class MyGameEngine extends GameEngine {
         position = new ThreeVector(0, 0, 0);
         this.addObjectToWorld(new BoxCannon(++this.world.idCount,this, position));
         
-
-
     }
 
     postStepHandleBall() {
@@ -206,6 +215,10 @@ class MyGameEngine extends GameEngine {
         //serializer.registerClass(require('../common/Ball'));
         serializer.registerClass(require('../common/PlayerAvatar'));
         serializer.registerClass(require('../common/PlayerCube'));
+        serializer.registerClass(require('../common/PlayerData'));
+        serializer.registerClass(require('../common/PlayerController'));
+
+
         serializer.registerClass(require('../common/SphereCannon'));
         serializer.registerClass(require('../common/PlaneCannon'));
         serializer.registerClass(require('../common/BoxCannon'));
