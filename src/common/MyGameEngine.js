@@ -135,11 +135,11 @@ class MyGameEngine extends GameEngine {
                 if(inputData.input === 'space'){
                     if(playercontrol.bspawn == false){
                         playercontrol.bspawn = true;
-                        playercontrol.pawn = this.requestspawn();
+                        playercontrol.pawn = this.requestspawn(playerId);
+                        //this.requestspawn(playerId);
                     }
                 }
             }
-
 
             //if (inputData.input === 'up') {
                 //playerPaddle.position.y -= 5;
@@ -173,7 +173,6 @@ class MyGameEngine extends GameEngine {
         this.addObjectToWorld(new SphereCannon(++this.world.idCount,this, position));
         //position = new ThreeVector(0, -4, 0);
         //this.addObjectToWorld(new BoxCannon(++this.world.idCount,this, position));
-
         //this.addObjectToWorld(new PlayerCube(++this.world.idCount, new ThreeVector(0, 0, 0)));
         //position = new ThreeVector(0, 20, 0)
         //this.addObjectToWorld(new PlayerCube(++this.world.idCount,this,position ));
@@ -182,26 +181,27 @@ class MyGameEngine extends GameEngine {
         //this.spawnship();
     }
 
-    requestspawn(){
-        console.log("spawn ship....")
-       return this.spawnship();
+    makeprojectile(){
+
+
     }
 
-    spawnship(){
+    requestspawn(playerId){
+        console.log("spawn ship....")
+        return this.spawnship(playerId);
+    }
+
+    spawnship(playerId){
         let pawn;
         //console.log("==================================");
         //console.log("create player object...");
         //console.log(PlayerCube);
         //console.log("count:"+ this.world.idCount);
-        //pawn = this.addObjectToWorld(new PlayerCube(++this.world.idCount, new ThreeVector(0, 20, 0)));
-        //return pawn;
-        return this.addObjectToWorld(new PlayerCube(++this.world.idCount, new ThreeVector(0, 20, 0)));
+        pawn = this.addObjectToWorld(new PlayerCube(++this.world.idCount, new ThreeVector(0, 20, 0)));
+        pawn.playerId = playerId;
+        return pawn;
+        //return this.addObjectToWorld(new PlayerCube(++this.world.idCount, new ThreeVector(0, 20, 0)));
     }
-
-
-
-
-
 
     postStepHandleBall() {
         /*

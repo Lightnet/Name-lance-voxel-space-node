@@ -25,7 +25,7 @@ class PlayerCube extends PhysicalObject {
         super(id, position);
         this.id = id;
         this.class = PlayerCube;
-        //this.playerId = null;
+        this.playerId = null;
         this.gameEngine = gameEngine;
         //console.log("this.id");
         //console.log("add to world scene PlayerCube.");
@@ -33,8 +33,23 @@ class PlayerCube extends PhysicalObject {
     };
 
     onAddToWorld(gameEngine) {
+        super.onAddToWorld(gameEngine);
         console.log("add to world scene playercube.");
-        console.log("id:" + this.id);
+        console.log("============id:" + this.id);
+        //console.log(this.clientEngine);
+
+        //if(this.id > 100000){
+            //console.log("REMOVE .... id:" + this.id);
+            //gameEngine.removeObjectFromWorld(this.id);
+            //return;
+        //}
+
+        //if(this.playerId == null){
+            //console.log("REMOVE .... id:" + this.id);
+            //gameEngine.removeObjectFromWorld(this.id);
+            //return;
+        //}
+        console.log("playerId:" + this.playerId);
         // create the physics body
         this.gameEngine = gameEngine;
         //CANNON = this.gameEngine.physicsEngine.CANNON;
@@ -44,7 +59,9 @@ class PlayerCube extends PhysicalObject {
 
         this.scene = gameEngine.renderer ? gameEngine.renderer.scene : null;
 
-        if (this.scene) {
+        //console.log( this.scene);
+
+        if ((this.scene)&&(this.id > 100000)) {
             let el = this.renderEl = document.createElement('a-entity');
             //console.log(this.position);
             //console.log(this.id);

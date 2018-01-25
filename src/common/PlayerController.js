@@ -94,8 +94,9 @@ class PlayerController extends GameObject {
             if(this.yawrotation < 0){
                 this.yawrotation = 360;
             }
-
-            this.pawn.physicsObj.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), this.yawrotation);
+            if(this.pawn.physicsObj !=null){
+                this.pawn.physicsObj.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), this.yawrotation);
+            }
         }
     }
 
@@ -109,7 +110,10 @@ class PlayerController extends GameObject {
             if(this.yawrotation > 360){
                 this.yawrotation = 0;
             }
-            this.pawn.physicsObj.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), this.yawrotation);
+            //console.log(this.pawn.physicsObj);
+            if(this.pawn.physicsObj !=null){
+                this.pawn.physicsObj.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), this.yawrotation);
+            }
         }
         //console.log('turn right');
     }
