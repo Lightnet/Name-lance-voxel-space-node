@@ -15,6 +15,8 @@
 //const PhysicalObject = require('lance-gg').serialize.PhysicalObject;
 //const GameObject = require('lance-gg').serialize.ThreeVector;
 
+const PlayerCube = require('./PlayerCube');
+const ThreeVector = require('lance-gg').serialize.ThreeVector;
 const GameObject = require('lance-gg').serialize.DynamicObject;
 
 //console.log(GameObject);
@@ -31,6 +33,9 @@ class PlayerController extends GameObject {
         this.teamid = 0;//0 = free for all
         this.pawn = null; //object control
         this.state="spector";
+        this.yawrotation = 0;
+        this.bpress = false;
+        this.bspawn = false;
     };
 
     onAddToWorld(gameEngine) {
@@ -41,21 +46,95 @@ class PlayerController extends GameObject {
     }
 
     processInput(inputData){
-        if (inputData.input === 'up') {
+        //console.log(inputData);
+        if ((inputData.input === 'up') && (inputData.options.movement == true)) {
             //playerPaddle.position.y -= 5;
-        } else if (inputData.input === 'down') {
+            this.forwardthrust();
+        } else if ((inputData.input === 'down') && (inputData.options.movement == true)) {
             //playerPaddle.position.y += 5;
-            this.test();
-        } else if (inputData.input === 'left') {
+            //this.test();
+            this.reversethrust();
+        } else if ((inputData.input === 'left') && (inputData.options.movement == true)) {
             //playerPaddle.position.y += 5;
             //console.log("left");
-        } else if (inputData.input === 'right') {
+            this.turnleft();
+        } else if ((inputData.input === 'right') && (inputData.options.movement == true)) {
             //playerPaddle.position.y += 5;
             //console.log("right");
+            this.turnright();
         }
-        if (inputData.input === 'space') {
+        if( (inputData.input === 'space') && (inputData.options.movement == true)) {
             //playerPaddle.position.y += 5;
             //console.log("space");
+            if(this.bpress == false){
+                this.bpress = true;
+                this.checkspawn();
+            }else{
+
+            }
+        }
+    }
+
+    forwardthrust(){
+        if(this.pawn != null){
+
+        }
+    }
+
+    reversethrust(){
+        if(this.pawn != null){
+
+        }
+    }
+
+    turnleft(){
+        if(this.pawn != null){
+            let CANNON = this.gameEngine.physicsEngine.CANNON;
+            this.yawrotation = this.yawrotation - 0.1;
+            if(this.yawrotation < 0){
+                this.yawrotation = 360;
+            }
+
+            this.pawn.physicsObj.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), this.yawrotation);
+        }
+    }
+
+    turnright(){
+        if(this.pawn != null){
+            //console.log('turn right');
+            let CANNON = this.gameEngine.physicsEngine.CANNON;
+            //console.log(this.pawn.physicsObj);
+            //console.log(this.pawn);
+            this.yawrotation = this.yawrotation + 0.1;
+            if(this.yawrotation > 360){
+                this.yawrotation = 0;
+            }
+            this.pawn.physicsObj.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), this.yawrotation);
+        }
+        //console.log('turn right');
+    }
+
+    checkspawn(){
+        //if(this.bspawn == false){
+            //this.bspawn = true;
+            //console.log("spawnning....");
+            //this.spawnship();
+        //}
+        //return this.this.bspawn;
+    }
+
+    spawnship(){
+        if(this.pawn == null){
+            //console.log("==================================");
+            //console.log("create player object...");
+            //this.pawn = this.gameEngine.spawnship();
+            //this.gameEngine.requestspawn();
+            //console.log(PlayerCube);
+            //this.pawn = this.gameEngine.addObjectToWorld(new PlayerCube(++this.gameEngine.world.idCount, new ThreeVector(0, 20, 0)));
+            //console.log(this.pawn);
+            //console.log(this.gameEngine.addObjectToWorld);
+        }else{
+            console.log("player object exist...");
         }
     }
 

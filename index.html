@@ -11,16 +11,16 @@
         -->
     </head>
     <body>
-        
-        <a-scene physics="debug:true">
+        <!--
+            <a-scene physics="debug:false">
+        -->
+        <a-scene physics>
             <a-assets>
             </a-assets>
-
-            <a-camera wasd-controls-enabled="false" position="0 0 100"></a-camera>
+            <a-camera wasd-controls-enabled="true" position="0 0 100"></a-camera>
+        </a-scene>
+        <!--
             <a-plane position="0 0 -10" rotation="0 0 0" width="400" height="400" color="#7BC8A4"></a-plane>
-            
-
-            <!--
             <a-box id="paddle1" scale="5 50 1" position="5 0 0" rotation="0 0 0" color="#EF2DFF" class="paddle1"></a-box>
             <a-box id="paddle2" scale="5 50 1" position="5 0 0" rotation="0 0 0" color="#EF2D5E" class="paddle2"></a-box>
             <a-box id="ball" scale="5 5 1" position="0 0 0" rotation="0 0 0" color="#EF2D5E" class="ball"></a-box>
@@ -35,16 +35,6 @@
             <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
 
             -->
-        </a-scene>
         
-        <!--
-        <div style="width: 400px; height: 400px; background: black">
-            <div style="position:absolute;width:10px;height:50px;background:white" class="paddle1"></div>
-            <div style="position:absolute;width:10px;height:50px;background:white" class="paddle2"></div>
-            <div style="position:absolute;width:5px; height:5px;background:white" class="ball"></div>
-        </div>
-        -->
-
-
     </body>
 </html>

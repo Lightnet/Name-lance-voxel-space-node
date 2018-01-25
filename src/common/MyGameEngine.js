@@ -52,12 +52,16 @@ class MyGameEngine extends GameEngine {
     constructor(options) {
         super(options);
 
-        CANNON = this.physicsEngine.CANNON;
+        //CANNON = this.physicsEngine.CANNON;
     }
 
     start() {
-
         super.start();
+        //let CANNON = this.physicsEngine.CANNON;
+        //console.log(CANNON);
+        //console.log(this.physicsEngine.world.gravity.y);
+        //set gravity to zero
+        this.physicsEngine.world.gravity.y = 0;
 
         //this.worldSettings = {
             //width: 400,
@@ -125,7 +129,15 @@ class MyGameEngine extends GameEngine {
 
         if (playercontrol) {
             if(playercontrol.processInput !=null){
+                //console.log(inputData);
                 playercontrol.processInput(inputData);
+
+                if(inputData.input === 'space'){
+                    if(playercontrol.bspawn == false){
+                        playercontrol.bspawn = true;
+                        playercontrol.pawn = this.requestspawn();
+                    }
+                }
             }
 
 
@@ -150,19 +162,46 @@ class MyGameEngine extends GameEngine {
     }
 
     initGame() {
-
+        console.log("count:"+ this.world.idCount);
         // create the paddle objects
         //this.addObjectToWorld(new Paddle(++this.world.idCount, PADDING, 1));
         //this.addObjectToWorld(new Paddle(++this.world.idCount, WIDTH - PADDING, 2));
         //this.addObjectToWorld(new Ball(++this.world.idCount, WIDTH / 2, HEIGHT / 2));
-        let position = new ThreeVector(0, 0, 0);
+        let position;// = new ThreeVector(0, 0, 0);
         //this.addObjectToWorld(new PlayerAvatar(++this.world.idCount,this, position,1));
-        position = new ThreeVector(0, 100, 0);
+        position = new ThreeVector(0, 50, 0);
         this.addObjectToWorld(new SphereCannon(++this.world.idCount,this, position));
-        position = new ThreeVector(0, 0, 0);
-        this.addObjectToWorld(new BoxCannon(++this.world.idCount,this, position));
-        
+        //position = new ThreeVector(0, -4, 0);
+        //this.addObjectToWorld(new BoxCannon(++this.world.idCount,this, position));
+
+        //this.addObjectToWorld(new PlayerCube(++this.world.idCount, new ThreeVector(0, 0, 0)));
+        //position = new ThreeVector(0, 20, 0)
+        //this.addObjectToWorld(new PlayerCube(++this.world.idCount,this,position ));
+        //this.addObjectToWorld(new PlayerCube(++this.world.idCount,this, new ThreeVector(0, 20, 0)));
+
+        //this.spawnship();
     }
+
+    requestspawn(){
+        console.log("spawn ship....")
+       return this.spawnship();
+    }
+
+    spawnship(){
+        let pawn;
+        //console.log("==================================");
+        //console.log("create player object...");
+        //console.log(PlayerCube);
+        //console.log("count:"+ this.world.idCount);
+        //pawn = this.addObjectToWorld(new PlayerCube(++this.world.idCount, new ThreeVector(0, 20, 0)));
+        //return pawn;
+        return this.addObjectToWorld(new PlayerCube(++this.world.idCount, new ThreeVector(0, 20, 0)));
+    }
+
+
+
+
+
 
     postStepHandleBall() {
         /*

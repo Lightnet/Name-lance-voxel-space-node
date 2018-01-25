@@ -24,13 +24,19 @@ class SphereCannon extends PhysicalObject {
         super(id, position);
         this.class = SphereCannon;
         this.gameEngine = gameEngine;
+        //this.id = id;
+        //console.log("add to world scene SphereCannon.");
+        //console.log("id:" + this.id);
+        //console.log("id:" + id);
+        //console.log("gameEngine:" + gameEngine);
     };
 
     onAddToWorld(gameEngine) {
-        //console.log("add to world scene SphereCannon.");
+        console.log("add to world scene SphereCannon.");
+        console.log("id:" + this.id);
 
         // create the physics body
-        this.gameEngine = gameEngine;
+        //this.gameEngine = gameEngine;
         
         // create the physics body //important to add here 
         this.gameEngine = gameEngine;

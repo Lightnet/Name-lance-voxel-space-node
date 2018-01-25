@@ -35,31 +35,42 @@ class MyClientEngine extends ClientEngine {
 
     // our pre-step is to process all inputs
     preStep() {
+        //need to fixed this later...
 
         if (this.pressedKeys.up) {
             this.sendInput('up', { movement: true });
+        }else{
+            this.sendInput('up', { movement: false });
         }
 
         if (this.pressedKeys.down) {
             this.sendInput('down', { movement: true });
+        }else{
+            this.sendInput('down', { movement: false });
         }
 
         if (this.pressedKeys.left) {
             this.sendInput('left', { movement: true });
+        }else{
+            this.sendInput('left', { movement: false });
         }
 
         if (this.pressedKeys.right) {
             this.sendInput('right', { movement: true });
+        }else{
+            this.sendInput('right', { movement: false });
         }
 
         if (this.pressedKeys.space) {
             this.sendInput('space', { movement: true });
+        }else{
+            //this.sendInput('space', { movement: false });
         }
     }
 
     onKeyChange(e, isDown) {
         e = e || window.event;
-
+        //console.log(isDown);
         if (e.keyCode == '38') {
             this.pressedKeys.up = isDown;
         } else if (e.keyCode == '40') {

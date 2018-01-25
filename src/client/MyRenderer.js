@@ -14,6 +14,8 @@
 //const Renderer = require('lance-gg').render.Renderer;
 const AFrameRenderer = require('lance-gg').render.AFrameRenderer;
 
+const PlayerController = require('../common/PlayerController');
+
 require('aframe');
 require('aframe-physics-system');
 
@@ -119,6 +121,18 @@ class MyRenderer extends AFrameRenderer {
         //console.log(objName);
     //}
 
+    addObject(objData, options) {
+        super.addObject(objData);
+
+        //check for player controller class
+        if(objData.class == PlayerController){
+            //check for client own object 
+            if (this.clientEngine.isOwnedByPlayer(objData)) {
+                this.playercontroller = objData;  //// save reference to the player obj to client
+                console.log("player controller assign client");
+            }
+        }
+    }
 }
 
 module.exports = MyRenderer;
