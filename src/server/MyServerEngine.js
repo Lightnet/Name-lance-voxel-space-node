@@ -81,6 +81,7 @@ class MyServerEngine extends ServerEngine {
             //console.log(this.gameEngine.world.objects[key]);
             //check for player id for delete in objects list
             if((this.gameEngine.world.objects[key].playerId !=null)&&(this.gameEngine.world.objects[key].playerId == playerId)){
+                this.gameEngine.world.objects[key].destroy();
                 delete this.gameEngine.world.objects[key];
                 break;
             }

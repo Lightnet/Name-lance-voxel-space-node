@@ -169,7 +169,7 @@ class MyGameEngine extends GameEngine {
         //this.addObjectToWorld(new Ball(++this.world.idCount, WIDTH / 2, HEIGHT / 2));
         let position;// = new ThreeVector(0, 0, 0);
         //this.addObjectToWorld(new PlayerAvatar(++this.world.idCount,this, position,1));
-        position = new ThreeVector(0, 50, 0);
+        position = new ThreeVector(0, 5, 0);
         this.addObjectToWorld(new SphereCannon(++this.world.idCount,this, position));
         //position = new ThreeVector(0, -4, 0);
         //this.addObjectToWorld(new BoxCannon(++this.world.idCount,this, position));
@@ -197,7 +197,7 @@ class MyGameEngine extends GameEngine {
         //console.log("create player object...");
         //console.log(PlayerCube);
         //console.log("count:"+ this.world.idCount);
-        pawn = this.addObjectToWorld(new PlayerCube(++this.world.idCount, new ThreeVector(0, 20, 0)));
+        pawn = this.addObjectToWorld(new PlayerCube(++this.world.idCount, new ThreeVector(0, 0, 0)));
         pawn.playerId = playerId;
         return pawn;
         //return this.addObjectToWorld(new PlayerCube(++this.world.idCount, new ThreeVector(0, 20, 0)));

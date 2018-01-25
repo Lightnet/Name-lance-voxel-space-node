@@ -77,13 +77,20 @@ class PlayerController extends GameObject {
 
     forwardthrust(){
         if(this.pawn != null){
-
+            this.pawn.physicsObj.velocity.setZero();
+            let pos = this.pawn.physicsObj.position;
+            pos.z = pos.z + 0.001;
+            this.pawn.physicsObj.position.set(pos.x,pos.y,pos.z);
         }
     }
 
     reversethrust(){
         if(this.pawn != null){
-
+            //this.pawn.physicsObj.position.x++;
+            this.pawn.physicsObj.velocity.setZero();
+            let pos = this.pawn.physicsObj.position;
+            pos.z = pos.z - 0.001;
+            this.pawn.physicsObj.position.set(pos.x,pos.y,pos.z);
         }
     }
 
@@ -164,7 +171,6 @@ class PlayerController extends GameObject {
             this.gameEngine.renderer.toggle_login();
         }
         
-
         if (this.scene) {
             //console.log(this.gameEngine);
             //console.log(this.gameEngine.world.objects[2]);
@@ -178,7 +184,18 @@ class PlayerController extends GameObject {
             //console.log(sphereobject);
             //
         }
+    }
+
+    destroy(){
+        super.destroy();
+        console.log("destroy");
         
+        if(this.pawn !=null){
+            this.gameEngine.removeObjectFromWorld(this.pawn.id);
+            this.pawn.destroy();
+        }
+        //this.gameEngine.removeObjectFromWorld(this.id);
+
     }
 
 }

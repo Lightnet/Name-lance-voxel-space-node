@@ -13,7 +13,7 @@
 
 //const DynamicObject= require('lance-gg').serialize.DynamicObject;
 const PhysicalObject = require('lance-gg').serialize.PhysicalObject;
-const RADIUS = 4;
+const RADIUS = 1;
 const MASS = 0.1;
 let CANNON = null;
 
@@ -73,6 +73,11 @@ class SphereCannon extends PhysicalObject {
 
     toString() {
         return `SphereCannon::${super.toString()}`;
+    }
+
+    destroy() {
+        console.log("destroy physicsObj");
+        this.gameEngine.physicsEngine.removeObject(this.physicsObj);
     }
 }
 

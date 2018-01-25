@@ -34,6 +34,10 @@ class PlayerCube extends PhysicalObject {
 
     onAddToWorld(gameEngine) {
         super.onAddToWorld(gameEngine);
+        this.gameEngine = gameEngine;
+        CANNON = this.gameEngine.physicsEngine.CANNON;
+
+        //console.log(gameEngine.renderer);
         console.log("add to world scene playercube.");
         console.log("============id:" + this.id);
         //console.log(this.clientEngine);
@@ -51,17 +55,21 @@ class PlayerCube extends PhysicalObject {
         //}
         console.log("playerId:" + this.playerId);
         // create the physics body
-        this.gameEngine = gameEngine;
+        
         //CANNON = this.gameEngine.physicsEngine.CANNON;
         this.physicsObj = gameEngine.physicsEngine.addSphere(RADIUS, MASS);
         this.physicsObj.position.set(this.position.x, this.position.y, this.position.z);
         this.physicsObj.angularDamping = 0.1;
 
         this.scene = gameEngine.renderer ? gameEngine.renderer.scene : null;
-
         //console.log( this.scene);
+        //if ((this.scene)&&(this.id < 100000)) {
+        //if ((this.scene)&&(this.id > 100000)) {
+        if ((this.scene)) {
+            //this.physicsObj = gameEngine.physicsEngine.addSphere(RADIUS, MASS);
+            //this.physicsObj.position.set(this.position.x, this.position.y, this.position.z);
+            //this.physicsObj.angularDamping = 0.1;
 
-        if ((this.scene)&&(this.id > 100000)) {
             let el = this.renderEl = document.createElement('a-entity');
             //console.log(this.position);
             //console.log(this.id);
@@ -70,10 +78,9 @@ class PlayerCube extends PhysicalObject {
             let q = this.quaternion;
             el.setAttribute('position', `${p.x} ${p.y} ${p.z}`);
             //el.setAttribute('material', 'src: #ball');
-            el.setAttribute('geometry', `primitive: box;width:8;height:8;depth:8;`);
+            el.setAttribute('geometry', `primitive: box;width:1;height:1;depth:1;`);
             el.setAttribute('game-object-id', this.id);
             //this.setupEmitters();
-
             this.scene.appendChild(el);
             console.log("a-entity box");
         }
@@ -81,6 +88,11 @@ class PlayerCube extends PhysicalObject {
 
     toString() {
         return `PlayerCube::${super.toString()}`;
+    }
+
+    destroy() {
+        console.log("destroy physicsObj");
+        this.gameEngine.physicsEngine.removeObject(this.physicsObj);
     }
 }
 module.exports = PlayerCube;
