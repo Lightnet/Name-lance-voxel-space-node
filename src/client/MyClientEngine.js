@@ -26,6 +26,10 @@ class MyClientEngine extends ClientEngine {
             up: false,
             left: false,
             right: false,
+            a: false,
+            w: false,
+            s: false,
+            d: false,
             space: false
         };
 
@@ -111,6 +115,7 @@ class MyClientEngine extends ClientEngine {
     onKeyChange(e, isDown) {
         e = e || window.event;
         //console.log(isDown);
+        //console.log(e.keyCode);
         if (e.keyCode == '38') {
             this.pressedKeys.up = isDown;
         } else if (e.keyCode == '40') {
@@ -122,6 +127,20 @@ class MyClientEngine extends ClientEngine {
         } else if (e.keyCode == '32') {
             this.pressedKeys.space = isDown;
         }
+
+        if (e.keyCode == '65') {//a
+            this.pressedKeys.a = isDown;
+        }
+        if (e.keyCode == '83') {//s
+            this.pressedKeys.s = isDown;
+        }
+        if (e.keyCode == '68') {//d
+            this.pressedKeys.d = isDown;
+        }
+        if (e.keyCode == '87') {//w
+            this.pressedKeys.w = isDown;
+        }
+        
     }
 
     // extend ClientEngine connect to add own events

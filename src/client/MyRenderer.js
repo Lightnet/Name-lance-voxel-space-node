@@ -16,6 +16,7 @@ require('aframe-orbit-controls-component-2');
 //const Renderer = require('lance-gg').render.Renderer;
 const AFrameRenderer = require('lance-gg').render.AFrameRenderer;
 const PlayerController = require('../common/PlayerController');
+const PlayerCube = require('../common/PlayerCube');
 
 const debugWireframes = true;
 
@@ -65,11 +66,11 @@ class MyRenderer extends AFrameRenderer {
         });
     }
 
-    objectlist(){ 
-        for (let objId of Object.keys(this.sprites)) {
-            console.log(this.sprites[objId].el);
-        }
-    }
+    //objectlist(){
+        //for (let objId of Object.keys(this.sprites)) {
+            //console.log(this.sprites[objId].el);
+        //}
+    //}
 
     draw() {
         super.draw();
@@ -130,6 +131,17 @@ class MyRenderer extends AFrameRenderer {
             if (this.clientEngine.isOwnedByPlayer(objData)) {
                 this.playercontroller = objData;  //// save reference to the player obj to client
                 console.log("player controller assign client");
+            }
+        }
+        //PlayerCube
+        if (objData.class == PlayerCube) {
+            if (this.clientEngine.isOwnedByPlayer(objData)) {
+                console.log("client player cube");
+                //hide the hud
+                document.querySelector('#guiContainer').hidden = true;
+                this.playership = objData;
+                console.log(this);
+                //document.querySelector('#guiContainer');
             }
         }
     }

@@ -17,6 +17,7 @@ const ThreeVector = require('lance-gg').serialize.ThreeVector;
 //game objects
 const PlayerAvatar = require('./PlayerAvatar');
 
+const PlayerController = require('./PlayerController');
 const PlayerCube = require('./PlayerCube');
 const SphereCannon = require('./SphereCannon');
 const PlaneCannon = require('./PlaneCannon');
@@ -96,10 +97,10 @@ class MyGameEngine extends GameEngine {
 
                 if(inputData.input === 'space'){
                     if(playercontrol.bspawn == false){
-                        playercontrol.bspawn = true;
+                        //playercontrol.bspawn = true;
                         //playercontrol.pawn = 
-                        this.requestspawn(playerId);
-                        playercontrol.foucscamera();
+                        //this.requestspawn(playerId);
+                        //playercontrol.foucscamera();
                         //this.requestspawn(playerId);
                     }
                 }
@@ -149,6 +150,26 @@ class MyGameEngine extends GameEngine {
 
 
     }
+
+    makeShip(playerId) {
+        console.log("make ship");
+        //let ship = new Ship(++this.world.idCount, this, new TwoVector(newShipX, newShipY));
+        var pawn = this.addObjectToWorld(new PlayerCube(++this.world.idCount, new ThreeVector(0, 0, 0)));
+        pawn.playerId = playerId;
+        
+        for (var objId in this.world.objects) {
+            var o = this.world.objects[objId];
+            if (o.playerId == playerId && o.class == PlayerController) {
+                console.log("player controller found!");
+                o.checkpawn();
+                //o.pawn = pawn;
+                //o.bspawn = true;
+                //o.foucscamera();
+                break;
+            }
+        }
+        return pawn;
+    };
 
     requestspawn(playerId){
         console.log("spawn ship....")

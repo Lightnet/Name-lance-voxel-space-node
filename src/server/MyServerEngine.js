@@ -44,15 +44,27 @@ class MyServerEngine extends ServerEngine {
         //this.gameEngine.addObjectToWorld(new PlayerController(++this.gameEngine.world.idCount,this.gameEngine ,socket.playerId));
         let controller = new PlayerController(++this.gameEngine.world.idCount, socket.playerId);
         this.gameEngine.addObjectToWorld(controller);
-        let pawn = new PlayerCube(++this.gameEngine.world.idCount,this.gameEngine, new ThreeVector(0, 0, 0));
-        controller.pawn = pawn;
-        this.gameEngine.addObjectToWorld(pawn);
+        //let pawn = new PlayerCube(++this.gameEngine.world.idCount,this.gameEngine, new ThreeVector(0, 0, 0));
+        //controller.pawn = pawn;
+        //this.gameEngine.addObjectToWorld(pawn);
 
-
-        
         socket.on('keepAlive', ()=>{
             this.resetIdleTimeout(socket);
         });
+
+        let makePlayerShip = () => {
+            console.log("requestRestart > makePlayerShip");
+            let ship = this.gameEngine.makeShip(socket.playerId);
+            //this.scoreData[ship.id] = {
+                //kills: 0,
+                //name: nameGenerator('general')
+            //};
+            //this.updateScore();
+        };
+
+        // handle client restart requests
+        socket.on('requestRestart', makePlayerShip);
+
     }
 
     onPlayerDisconnected(socketId, playerId) {

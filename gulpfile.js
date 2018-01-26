@@ -3,12 +3,14 @@ var bro = require('gulp-bro');
 var rename = require('gulp-rename');
 var gls = require('gulp-live-server');
 var clean = require('gulp-clean');
+const debug = require('gulp-debug');
 
 var server = gls.new('main.js');
 
 gulp.task('clean-scripts', function () {
     return gulp.src('./dist/*.js', {read: false})
-        .pipe(clean());
+    .pipe(debug({title: 'Clean > bundle.js'}))
+    .pipe(clean({force: true}));
 });
 
 // Basic usage 
@@ -18,6 +20,7 @@ gulp.task('scripts', function() {
     gulp.src(['src/client/clientMain.js','!nodejs-physijs'])
         .pipe(bro())
         .pipe(rename('bundle.js'))
+        .pipe(debug({title: 'scripts > bundle.js'}))
         .pipe(gulp.dest('./dist/'));
 });
 

@@ -78,15 +78,34 @@ class PlayerController extends GameObject {
 
     forwardthrust(){
         if(this.pawn != null){
-            this.pawn.physicsObj.velocity.setZero();
-            let pos = this.pawn.physicsObj.position;
+            let playerpawn = this.pawn;
+            /*
+            let playerpawn = null;
+            for (let objId in this.gameEngine.world.objects) {
+                let o = this.gameEngine.world.objects[objId];
+                if (o.playerId == this.playerId && o.class == PlayerCube) {
+                    console.log("player controller found!");
+                    //o.pawn = pawn;
+                    //o.bspawn = true;
+                    //o.foucscamera();
+                    playerpawn = this.gameEngine.world.objects[objId];
+                    break;
+                }
+            }
+            */
+
+            playerpawn.physicsObj.velocity.setZero();
+            let pos = playerpawn.physicsObj.position;
             pos.z = pos.z + this.movespeed;
-            this.pawn.physicsObj.position.set(pos.x,pos.y,pos.z);
+            playerpawn.physicsObj.position.set(pos.x,pos.y,pos.z);
+            //console.log("forward?");
+            console.log(this.pawn.position);
         }
     }
 
     reversethrust(){
         if(this.pawn != null){
+            console.log(this.pawn.position);
             //this.pawn.physicsObj.position.x++;
             this.pawn.physicsObj.velocity.setZero();
             let pos = this.pawn.physicsObj.position;
@@ -97,12 +116,15 @@ class PlayerController extends GameObject {
 
     turnleft(){
         if(this.pawn != null){
+            //console.log(this.pawn);
+            console.log(this.pawn.quaternion);
             let CANNON = this.gameEngine.physicsEngine.CANNON;
             this.yawrotation = this.yawrotation - 0.1;
             if(this.yawrotation < 0){
                 this.yawrotation = 360;
             }
             if(this.pawn.physicsObj !=null){
+                console.log("turn left?");
                 this.pawn.physicsObj.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), this.yawrotation);
             }
         }
@@ -110,6 +132,7 @@ class PlayerController extends GameObject {
 
     turnright(){
         if(this.pawn != null){
+            console.log(this.pawn.quaternion);
             //console.log('turn right');
             let CANNON = this.gameEngine.physicsEngine.CANNON;
             //console.log(this.pawn.physicsObj);
@@ -125,6 +148,21 @@ class PlayerController extends GameObject {
         }
         //console.log('turn right');
     }
+
+    checkpawn(){
+        for (let objId in this.gameEngine.world.objects) {
+            var o = this.gameEngine.world.objects[objId];
+            if (o.playerId == this.playerId && o.class == PlayerCube) {
+                console.log("PlayerCube found! Assign");
+                //o.pawn = pawn;
+                //o.bspawn = true;
+                //o.foucscamera();
+                this.pawn = this.gameEngine.world.objects[objId];
+                break;
+            }
+        }
+    }
+
 
     checkspawn(){
         //if(this.bspawn == false){
