@@ -32,6 +32,7 @@ class SphereCannon extends PhysicalObject {
     };
 
     onAddToWorld(gameEngine) {
+        console.log("===============================.");
         console.log("add to world scene SphereCannon.");
         console.log("id:" + this.id);
 

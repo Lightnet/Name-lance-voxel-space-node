@@ -33,6 +33,25 @@ class MyClientEngine extends ClientEngine {
         document.onkeyup = (e) => { that.onKeyChange(e, false); };
     }
 
+    start() {
+        super.start();
+        // handle gui for game condition
+        this.gameEngine.on('objectDestroyed', (obj) => {
+            console.log("objectDestroyed");
+            //if (obj.class == Ship && this.isOwnedByPlayer(obj)) {
+                //document.body.classList.add('lostGame');
+                //document.querySelector('#tryAgain').disabled = false;
+            //}
+        });
+
+        this.gameEngine.once('renderer.ready', () => {
+            console.log("==============================");
+            console.log("renderer.ready");
+
+        });
+
+    }
+
     // our pre-step is to process all inputs
     preStep() {
         //need to fixed this later...
@@ -92,6 +111,10 @@ class MyClientEngine extends ClientEngine {
                 //this.renderer.updateScore(e);
             //});
             console.log(this.playerId);
+
+            //console.log(this.gameEngine.world );
+            //let playercontrol = this.world.getPlayerObject(playerId);
+            //console.log(this.gameEngine.world.getPlayerObject(this.playerId) );
 
             this.socket.on('disconnect', (e) => {
                 console.log('disconnected');

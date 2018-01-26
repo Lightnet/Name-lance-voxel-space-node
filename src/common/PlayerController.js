@@ -36,6 +36,7 @@ class PlayerController extends GameObject {
         this.yawrotation = 0;
         this.bpress = false;
         this.bspawn = false;
+        this.movespeed = 0.1;
     };
 
     onAddToWorld(gameEngine) {
@@ -79,7 +80,7 @@ class PlayerController extends GameObject {
         if(this.pawn != null){
             this.pawn.physicsObj.velocity.setZero();
             let pos = this.pawn.physicsObj.position;
-            pos.z = pos.z + 0.001;
+            pos.z = pos.z + this.movespeed;
             this.pawn.physicsObj.position.set(pos.x,pos.y,pos.z);
         }
     }
@@ -89,7 +90,7 @@ class PlayerController extends GameObject {
             //this.pawn.physicsObj.position.x++;
             this.pawn.physicsObj.velocity.setZero();
             let pos = this.pawn.physicsObj.position;
-            pos.z = pos.z - 0.001;
+            pos.z = pos.z - this.movespeed;
             this.pawn.physicsObj.position.set(pos.x,pos.y,pos.z);
         }
     }
@@ -149,6 +150,17 @@ class PlayerController extends GameObject {
         }
     }
 
+    foucscamera(){
+        this.scene = this.gameEngine.renderer ? this.gameEngine.renderer.scene : null;
+        if((this.scene !=null)&&(this.pawn !=null)){
+            console.log("camera set scene client?");
+            if(this.playerId == this.gameEngine.renderer.clientEngine.playerId){
+                let cameraEL = document.querySelector('a-camera');
+                cameraEL.setAttribute("orbit-controls", "target",`#${this.pawn.id}`);
+                cameraEL.components['orbit-controls'].target = this.pawn.position;
+            }
+        }
+    }
 
     toString() {
         return `PlayerController::${super.toString()}`;

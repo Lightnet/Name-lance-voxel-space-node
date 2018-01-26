@@ -67,19 +67,6 @@ class MyGameEngine extends GameEngine {
             //width: 400,
             //height: 400
         //};
-        
-        /*
-        this.on('postStep', () => { this.postStepHandleBall(); });
-        this.on('objectAdded', (object) => {
-            if (object.id == 1) {
-                this.paddle1 = object;
-            } else if (object.id == 2) {
-                this.paddle2 = object;
-            } else if (object.class == Ball) {
-                this.ball = object;
-            }
-        });
-        */
 
         this.on('postStep', () => {
 
@@ -90,31 +77,6 @@ class MyGameEngine extends GameEngine {
             //}
         //});
     }
-
-    /*
-    processInput(inputData, playerId) {
-
-        super.processInput(inputData, playerId);
-
-        // get the player's primary object
-        let player = this.world.getPlayerObject(playerId);
-        if (player) {
-            console.log(`player ${playerId} pressed ${inputData.input}`);
-            if (inputData.input === 'up') {
-                player.isMovingUp = true;
-            } else if (inputData.input === 'down') {
-                player.isMovingDown = true;
-            } else if (inputData.input === 'right') {
-                player.isRotatingRight = true;
-            } else if (inputData.input === 'left') {
-                player.isRotatingLeft = true;
-            } else if (inputData.input === 'space') {
-                this.fire(player, inputData.messageIndex);
-                this.emit('fire');
-            }
-        }
-    }
-    */
 
     processInput(inputData, playerId) {
 
@@ -135,7 +97,9 @@ class MyGameEngine extends GameEngine {
                 if(inputData.input === 'space'){
                     if(playercontrol.bspawn == false){
                         playercontrol.bspawn = true;
-                        playercontrol.pawn = this.requestspawn(playerId);
+                        //playercontrol.pawn = 
+                        this.requestspawn(playerId);
+                        playercontrol.foucscamera();
                         //this.requestspawn(playerId);
                     }
                 }
@@ -174,7 +138,7 @@ class MyGameEngine extends GameEngine {
         //position = new ThreeVector(0, -4, 0);
         //this.addObjectToWorld(new BoxCannon(++this.world.idCount,this, position));
         //this.addObjectToWorld(new PlayerCube(++this.world.idCount, new ThreeVector(0, 0, 0)));
-        //position = new ThreeVector(0, 20, 0)
+        //position = new ThreeVector(0, 20, 0);
         //this.addObjectToWorld(new PlayerCube(++this.world.idCount,this,position ));
         //this.addObjectToWorld(new PlayerCube(++this.world.idCount,this, new ThreeVector(0, 20, 0)));
 
@@ -188,7 +152,10 @@ class MyGameEngine extends GameEngine {
 
     requestspawn(playerId){
         console.log("spawn ship....")
-        return this.spawnship(playerId);
+        let pawn = new PlayerCube(++this.world.idCount, new ThreeVector(0, 0, 0));
+        pawn.playerId = playerId;
+        this.addObjectToWorld(pawn);
+        //return this.spawnship(playerId);
     }
 
     spawnship(playerId){

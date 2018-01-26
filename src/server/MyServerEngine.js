@@ -16,6 +16,8 @@
 const ServerEngine = require('lance-gg').ServerEngine;
 
 const PlayerController = require('../common/PlayerController');
+const PlayerCube = require('../common/PlayerCube');
+const ThreeVector = require('lance-gg').serialize.ThreeVector;
 
 class MyServerEngine extends ServerEngine {
 
@@ -40,24 +42,17 @@ class MyServerEngine extends ServerEngine {
         //console.log(PlayerController);
         //console.log(this.gameEngine);
         //this.gameEngine.addObjectToWorld(new PlayerController(++this.gameEngine.world.idCount,this.gameEngine ,socket.playerId));
-        this.gameEngine.addObjectToWorld(new PlayerController(++this.gameEngine.world.idCount, socket.playerId));
-        //console.log(this.gameEngine.world.idCount);
-        //console.log("socket.id:");
-        //console.log(socket.id);
-        //console.log("socket.playerId:");
-        //console.log(socket.playerId);
-        /*
-        // attach newly connected player an available paddle
-        if (this.players.player1 === null) {
-            this.players.player1 = socket.id;
-            this.gameEngine.playeravatar.playerId = socket.playerId;
-            //this.gameEngine.paddle1.playerId = socket.playerId;
-        } else if (this.players.player2 === null) {
-            this.players.player2 = socket.id;
-            //this.gameEngine.paddle2.playerId = socket.playerId;
-        }
-        */
-        //console.log(socket);
+        let controller = new PlayerController(++this.gameEngine.world.idCount, socket.playerId);
+        this.gameEngine.addObjectToWorld(controller);
+        let pawn = new PlayerCube(++this.gameEngine.world.idCount,this.gameEngine, new ThreeVector(0, 0, 0));
+        controller.pawn = pawn;
+        this.gameEngine.addObjectToWorld(pawn);
+
+
+        
+        socket.on('keepAlive', ()=>{
+            this.resetIdleTimeout(socket);
+        });
     }
 
     onPlayerDisconnected(socketId, playerId) {

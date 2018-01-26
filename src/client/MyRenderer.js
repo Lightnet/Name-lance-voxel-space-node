@@ -10,14 +10,14 @@
 */
 
 'use strict';
-
-//const Renderer = require('lance-gg').render.Renderer;
-const AFrameRenderer = require('lance-gg').render.AFrameRenderer;
-
-const PlayerController = require('../common/PlayerController');
-
 require('aframe');
 require('aframe-physics-system');
+//const Renderer = require('lance-gg').render.Renderer;
+const AFrameRenderer = require('lance-gg').render.AFrameRenderer;
+const PlayerController = require('../common/PlayerController');
+
+
+require('aframe-orbit-controls-component-2');
 
 const debugWireframes = true;
 
@@ -62,6 +62,8 @@ class MyRenderer extends AFrameRenderer {
                 this.emit('ready');
                 this.isReady = true;
             });
+
+            this.gameEngine.emit('renderer.ready');
         });
     }
 
