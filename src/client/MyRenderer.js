@@ -12,20 +12,18 @@
 'use strict';
 require('aframe');
 require('aframe-physics-system');
+require('aframe-orbit-controls-component-2');
 //const Renderer = require('lance-gg').render.Renderer;
 const AFrameRenderer = require('lance-gg').render.AFrameRenderer;
 const PlayerController = require('../common/PlayerController');
 
-
-require('aframe-orbit-controls-component-2');
-
 const debugWireframes = true;
 
-//class MyRenderer extends Renderer {
 class MyRenderer extends AFrameRenderer {
 
     constructor(gameEngine, clientEngine) {
         super(gameEngine, clientEngine);
+        console.log("[init MyRenderer]");
         //this.sprites = {};
         //var self = this;
         //console.log(gameEngine);

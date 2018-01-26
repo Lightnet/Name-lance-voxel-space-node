@@ -15,7 +15,6 @@ const MyGameEngine = require('../common/MyGameEngine');
 //const SimplePhysicsEngine = require('lance-gg').physics.SimplePhysicsEngine;
 const CannonPhysicsEngine = require('lance-gg').physics.CannonPhysicsEngine;
 
-
 // default options, overwritten by query-string options
 // is sent to both game engine and client engine
 const defaults = {

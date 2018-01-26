@@ -2,17 +2,23 @@ var gulp = require('gulp');
 var bro = require('gulp-bro');
 var rename = require('gulp-rename');
 var gls = require('gulp-live-server');
+var clean = require('gulp-clean');
 
 var server = gls.new('main.js');
+
+gulp.task('clean-scripts', function () {
+    return gulp.src('./dist/*.js', {read: false})
+        .pipe(clean());
+});
 
 // Basic usage 
 gulp.task('scripts', function() {
     // Single entry point to browserify 
+    //gulp.src(['src/client/clientMain.js','!nodejs-physijs'])
     gulp.src(['src/client/clientMain.js','!nodejs-physijs'])
         .pipe(bro())
         .pipe(rename('bundle.js'))
         .pipe(gulp.dest('./dist/'));
-    //server.start.bind(server);
 });
 
 gulp.task('voxelpainter',()=>{
@@ -31,10 +37,9 @@ gulp.task('spaceship',()=>{
 
 //watch files changes and auto compile file.
 gulp.task('watch', () =>{
-    gulp.watch(['src/client/*.js','src/server/*.js','src/common/*.js'],['scripts']);
-    gulp.watch(['src/voxelpainter/voxelpainter.js'],['voxelpainter']);
-    gulp.watch(['src/spaceship/*.js'],['spaceship']);
-
+    gulp.watch(['src/client/*.js','src/server/*.js','src/common/*.js'],['clean-scripts','scripts']);
+    //gulp.watch(['src/voxelpainter/voxelpainter.js'],['voxelpainter']);
+    //gulp.watch(['src/spaceship/*.js'],['spaceship']);
 });
 
 gulp.task('serve', function() {
@@ -55,4 +60,5 @@ gulp.task('serve', function() {
 });
 
 //main entry call task or default task call
-gulp.task('default',['scripts','serve','watch','voxelpainter','spaceship']);
+//gulp.task('default',['clean-scripts','scripts','serve','watch','voxelpainter','spaceship']);
+gulp.task('default',['clean-scripts','scripts','serve','watch']);

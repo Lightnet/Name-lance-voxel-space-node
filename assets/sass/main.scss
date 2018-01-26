@@ -1,0 +1,55 @@
+
+
+
+/*
+html, body{
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+	font-family: "proxima-nova", sans-serif;
+}
+
+#guiContainer, #offscreenIndicatorContainer{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 5;
+	pointer-events: none;
+}
+
+.hud{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 20rem;
+	font-size: 12px;
+	padding: 1rem;
+	color: #fff;
+	font-family: arial, sans-serif;
+	opacity: 0;
+
+	transition: all 0.5s ease-in;
+}
+
+.keysContainer{
+	pointer-events: none;
+
+	position: absolute;
+	bottom: 50px;
+	left: 50%;
+	transform: translateX(-50%);
+
+	&:before, &:after{
+		content: "";
+		display: inline-block;
+		opacity: 0;
+		transition: all 0.5s ease-in;
+	}
+
+	&:before{
+		margin-right: 3rem;
+	}
+}
+*/

@@ -11,6 +11,21 @@
         -->
     </head>
     <body>
+        <div id="guiContainer">
+            <button id="joinGame">Join Game</button>
+            <button id="tryAgain" disabled>Try again</button>
+            <button id="reconnect" disabled>Reconnect</button>
+
+            <div class="hud">
+                <div>Latency: <span class="latencyData">N/A</span></div>
+                <div>Latency (avg): <span class="averageLatencyData">N/A</span></div>
+            </div>
+            <div class="score"></div>
+            <div id="offscreenIndicatorContainer"></div>
+            <div class="keysContainer"></div>
+            <div class="fireButton"></div>
+            <h2>This is a live JS multiplayer game</h2>
+        </div>
         <!--
             <a-scene physics="debug:false">
                 target: #target;

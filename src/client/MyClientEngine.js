@@ -11,6 +11,7 @@
 
 const ClientEngine = require('lance-gg').ClientEngine;
 const MyRenderer = require('../client/MyRenderer');
+const Utils = require('./../common/Utils');
 
 class MyClientEngine extends ClientEngine {
 
@@ -48,8 +49,28 @@ class MyClientEngine extends ClientEngine {
             console.log("==============================");
             console.log("renderer.ready");
 
-        });
+            // click event for "try again" button
+            document.querySelector('#tryAgain').addEventListener('click', () => {
+                if (Utils.isTouchDevice()){
+                    this.renderer.enableFullScreen();
+                }
+                this.socket.emit('requestRestart');
+                console.log("#tryAgain");
+            });
 
+            document.querySelector('#joinGame').addEventListener('click', () => {
+                if (Utils.isTouchDevice()){
+                    this.renderer.enableFullScreen();
+                }
+                this.socket.emit('requestRestart');
+                console.log("#joinGame");
+            });
+
+            document.querySelector('#reconnect').addEventListener('click', () => {
+                window.location.reload();
+                console.log("#reconnect");
+            });
+        });
     }
 
     // our pre-step is to process all inputs
