@@ -84,13 +84,29 @@ class MyGameEngine extends GameEngine {
         super.processInput(inputData, playerId);
 
         //console.log(playerId);
-    
+        //console.log(this.world);
+
+        let player = null
+
+        for (let objId in this.world.objects) {
+            let o = this.world.objects[objId];
+            if (o.playerId == playerId && o.class == PlayerCube) {
+                player = o;
+                break;
+            }
+        }
+
+        if(player != null){
+            player.processInput(inputData);
+        }
+        
+        /*
         // get the player paddle tied to the player socket
         let playercontrol = this.world.getPlayerObject(playerId);
 
         //console.log(playercontrol);
 
-        if (playercontrol) {
+        if (playercontrol.class == PlayerController) {
             if(playercontrol.processInput !=null){
                 //console.log(inputData);
                 playercontrol.processInput(inputData);
@@ -105,24 +121,8 @@ class MyGameEngine extends GameEngine {
                     }
                 }
             }
-
-            //if (inputData.input === 'up') {
-                //playerPaddle.position.y -= 5;
-            //} else if (inputData.input === 'down') {
-                //playerPaddle.position.y += 5;
-                //playercontrol.test();
-            //} else if (inputData.input === 'left') {
-                //playerPaddle.position.y += 5;
-                //console.log("left");
-            //} else if (inputData.input === 'right') {
-                //playerPaddle.position.y += 5;
-                //console.log("right");
-            //}
-            //if (inputData.input === 'space') {
-                //playerPaddle.position.y += 5;
-                //console.log("space");
-            //}
         }
+        */
         //console.log("move?");
     }
 

@@ -30,6 +30,11 @@ class PlayerCube extends PhysicalObject {
         this.gameEngine = gameEngine;
         //console.log("this.id");
         //console.log("add to world scene PlayerCube.");
+
+        this.yawrotation = 0;
+        this.bpress = false;
+        this.bspawn = false;
+        this.movespeed = 0.1;
     };
 
     onAddToWorld(gameEngine) {
@@ -64,11 +69,100 @@ class PlayerCube extends PhysicalObject {
             //console.log(this.gameEngine);
             //console.log("player clientEngine id:" + gameEngine.renderer.clientEngine.playerId);
             //console.log("player object id:"+ this.playerId);
-            //if(this.playerId == gameEngine.renderer.clientEngine.playerId){
-                //let cameraEL = document.querySelector('a-camera');
-                //cameraEL.setAttribute("orbit-controls", "target",`#${this.id}`);
-                //cameraEL.components['orbit-controls'].target = p;
-            //}
+            if(this.playerId == gameEngine.renderer.clientEngine.playerId){
+                let cameraEL = document.querySelector('a-camera');
+                cameraEL.setAttribute("orbit-controls", "target",`#${this.id}`);
+                cameraEL.components['orbit-controls'].target = p;
+            }
+        }
+    }
+
+    processInput(inputData){
+        //console.log(inputData);
+        if ((inputData.input === 'up') && (inputData.options.movement == true)) {
+            //playerPaddle.position.y -= 5;
+            this.forwardthrust();
+        } else if ((inputData.input === 'down') && (inputData.options.movement == true)) {
+            //playerPaddle.position.y += 5;
+            //this.test();
+            this.reversethrust();
+        } else if ((inputData.input === 'left') && (inputData.options.movement == true)) {
+            //playerPaddle.position.y += 5;
+            //console.log("left");
+            this.turnleft();
+        } else if ((inputData.input === 'right') && (inputData.options.movement == true)) {
+            //playerPaddle.position.y += 5;
+            //console.log("right");
+            this.turnright();
+        }
+        if( (inputData.input === 'space') && (inputData.options.movement == true)) {
+            //playerPaddle.position.y += 5;
+            //console.log("space");
+        }
+    }
+
+    forwardthrust(){
+        if(this.physicsObj != null){
+            this.physicsObj.velocity.setZero();
+            let pos = this.physicsObj.position;
+            pos.z = pos.z + this.movespeed;
+            this.physicsObj.position.set(pos.x,pos.y,pos.z);
+            //console.log("forward?");
+            //console.log(this.position);
+        }
+    }
+
+    reversethrust(){
+        if(this.physicsObj != null){
+            //console.log(this.position);
+            //this.pawn.physicsObj.position.x++;
+            this.physicsObj.velocity.setZero();
+            let pos = this.physicsObj.position;
+            pos.z = pos.z - this.movespeed;
+            this.physicsObj.position.set(pos.x,pos.y,pos.z);
+        }
+    }
+
+    turnleft(){
+        if(this.physicsObj != null){
+            //console.log(this.pawn);
+            //console.log(this.quaternion);
+            let CANNON = this.gameEngine.physicsEngine.CANNON;
+            this.yawrotation = this.yawrotation - 0.1;
+            if(this.yawrotation < 0){
+                this.yawrotation = 360;
+            }
+            //console.log("turn left?");
+            this.physicsObj.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), this.yawrotation);
+        }
+    }
+
+    turnright(){
+        if(this.physicsObj != null){
+            //console.log(this.quaternion);
+            let CANNON = this.gameEngine.physicsEngine.CANNON;
+            this.yawrotation = this.yawrotation + 0.1;
+            if(this.yawrotation > 360){
+                this.yawrotation = 0;
+            }
+            if(this.physicsObj !=null){
+                this.physicsObj.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), this.yawrotation);
+            }
+        }
+        //console.log('turn right');
+    }
+
+
+
+    foucscamera(){
+        this.scene = this.gameEngine.renderer ? this.gameEngine.renderer.scene : null;
+        if((this.scene !=null)&&(this.pawn !=null)){
+            console.log("camera set scene client?");
+            if(this.playerId == this.gameEngine.renderer.clientEngine.playerId){
+                let cameraEL = document.querySelector('a-camera');
+                cameraEL.setAttribute("orbit-controls", "target",`#${this.pawn.id}`);
+                cameraEL.components['orbit-controls'].target = this.pawn.position;
+            }
         }
     }
 
