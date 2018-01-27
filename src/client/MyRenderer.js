@@ -92,13 +92,35 @@ class MyRenderer extends AFrameRenderer {
             if (this.clientEngine.isOwnedByPlayer(objData)) {
                 console.log("client player cube");
                 //hide the hud
-                document.querySelector('#guiContainer').hidden = true;
+                document.querySelector('#joinGame').hidden = true;
+                document.querySelector('#tryAgain').hidden = true;
+                document.querySelector('#reconnect').hidden = true;
+
+
+
+
                 this.playership = objData;
                 console.log(this);
                 //document.querySelector('#guiContainer');
             }
         }
     }
+
+    updateHUD(data){
+        if (data.RTT){ qs('.latencyData').innerHTML = data.RTT;}
+        if (data.RTTAverage){ qs('.averageLatencyData').innerHTML = truncateDecimals(data.RTTAverage, 2);}
+    }
 }
+
+// convenience function
+function qs(selector) { return document.querySelector(selector);}
+
+function truncateDecimals(number, digits) {
+    let multiplier = Math.pow(10, digits);
+    let adjustedNum = number * multiplier;
+    let truncatedNum = Math[adjustedNum < 0 ? 'ceil' : 'floor'](adjustedNum);
+
+    return truncatedNum / multiplier;
+};
 
 module.exports = MyRenderer;

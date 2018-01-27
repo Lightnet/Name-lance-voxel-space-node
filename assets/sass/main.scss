@@ -1,7 +1,10 @@
+//@import "./../../node_modules/breakpoint-sass/stylesheets/breakpoint";
 
+//$breakpoint-mobile: (max-width 568px) (orientation portrait);
+//$breakpoint-mobile-landscape: (max-width 568px) (orientation landscape);
+//$breakpoint-tablet: 569px 1280px;
+//$breakpoint-desktop: min-width 1281px;
 
-
-/*
 html, body{
 	padding: 0;
 	margin: 0;
@@ -52,4 +55,3 @@ html, body{
 		margin-right: 3rem;
 	}
 }
-*/

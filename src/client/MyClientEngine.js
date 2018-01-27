@@ -47,6 +47,7 @@ class MyClientEngine extends ClientEngine {
                 //document.body.classList.add('lostGame');
                 //document.querySelector('#tryAgain').disabled = false;
             //}
+            document.querySelector('#tryAgain').disabled = false;
         });
 
         this.gameEngine.once('renderer.ready', () => {
@@ -74,6 +75,10 @@ class MyClientEngine extends ClientEngine {
                 window.location.reload();
                 console.log("#reconnect");
             });
+        });
+
+        this.networkMonitor.on('RTTUpdate', (e) => {
+            this.renderer.updateHUD(e);
         });
     }
 
@@ -164,7 +169,7 @@ class MyClientEngine extends ClientEngine {
                 console.log('disconnected');
                 //document.body.classList.add('disconnected');
                 //document.body.classList.remove('gameActive');
-                //document.querySelector('#reconnect').disabled = false;
+                document.querySelector('#reconnect').disabled = false;
             });
 
             //if ('autostart' in Utils.getUrlVars()) {
