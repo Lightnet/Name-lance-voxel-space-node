@@ -24,7 +24,7 @@ This will start server from packages.json script command.
 
 Notes:
  * It depend on the packages are out date tend to break setup and other things for testing.
- * Refresh page tends to crash the server nodejs if code poor or place correct script file.
+ * Refresh page tends to crash the server nodejs if code poor or place incorrect script file.
  * This project is just prototype and has many place holder files for testing.
 
 # Idea Designs:
@@ -38,9 +38,14 @@ Notes:
  * Multiplayer builds tests.
 
 # Programs / Packages / Libs:
- * [Nodejs](https://nodejs.org)
- * [aframe](https://aframe.io/) A-Frame
- * [Lance](https://github.com/lance-gg/lance)  (multi-player network)
+ * [nodejs](https://nodejs.org) 
+ * Visual Studio Code (Quick debug builds, auto lanuch web server, auto compile script from gulp scripts.)
+ * [aframe](https://aframe.io/) A-Frame 3D Render.
+  * aframe-extras
+  * aframe-orbit-controls-component-2
+  * aframe-physics-system
+ * [lance-gg](https://github.com/lance-gg/lance)  (lance-gg multi-player network)
+
 
 # Branches:
   * Master -Dev Build.
