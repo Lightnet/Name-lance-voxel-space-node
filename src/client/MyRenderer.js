@@ -96,9 +96,6 @@ class MyRenderer extends AFrameRenderer {
                 document.querySelector('#tryAgain').hidden = true;
                 document.querySelector('#reconnect').hidden = true;
 
-
-
-
                 this.playership = objData;
                 console.log(this);
                 //document.querySelector('#guiContainer');

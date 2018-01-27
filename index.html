@@ -2,41 +2,44 @@
     <head>
         <title>Another awesome Lance multiplayer network game</title>
         <script src="/socket.io/socket.io.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
         <!--
-            
+        <link rel="stylesheet/scss" type="text/css" href="/assets/sass/main.scss">    
         -->
-        <link rel="stylesheet/scss" type="text/css" href="assets/sass/main.scss">
+        
         <script src="dist/bundle.js" type="text/javascript"></script>
         <!--
-            <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>    
+        <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>    
         -->
+        <style>
+        
+        .scene{
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        #guiContainer{
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        
+        </style>
     </head>
     <body>
-        <div id="guiContainer">
-            <button id="joinGame">Join Game</button>
-            <button id="tryAgain" disabled>Try again</button>
-            <button id="reconnect" disabled>Reconnect</button>
-
-            <div class="hud">
-                <div>Latency: <span class="latencyData">N/A</span></div>
-                <div>Latency (avg): <span class="averageLatencyData">N/A</span></div>
-            </div>
-            <div class="score"></div>
-            <div id="offscreenIndicatorContainer"></div>
-            <div class="keysContainer"></div>
-            <div class="fireButton"></div>
-            <!--
-            <h2>This is a live JS multiplayer game</h2>
-            -->
-        </div>
+        
+        
+        
         <!--
-            <a-scene physics="debug:false">
-                target: #target;
+        <a-scene physics="debug:false">
         -->
-        <a-scene physics>
+        <a-scene class="scene" physics vr-mode-ui="enabled:false;">
             <a-assets>
             </a-assets>
-            <a-camera orbit-controls="
+            <a-camera 
+            look-controls-enabled="false"
+            orbit-controls="
             autoRotate: false;
             target: #target;
             enableDamping: true;
@@ -49,23 +52,22 @@
 
             <a-box id="target" width="0.1" height="0.1" depth="0.1" position="0 0 0" rotation="0 0 0" color="#4CC3D9"></a-box>
         </a-scene>
-        
-        <!--
-            <a-plane position="0 0 -10" rotation="0 0 0" width="400" height="400" color="#7BC8A4"></a-plane>
-            <a-box id="paddle1" scale="5 50 1" position="5 0 0" rotation="0 0 0" color="#EF2DFF" class="paddle1"></a-box>
-            <a-box id="paddle2" scale="5 50 1" position="5 0 0" rotation="0 0 0" color="#EF2D5E" class="paddle2"></a-box>
-            <a-box id="ball" scale="5 5 1" position="0 0 0" rotation="0 0 0" color="#EF2D5E" class="ball"></a-box>
-            <a-plane position="200 200 -10" rotation="0 0 0" width="400" height="400" color="#7BC8A4"></a-plane>
 
-            <a-box position="0 0 0" rotation="0 0 0" color="#4CC3D9" class="ball"></a-box>
-                
-            <a-sky color="#ECECEC"></a-sky>
-            <a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
-            <a-sphere position="0 1.25 -5" radius="1.25" color="#EF2D5E"></a-sphere>
-            <a-cylinder position="1 0.75 -3" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
-            <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
+        <div id="guiContainer">
+            <div class="hud">
+                <div>Latency: <span class="latencyData">N/A</span></div>
+                <div>Latency (avg): <span class="averageLatencyData">N/A</span></div>
+            </div>
 
-            -->
+            <button id="joinGame">Join Game</button>
+            <button id="tryAgain" disabled>Try again</button>
+            <button id="reconnect" disabled>Reconnect</button>
+            <div class="score"></div>
+            <div id="offscreenIndicatorContainer"></div>
+            <div class="keysContainer"></div>
+            <div class="fireButton"></div>
+        </div>
         
+
     </body>
 </html>

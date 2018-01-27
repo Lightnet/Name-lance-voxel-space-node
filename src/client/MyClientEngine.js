@@ -54,6 +54,9 @@ class MyClientEngine extends ClientEngine {
             console.log("==============================");
             console.log("renderer.ready");
 
+            document.querySelector('#tryAgain').hidden = true;
+            document.querySelector('#reconnect').hidden = true;
+
             // click event for "try again" button
             document.querySelector('#tryAgain').addEventListener('click', () => {
                 if (Utils.isTouchDevice()){
@@ -170,6 +173,8 @@ class MyClientEngine extends ClientEngine {
                 //document.body.classList.add('disconnected');
                 //document.body.classList.remove('gameActive');
                 document.querySelector('#reconnect').disabled = false;
+                document.querySelector('#reconnect').hidden = false;
+                document.querySelector('#joinGame').hidden = true;
             });
 
             //if ('autostart' in Utils.getUrlVars()) {
