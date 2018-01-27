@@ -9,10 +9,7 @@
 
 */
 
-//console.log("server");
-
 'use strict';
-
 const ServerEngine = require('lance-gg').ServerEngine;
 
 const PlayerController = require('../common/PlayerController');
@@ -61,10 +58,8 @@ class MyServerEngine extends ServerEngine {
             //};
             //this.updateScore();
         };
-
         // handle client restart requests
         socket.on('requestRestart', makePlayerShip);
-
     }
 
     onPlayerDisconnected(socketId, playerId) {

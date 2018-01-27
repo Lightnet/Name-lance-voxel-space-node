@@ -85,9 +85,33 @@ class MyGameEngine extends GameEngine {
 
         //console.log(playerId);
         //console.log(this.world);
+        let playercontrol = this.world.getPlayerObject(playerId);
+        let player = null;
 
-        let player = null
+        if(playercontrol.class == PlayerController){
+            if(playercontrol.pawn != null){
+                let o = this.world.objects[playercontrol.pawn.id];
+                o.processInput(inputData);
+                /*
+                for (let objId in this.world.objects) {
+                    let o = this.world.objects[objId];
+                    if (o.playerId == playerId && o.class == PlayerCube) {
+                        player = o;
+                        break;
+                    }
+                }
+                if(player != null){
+                    player.processInput(inputData);
+                    console.log("input...");
+                }
+                */
+            }else{
+                playercontrol.checkpawn();
+            }
+        }
 
+        //console.log(playercontrol);
+        /*
         for (let objId in this.world.objects) {
             let o = this.world.objects[objId];
             if (o.playerId == playerId && o.class == PlayerCube) {
@@ -95,10 +119,11 @@ class MyGameEngine extends GameEngine {
                 break;
             }
         }
-
-        if(player != null){
-            player.processInput(inputData);
-        }
+        */
+        //if(player != null){
+            //player.processInput(inputData);
+            //console.log("input...");
+        //}
         
         /*
         // get the player paddle tied to the player socket

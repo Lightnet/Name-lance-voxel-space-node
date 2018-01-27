@@ -83,27 +83,31 @@ class MyClientEngine extends ClientEngine {
 
         if (this.pressedKeys.up) {
             this.sendInput('up', { movement: true });
-        }else{
-            this.sendInput('up', { movement: false });
         }
+        //if(!this.pressedKeys.up) {
+            //this.sendInput('up', { movement: false });
+        //}
 
         if (this.pressedKeys.down) {
             this.sendInput('down', { movement: true });
-        }else{
-            this.sendInput('down', { movement: false });
         }
+        //if(!this.pressedKeys.down) {
+            //this.sendInput('down', { movement: false });
+        //}
 
         if (this.pressedKeys.left) {
             this.sendInput('left', { movement: true });
-        }else{
-            this.sendInput('left', { movement: false });
         }
+        //if (!this.pressedKeys.left) {
+            //this.sendInput('left', { movement: false });
+        //}
 
         if (this.pressedKeys.right) {
             this.sendInput('right', { movement: true });
-        }else{
-            this.sendInput('right', { movement: false });
         }
+        //if (!this.pressedKeys.right) {
+            //this.sendInput('right', { movement: false });
+        //}
 
         if (this.pressedKeys.space) {
             this.sendInput('space', { movement: true });
