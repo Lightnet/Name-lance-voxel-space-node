@@ -96,7 +96,7 @@ AFRAME.registerComponent('rayplane', {
               let targetdir = pos.clone().sub(box.position).normalize();
 
               targetdirection = targetdir;
-              //direction vector to rotation quat traget
+              //direction vector to rotation quat target
               let mx = new THREE.Matrix4().lookAt(targetdir,new THREE.Vector3(0,0,0),new THREE.Vector3(0,1,0));
               let qt = new THREE.Quaternion().setFromRotationMatrix(mx);
   

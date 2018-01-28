@@ -1,6 +1,20 @@
 {
     "accessors": [
         {
+            "bufferView": 2,
+            "byteOffset": 0,
+            "componentType": 5123,
+            "count": 24,
+            "max": [
+                23
+            ],
+            "min": [
+                0
+            ],
+            "name": "accessor_buffer_Cube_0",
+            "type": "SCALAR"
+        },
+        {
             "bufferView": 1,
             "byteOffset": 0,
             "componentType": 5126,
@@ -35,20 +49,6 @@
             ],
             "name": "accessor_buffer_Cube_POSITION_0",
             "type": "VEC3"
-        },
-        {
-            "bufferView": 2,
-            "byteOffset": 0,
-            "componentType": 5123,
-            "count": 24,
-            "max": [
-                23
-            ],
-            "min": [
-                0
-            ],
-            "name": "accessor_buffer_Cube_0",
-            "type": "SCALAR"
         }
     ],
     "asset": {
@@ -92,10 +92,10 @@
             "primitives": [
                 {
                     "attributes": {
-                        "NORMAL": 0,
-                        "POSITION": 1
+                        "NORMAL": 1,
+                        "POSITION": 2
                     },
-                    "indices": 2,
+                    "indices": 0,
                     "mode": 4
                 }
             ]
@@ -127,13 +127,13 @@
                 0
             ],
             "matrix": [
-                -1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
                 1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -1.0,
                 0.0,
                 0.0,
                 1.0,

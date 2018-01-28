@@ -27,7 +27,7 @@
     "gulp-debug": "^3.2.0",
     "gulp-live-server": "0.0.31",
     "gulp-rename": "^1.2.2",
-    "watchify": "^3.7.0"
+    "watchify": "^3.10.0"
   },
   "scripts": {
     "start": "node main.js",

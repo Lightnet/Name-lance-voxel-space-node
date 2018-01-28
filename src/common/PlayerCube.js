@@ -14,6 +14,10 @@
 //const DynamicObject= require('lance-gg').serialize.DynamicObject;
 const PhysicalObject = require('lance-gg').serialize.PhysicalObject;
 const ThreeVector = require('lance-gg').serialize.ThreeVector;
+const Quaternion = require('lance-gg').serialize.Quaternion;
+
+const THREE = require('three');
+
 const RADIUS = 4;
 const MASS = 0.1;
 let CANNON = null;
@@ -61,7 +65,11 @@ class PlayerCube extends PhysicalObject {
             //let q = this.physicsObj.quaternion;
             el.setAttribute('position', `${p.x} ${p.y} ${p.z}`);
             //el.setAttribute('material', 'src: #ball');
-            el.setAttribute('geometry', `primitive: box;width:1;height:1;depth:1;`);
+            //el.setAttribute('geometry', `primitive: box;width:1;height:1;depth:1;`);
+
+            el.setAttribute('gltf-model', `#pointer`);
+
+
             el.setAttribute('game-object-id', this.id);
             el.setAttribute('id', this.id);
             //this.setupEmitters();
@@ -99,27 +107,88 @@ class PlayerCube extends PhysicalObject {
             //playerPaddle.position.y += 5;
             //console.log("space");
         }
+
+        if( (inputData.input === 'b') && (inputData.options.movement == true)) {
+            this.stopmovement();
+        }
     }
 
     forwardthrust(){
         if(this.physicsObj != null){
-            this.physicsObj.velocity.setZero();
-            let pos = this.physicsObj.position;
-            pos.z = pos.z + this.movespeed;
-            this.physicsObj.position.set(pos.x,pos.y,pos.z);
+            let CANNON = this.gameEngine.physicsEngine.CANNON;
+            //this.physicsObj.velocity.setZero();
+            //let pos = this.physicsObj.position;
+
+            let q = new CANNON.Quaternion();
+            q.setFromAxisAngle(new CANNON.Vec3(0,1,0),this.yawrotation);
+            let dirvector = new THREE.Vector3( 0, 0, 1 );
+            var quaternion = new THREE.Quaternion(q.x,q.y,q.z,q.w);
+            dirvector.applyQuaternion( quaternion );
+            //console.log(dirvector);
+
+            //pos.x = pos.x + dirvector.x;
+            //pos.z = pos.z + dirvector.z;
+
+            this.physicsObj.applyImpulse(
+                new CANNON.Vec3(dirvector.x, dirvector.y, dirvector.z), // impulse 
+                new CANNON.Vec3().copy(this.physicsObj.position) // world position
+            );
+
+            //pos.z = pos.z + this.movespeed;
+            //this.physicsObj.position.set(pos.x,pos.y,pos.z);
+            //console.log(CANNON);
+            //let q = new CANNON.Quaternion();
+            //q.setFromAxisAngle(new CANNON.Vec3(0,1,0),this.yawrotation);
+            //console.log(q );
+            //let p = new CANNON.Vec3(0,0,1);
+            //console.log(p);
+            //let p = new ThreeVector(0,0,1);
+            //p.applyQuaternion( q );
+            //p.applyQuaternion( q );
+            //console.log(THREE);
+            //console.log(p);
+            //let q = new Quaternion();
+            //q.setFromAxisAngle ( axis, angle )
             //console.log("forward?");
             //console.log(this.position);
         }
     }
 
+    stopmovement(){
+        if(this.physicsObj != null){
+            this.physicsObj.velocity.setZero();
+        }
+    }
+
     reversethrust(){
         if(this.physicsObj != null){
+
+            let CANNON = this.gameEngine.physicsEngine.CANNON;
+            //this.physicsObj.velocity.setZero();
+            //let pos = this.physicsObj.position;
+
+            let q = new CANNON.Quaternion();
+            q.setFromAxisAngle(new CANNON.Vec3(0,1,0),this.yawrotation);
+            let dirvector = new THREE.Vector3( 0, 0, -1 );
+            var quaternion = new THREE.Quaternion(q.x,q.y,q.z,q.w);
+            dirvector.applyQuaternion( quaternion );
+            //console.log(dirvector);
+
+            //pos.x = pos.x + dirvector.x;
+            //pos.z = pos.z + dirvector.z;
+
+            this.physicsObj.applyImpulse(
+                new CANNON.Vec3(dirvector.x, dirvector.y, dirvector.z), // impulse 
+                new CANNON.Vec3().copy(this.physicsObj.position) // world position
+            );
+
+
             //console.log(this.position);
             //this.pawn.physicsObj.position.x++;
-            this.physicsObj.velocity.setZero();
-            let pos = this.physicsObj.position;
-            pos.z = pos.z - this.movespeed;
-            this.physicsObj.position.set(pos.x,pos.y,pos.z);
+            //this.physicsObj.velocity.setZero();
+            //let pos = this.physicsObj.position;
+            //pos.z = pos.z - this.movespeed;
+            //this.physicsObj.position.set(pos.x,pos.y,pos.z);
         }
     }
 
@@ -128,9 +197,11 @@ class PlayerCube extends PhysicalObject {
             //console.log(this.pawn);
             //console.log(this.quaternion);
             let CANNON = this.gameEngine.physicsEngine.CANNON;
-            this.yawrotation = this.yawrotation - 0.1;
-            if(this.yawrotation < 0){
-                this.yawrotation = 360;
+            this.yawrotation = this.yawrotation + 0.1;
+            
+
+            if(this.yawrotation > 360){
+                this.yawrotation = 0;
             }
             //console.log("turn left?");
             this.physicsObj.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), this.yawrotation);
@@ -141,10 +212,12 @@ class PlayerCube extends PhysicalObject {
         if(this.physicsObj != null){
             //console.log(this.quaternion);
             let CANNON = this.gameEngine.physicsEngine.CANNON;
-            this.yawrotation = this.yawrotation + 0.1;
-            if(this.yawrotation > 360){
-                this.yawrotation = 0;
+            this.yawrotation = this.yawrotation - 0.1;
+
+            if(this.yawrotation < 0){
+                this.yawrotation = 360;
             }
+            
             if(this.physicsObj !=null){
                 this.physicsObj.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), this.yawrotation);
             }
@@ -152,16 +225,15 @@ class PlayerCube extends PhysicalObject {
         //console.log('turn right');
     }
 
-
-
+    //lock camera
     foucscamera(){
         this.scene = this.gameEngine.renderer ? this.gameEngine.renderer.scene : null;
-        if((this.scene !=null)&&(this.pawn !=null)){
+        if((this.scene !=null)){
             console.log("camera set scene client?");
             if(this.playerId == this.gameEngine.renderer.clientEngine.playerId){
                 let cameraEL = document.querySelector('a-camera');
-                cameraEL.setAttribute("orbit-controls", "target",`#${this.pawn.id}`);
-                cameraEL.components['orbit-controls'].target = this.pawn.position;
+                cameraEL.setAttribute("orbit-controls", "target",`#${this.id}`);
+                cameraEL.components['orbit-controls'].target = this.position;
             }
         }
     }

@@ -30,6 +30,7 @@ class MyClientEngine extends ClientEngine {
             w: false,
             s: false,
             d: false,
+            b: false,
             space: false
         };
 
@@ -119,15 +120,19 @@ class MyClientEngine extends ClientEngine {
 
         if (this.pressedKeys.space) {
             this.sendInput('space', { movement: true });
-        }else{
-            //this.sendInput('space', { movement: false });
         }
+
+        if (this.pressedKeys.b) {
+            this.sendInput('b', { movement: true });
+        }
+
+        //console.log(this.pressedKeys);
     }
 
     onKeyChange(e, isDown) {
         e = e || window.event;
         //console.log(isDown);
-        //console.log(e.keyCode);
+        console.log(e.keyCode);
         if (e.keyCode == '38') {
             this.pressedKeys.up = isDown;
         } else if (e.keyCode == '40') {
@@ -151,6 +156,10 @@ class MyClientEngine extends ClientEngine {
         }
         if (e.keyCode == '87') {//w
             this.pressedKeys.w = isDown;
+        }
+
+        if (e.keyCode == '66') {//b
+            this.pressedKeys.b = isDown;
         }
         
     }
