@@ -29,20 +29,22 @@
     </head>
     <body>
         
-        
-        
         <!--
         <a-scene physics="debug:false">
+            look-controls="enabled:true;"
         -->
         <a-scene class="scene" physics vr-mode-ui="enabled:false;">
             <a-assets>
+                <a-asset-item id="pointer" src="/assets/pointer.gltf" material="transparent: true; opacity: 0.5;" ></a-asset-item>
             </a-assets>
+            <a-sky color="#ECECEC"></a-sky>
             <a-camera 
             look-controls-enabled="false"
+
             orbit-controls="
             autoRotate: false;
             target: #target;
-            enableDamping: true;
+            enableDamping: false;
             dampingFactor: 0.125;
             rotateSpeed:0.25;
             minDistance:1;
