@@ -16,6 +16,8 @@ const PlayerController = require('../common/PlayerController');
 const PlayerCube = require('../common/PlayerCube');
 const ThreeVector = require('lance-gg').serialize.ThreeVector;
 
+const Missile = require('../common/Missile');
+
 class MyServerEngine extends ServerEngine {
 
     constructor(io, gameEngine, inputOptions) {
@@ -32,6 +34,12 @@ class MyServerEngine extends ServerEngine {
             //player1: null,
             //player2: null
         //};
+
+        this.gameEngine.on('fire',function(data){
+            console.log("data");
+            console.log(data);
+            this.makeMissile(data);
+        });
     }
 
     onPlayerConnected(socket) {
@@ -89,6 +97,15 @@ class MyServerEngine extends ServerEngine {
                 break;
             }
         }
+    }
+
+    makeMissile(data) {
+        //let missile = new Missile(++this.gameEngine.world.idCount);
+        //this.gameEngine.addObjectToWorld(missile);
+
+        this.gameEngine.makeMissile();
+
+
     }
 }
 

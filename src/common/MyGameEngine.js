@@ -44,7 +44,12 @@ class MyGameEngine extends GameEngine {
             this.timer.tick();
         });
 
-
+        //this.on('fire',function(data){
+            //console.log("data");
+            //console.log(data);
+            //this.makeMissile();
+        //});
+        console.log(this);
     }
 
     start() {
@@ -72,24 +77,40 @@ class MyGameEngine extends GameEngine {
         super.processInput(inputData, playerId);
         //console.log(playerId);
         //console.log(this.world);
-        let playercontrol = this.world.getPlayerObject(playerId);
-        let player = null;
 
+        if(inputData.input == 'space'){
+            //this.makeMissile();
+            this.emit('fire',{playerid:playerId});
+        }
+        //let playercontrol = this.world.getPlayerObject(playerId);
+        //let player = null;
+        //let playerShip;
+        /*
         if(playercontrol.class == PlayerController){
             if(playercontrol.pawn != null){
-                console.log("pawn found!");
-                let o = this.world.objects[playercontrol.pawn.id];
-                o.processInput(inputData);
+                //console.log("pawn found!");
+                //let ops = this.world.objects[playercontrol.pawn.id];
+                //ops.processInput(inputData);
 
                 if(inputData.input == 'space'){
-                    this.makeMissile(o, inputData.messageIndex);
+                    //this.makeMissile(ops, inputData.messageIndex);
+                    for (let objId in this.world.objects) {
+                        let o = this.world.objects[objId];
+                        if (o.playerId == playerId && o.class == PlayerCube) {
+                            playerShip = o;
+                            break;
+                        }
+                    }
+                    this.makeMissile(playerShip);
                 }
+
 
             }else{
                 console.log("not pawn found!");
                 playercontrol.checkpawn();
             }
         }
+        */
     }
 
     initGame() {
@@ -112,40 +133,41 @@ class MyGameEngine extends GameEngine {
     }
 
 
-    makeMissile(playerShip, inputId) {
+    //makeMissile(playerId, playerShip, inputId) {
+    //makeMissile(playerShip) {
+    makeMissile() {
         let missile = new Missile(++this.world.idCount);
         //missile.position.copy(playerShip.position);
         //missile.velocity.copy(playerShip.velocity);
         this.addObjectToWorld(missile);
+        /*
         //copy vector
-        let pos = playerShip.physicsObj.position.clone();
+        //let pos = playerShip.physicsObj.position.clone();
+        let pos = new ThreeVector(0,0,0);
         //threejs
         let dir = new THREE.Vector3(0,0,5);
-        let angle = playerShip.yawrotation;
+        //let angle = playerShip.yawrotation;
+        let angle = 0.1;
         dir.applyAxisAngle(new THREE.Vector3(0,1,0), angle);
         //apply face direction for make missile in world and scene
         pos.x += dir.x;
         pos.z += dir.z;
         //copy setting from ship
-        missile.physicsObj.position.copy(pos);
-        missile.physicsObj.velocity.copy(playerShip.physicsObj.velocity);
+        //missile.physicsObj.position.copy(pos);
+        //missile.physicsObj.velocity.copy(playerShip.physicsObj.velocity);
         //apply rotation y 
-        missile.angle = playerShip.yawrotation;
+        missile.angle = angle;
+        //missile.playerId = playerShip.playerId;
         missile.playerId = playerShip.playerId;
-        missile.ownerId = playerShip.id;
-        missile.inputId = inputId;
+        //missile.ownerId = playerShip.id;
+        //missile.inputId = inputId;
         //missile.physicsObj.velocity.x += Math.cos(missile.angle * (Math.PI / 180)) * 10;
         //missile.physicsObj.velocity.z += Math.sin(missile.angle * (Math.PI / 180)) * 10;
-
         missile.physicsObj.velocity.x += dir.x;
         missile.physicsObj.velocity.z += dir.z;
-
-
         this.trace.trace(`missile[${missile.id}] created vel=${missile.velocity}`);
-
-        
         this.timer.add(40, this.destroyMissile, this, [missile.id]);
-
+        */
         return missile;
     }
 

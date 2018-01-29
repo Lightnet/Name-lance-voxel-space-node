@@ -192,8 +192,6 @@ class PlayerCube extends PhysicalObject {
             //console.log(this.quaternion);
             let CANNON = this.gameEngine.physicsEngine.CANNON;
             this.yawrotation = this.yawrotation + 0.1;
-            
-
             if(this.yawrotation > 360){
                 this.yawrotation = 0;
             }
@@ -236,10 +234,9 @@ class PlayerCube extends PhysicalObject {
     }
 
     fireweapon(inputData){
-        if(this.gameEngine){
-            this.gameEngine.makeMissile(this, inputData.messageIndex);
-
-        }
+        //if(this.gameEngine){
+            //this.gameEngine.makeMissile(this, inputData.messageIndex);
+        //}
     }
 
     toString() {
