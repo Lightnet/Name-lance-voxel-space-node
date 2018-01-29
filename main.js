@@ -1,3 +1,17 @@
+/*
+    Project Name: lance-voxel-space-node
+    License: CC0
+    Multiples Licenses check the README.md file.
+
+    Created by: Lightnet
+
+    Information: Multiplayer Node Server Prototype Spaceship Game
+
+    This main file for game client/server and host express and socket.io handler.
+
+*/
+
+
 'use strict';
 
 //main point entry

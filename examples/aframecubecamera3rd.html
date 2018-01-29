@@ -5,6 +5,33 @@
     </head>
     <body>
         <script>
+  AFRAME.registerComponent('camera3rd', {
+    schema: {
+        enabled: {type: 'boolean',default:true},
+        cameraid: {type: 'string',default:"a-camera"}
+    },
+    init: function () {
+        
+    },
+    tick: function (time, delta) {
+        
+        if(!this.data.enabled){
+            return;
+        }
+        //console.log(this.data.enabled);
+        let relativeCameraOffset = new THREE.Vector3(0,5,-10);
+        let cameraEL = document.querySelector(this.data.cameraid);
+        let cameraOffset = relativeCameraOffset.applyMatrix4( this.el.object3D.matrixWorld.clone() );
+
+        if((cameraEL !=null)){
+            cameraEL.object3D.position.set(cameraOffset.x,cameraOffset.y,cameraOffset.z);
+            let m1 = new THREE.Matrix4();
+            m1.lookAt( cameraEL.object3D.position, this.el.object3D.position, new THREE.Vector3(0,1,0) );
+            cameraEL.object3D.quaternion.setFromRotationMatrix( m1 );
+        }
+    }
+});
+
   AFRAME.registerComponent('playermove', {
         schema: {
             w: {type: 'boolean'},
@@ -14,8 +41,8 @@
             rotateAngle: {type: 'number'},
         },
       init: function () {
-        var cameraEL = document.querySelector('a-camera');
-        this.camera = cameraEL.components.camera.camera;
+        //var cameraEL = document.querySelector('a-camera');
+        //this.camera = cameraEL.components.camera.camera;
         var self = this;
         window.addEventListener("keydown",function(event){
             //console.log(event);
@@ -73,22 +100,12 @@
             this.el.object3D.quaternion.setFromAxisAngle( new THREE.Vector3(0,1,0), this.data.rotateAngle);
         }
 
-        let cameraOffset = relativeCameraOffset.applyMatrix4( this.el.object3D.matrixWorld.clone() );
+        //let cameraOffset = relativeCameraOffset.applyMatrix4( this.el.object3D.matrixWorld.clone() );
         //console.log(cameraOffset);
-        pointEL.object3D.position.set(cameraOffset.x,cameraOffset.y,cameraOffset.z);
-        pointEL.object3D.lookAt(this.el.object3D.position);
+        //pointEL.object3D.position.set(cameraOffset.x,cameraOffset.y,cameraOffset.z);
+        //pointEL.object3D.lookAt(this.el.object3D.position);
+        //cameraEL.object3D.position.set(cameraOffset.x,cameraOffset.y,cameraOffset.z);
 
-        cameraEL.object3D.position.set(cameraOffset.x,cameraOffset.y,cameraOffset.z);
-        //cameraEL.object3D.lookAt(this.el.object3D.position);
-        //cameraEL.components.camera.camera.lookAt(this.el.object3D.position);
-
-        //cameraEL.object3D.lookAt(this.el.object3D.position.clone());//doesn't work
-        //cameraEL.components.camera.camera.lookAt(this.el.object3D.position.clone());
-
-        //cameraEL.object3D.lookAt(new THREE.Vector3(0,0,0));
-        //cameraEL.components.camera.camera.lookAt(new THREE.Vector3(0,0,0));
-
-        //cameraEL.components.camera.camera.lookAt(this.el);
 
         //function lookat(vec){
             // This method does not support objects with rotated and/or translated parent(s)
@@ -99,36 +116,18 @@
 
         //console.log(this.el.object3D.position);
         //copy from node_module\three\src\core\object3d.js
-        let m1 = new THREE.Matrix4();
-        m1.lookAt( cameraEL.object3D.position, this.el.object3D.position, new THREE.Vector3(0,1,0) );
+        //{ work here
+        //let m1 = new THREE.Matrix4();
+        //m1.lookAt( cameraEL.object3D.position, this.el.object3D.position, new THREE.Vector3(0,1,0) );
         //console.log(cameraEL.object3D.position);
-        cameraEL.object3D.quaternion.setFromRotationMatrix( m1 );
-        
-
-
-
+        //cameraEL.object3D.quaternion.setFromRotationMatrix( m1 );
+        //}
         //cameraEL.components.camera.camera.rotation.y = this.el.object3D.rotation.y + (180 * (Math.PI/180) );
         //console.log(cameraEL.components.camera.camera.rotation.y);
 
 
         if(this.camera !=null){
             if((this.data.a)||(this.data.d)){
-                
-                //cameraEL.object3D.lookAt(this.el.object3D.position);
-                //let q = pointEL.object3D.quaternion;
-
-                //q.inverse();
-                //q.setFromAxisAngle(new THREE.Vector3(0,1,0),-this.data.rotateAngle);
-                //console.log(q);
-                //cameraEL.object3D.quaternion.set(q.x,q.y,q.z,q.w);
-                //cameraEL.components.camera.camera.lookAt(this.el.object3D.position);
-                //cameraEL.components.camera.camera.quaternion.set(q.x,q.y,q.z,q.w);
-
-                let cam = cameraEL.components.camera.camera;
-
-                //console.log(cam);
-                //console.log(cam.position);
-                //console.log(cameraEL.object3D.position);
             }
         }
       }
@@ -139,16 +138,18 @@
             <a-assets>
             </a-assets>
             <a-sky color="#ECECEC"></a-sky>
-            <a-camera camera="active: false" position="0 5 10" look-controls-enabled="false" wasd-controls-enabled="false" rotation="0 0 0" ></a-camera>
-            <a-entity id="camera" camera="active: true" position="0 5 10" rotation="0 45 0"></a-entity>
+            <a-camera camera="active: true" position="0 5 10" look-controls-enabled="false" wasd-controls-enabled="false" rotation="0 0 0" ></a-camera>
+            
             <a-box  id="point" rotation="0 0 0" color="red"></a-box>
             <a-plane position="0 0 0" rotation="-90 0 0" width="100" height="100" color="#7BC8A4"></a-plane>
-<!--
+            <!--
+            <a-entity id="camera" camera="active: true" position="0 5 10" rotation="0 45 0"></a-entity>
             <a-plane position="0 -100 0" rotation="-90 0 0" width="100" height="100" color="#7BC8A4"></a-plane>
             <a-plane position="0 100 0" rotation="-90 0 0" width="100" height="100" color="#7BC8A4"></a-plane>
             <a-plane position="0 0 10" rotation="0 0 0" width="100" height="100" color="#7BC8A4"></a-plane>
-        -->
-            <a-box  id="modelmesh" playermove color="green"></a-box>
+            //camera3rd="cameraid:#camera"
+            -->
+            <a-box  id="modelmesh" playermove camera3rd="enabled:true;" color="green"></a-box>
 
             <a-box color="blue" position="5 0 5"></a-box>
             <a-box color="blue" position="-5 0 5"></a-box>

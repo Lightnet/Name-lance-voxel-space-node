@@ -189,6 +189,13 @@ class MyClientEngine extends ClientEngine {
             //if ('autostart' in Utils.getUrlVars()) {
                 //this.socket.emit('requestRestart');
             //}
+
+            //in presentation mode make sure to not idle
+            //if ('presentation' in Utils.getUrlVars()) {
+                setInterval(() =>{
+                    this.socket.emit('keepAlive');
+                }, 1000 * 10)
+            //}
         });
     }
 }

@@ -158,6 +158,7 @@ class PlayerController extends GameObject {
                 //o.bspawn = true;
                 //o.foucscamera();
                 this.pawn = this.gameEngine.world.objects[objId];
+                this.pawn.foucscamera();
                 //console.log("objId:"+objId);
                 //console.log("Id:"+this.pawn.id);
                 break;

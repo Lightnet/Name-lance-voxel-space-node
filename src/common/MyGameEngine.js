@@ -23,28 +23,6 @@ const SphereCannon = require('./SphereCannon');
 const PlaneCannon = require('./PlaneCannon');
 const BoxCannon = require('./BoxCannon');
 
-//const Paddle = require('./Paddle');
-//const Ball = require('./Ball');
-//const PADDING = 20;
-//const WIDTH = 400;
-//const HEIGHT = 400;
-//const PADDLE_WIDTH = 10;
-//const PADDLE_HEIGHT = 50;
-/*
-var window = {
-    addEventListener:function(){}
-};
-global.window=window;
-
-var navigator= {
-    //addEventListener:function(){}
-};
-
-global.navigator=navigator;
-
-require('aframe');
-*/
-
 // todo check if this should be global
 let CANNON = null;
 
@@ -52,7 +30,6 @@ class MyGameEngine extends GameEngine {
 
     constructor(options) {
         super(options);
-
         //CANNON = this.physicsEngine.CANNON;
     }
 
@@ -63,12 +40,10 @@ class MyGameEngine extends GameEngine {
         //console.log(this.physicsEngine.world.gravity.y);
         //set gravity to zero
         this.physicsEngine.world.gravity.y = 0;
-
         //this.worldSettings = {
             //width: 400,
             //height: 400
         //};
-
         this.on('postStep', () => {
 
         });
@@ -80,9 +55,7 @@ class MyGameEngine extends GameEngine {
     }
 
     processInput(inputData, playerId) {
-
         super.processInput(inputData, playerId);
-
         //console.log(playerId);
         //console.log(this.world);
         let playercontrol = this.world.getPlayerObject(playerId);
@@ -90,65 +63,14 @@ class MyGameEngine extends GameEngine {
 
         if(playercontrol.class == PlayerController){
             if(playercontrol.pawn != null){
+                console.log("pawn found!");
                 let o = this.world.objects[playercontrol.pawn.id];
                 o.processInput(inputData);
-                /*
-                for (let objId in this.world.objects) {
-                    let o = this.world.objects[objId];
-                    if (o.playerId == playerId && o.class == PlayerCube) {
-                        player = o;
-                        break;
-                    }
-                }
-                if(player != null){
-                    player.processInput(inputData);
-                    console.log("input...");
-                }
-                */
             }else{
+                console.log("not pawn found!");
                 playercontrol.checkpawn();
             }
         }
-
-        //console.log(playercontrol);
-        /*
-        for (let objId in this.world.objects) {
-            let o = this.world.objects[objId];
-            if (o.playerId == playerId && o.class == PlayerCube) {
-                player = o;
-                break;
-            }
-        }
-        */
-        //if(player != null){
-            //player.processInput(inputData);
-            //console.log("input...");
-        //}
-        
-        /*
-        // get the player paddle tied to the player socket
-        let playercontrol = this.world.getPlayerObject(playerId);
-
-        //console.log(playercontrol);
-
-        if (playercontrol.class == PlayerController) {
-            if(playercontrol.processInput !=null){
-                //console.log(inputData);
-                playercontrol.processInput(inputData);
-
-                if(inputData.input === 'space'){
-                    if(playercontrol.bspawn == false){
-                        //playercontrol.bspawn = true;
-                        //playercontrol.pawn = 
-                        //this.requestspawn(playerId);
-                        //playercontrol.foucscamera();
-                        //this.requestspawn(playerId);
-                    }
-                }
-            }
-        }
-        */
-        //console.log("move?");
     }
 
     initGame() {
@@ -167,7 +89,6 @@ class MyGameEngine extends GameEngine {
         //position = new ThreeVector(0, 20, 0);
         //this.addObjectToWorld(new PlayerCube(++this.world.idCount,this,position ));
         //this.addObjectToWorld(new PlayerCube(++this.world.idCount,this, new ThreeVector(0, 20, 0)));
-
         //this.spawnship();
     }
 
@@ -181,18 +102,6 @@ class MyGameEngine extends GameEngine {
         //let ship = new Ship(++this.world.idCount, this, new TwoVector(newShipX, newShipY));
         var pawn = this.addObjectToWorld(new PlayerCube(++this.world.idCount, new ThreeVector(0, 0, 0)));
         pawn.playerId = playerId;
-        
-        for (var objId in this.world.objects) {
-            var o = this.world.objects[objId];
-            if (o.playerId == playerId && o.class == PlayerController) {
-                console.log("player controller found!");
-                o.checkpawn();
-                //o.pawn = pawn;
-                //o.bspawn = true;
-                //o.foucscamera();
-                break;
-            }
-        }
         return pawn;
     };
 
@@ -266,13 +175,10 @@ class MyGameEngine extends GameEngine {
     }
 
     registerClasses(serializer) {
-        //serializer.registerClass(require('../common/Paddle'));
-        //serializer.registerClass(require('../common/Ball'));
         serializer.registerClass(require('../common/PlayerAvatar'));
         serializer.registerClass(require('../common/PlayerCube'));
         serializer.registerClass(require('../common/PlayerData'));
         serializer.registerClass(require('../common/PlayerController'));
-
 
         serializer.registerClass(require('../common/SphereCannon'));
         serializer.registerClass(require('../common/PlaneCannon'));

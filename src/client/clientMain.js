@@ -15,6 +15,10 @@ const MyGameEngine = require('../common/MyGameEngine');
 //const SimplePhysicsEngine = require('lance-gg').physics.SimplePhysicsEngine;
 const CannonPhysicsEngine = require('lance-gg').physics.CannonPhysicsEngine;
 //require('../../assets/sass/main.scss');
+//===============================================
+// Load libs
+//===============================================
+require('./aframecamera3rd');
 
 // default options, overwritten by query-string options
 // is sent to both game engine and client engine

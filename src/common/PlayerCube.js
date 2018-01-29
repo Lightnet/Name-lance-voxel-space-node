@@ -46,17 +46,14 @@ class PlayerCube extends PhysicalObject {
         this.gameEngine = gameEngine;
         // create the physics body
         CANNON = this.gameEngine.physicsEngine.CANNON;
-
         console.log("add to world scene playercube.");
         console.log("============id:" + this.id);
         //console.log("playerId:" + this.playerId);
-    
-        this.physicsObj = gameEngine.physicsEngine.addSphere(RADIUS, MASS);
+        //console.log(gameEngine.physicsEngine);
+        this.physicsObj = gameEngine.physicsEngine.addBox(1,1,1, MASS,0.1);
         this.physicsObj.position.set(this.position.x, this.position.y, this.position.z);
         this.physicsObj.angularDamping = 0.1;
-
         this.scene = gameEngine.renderer ? gameEngine.renderer.scene : null;
-
         if (this.scene) {
             console.log("a-entity box");
             let el = this.renderEl = document.createElement('a-entity');
@@ -66,21 +63,16 @@ class PlayerCube extends PhysicalObject {
             el.setAttribute('position', `${p.x} ${p.y} ${p.z}`);
             //el.setAttribute('material', 'src: #ball');
             //el.setAttribute('geometry', `primitive: box;width:1;height:1;depth:1;`);
-
             el.setAttribute('gltf-model', `#pointer`);
-
-
             el.setAttribute('game-object-id', this.id);
             el.setAttribute('id', this.id);
             //this.setupEmitters();
             this.scene.appendChild(el);
-            //console.log(this.gameEngine);
+            this.el = el; //assign var since it not in the lancegg
             //console.log("player clientEngine id:" + gameEngine.renderer.clientEngine.playerId);
             //console.log("player object id:"+ this.playerId);
             if(this.playerId == gameEngine.renderer.clientEngine.playerId){
-                let cameraEL = document.querySelector('a-camera');
-                cameraEL.setAttribute("orbit-controls", "target",`#${this.id}`);
-                cameraEL.components['orbit-controls'].target = p;
+                //el.setAttribute("camera3rd", '');
             }
         }
     }
@@ -227,13 +219,16 @@ class PlayerCube extends PhysicalObject {
 
     //lock camera
     foucscamera(){
+        //work when client engine is call for reason when input handle
         this.scene = this.gameEngine.renderer ? this.gameEngine.renderer.scene : null;
-        if((this.scene !=null)){
+        if((this.scene !=null)&&(this.el !=null)){
             console.log("camera set scene client?");
             if(this.playerId == this.gameEngine.renderer.clientEngine.playerId){
-                let cameraEL = document.querySelector('a-camera');
-                cameraEL.setAttribute("orbit-controls", "target",`#${this.id}`);
-                cameraEL.components['orbit-controls'].target = this.position;
+                //let cameraEL = document.querySelector('a-camera');
+                //cameraEL.setAttribute("orbit-controls", "target",`#${this.id}`);
+                //cameraEL.components['orbit-controls'].target = this.position;
+                this.el.setAttribute("camera3rd", '');
+                console.log(this);
             }
         }
     }

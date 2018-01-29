@@ -27,11 +27,11 @@ class MyServerEngine extends ServerEngine {
         super.start();
 
         this.gameEngine.initGame();
-
-        this.players = {
-            player1: null,
-            player2: null
-        };
+        this.playercontrollers = {};
+        //this.players = {
+            //player1: null,
+            //player2: null
+        //};
     }
 
     onPlayerConnected(socket) {
@@ -47,6 +47,7 @@ class MyServerEngine extends ServerEngine {
 
         socket.on('keepAlive', ()=>{
             this.resetIdleTimeout(socket);
+            //console.log("keepAlive");
         });
 
         let makePlayerShip = () => {
