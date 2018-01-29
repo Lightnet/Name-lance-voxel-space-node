@@ -12,6 +12,9 @@
 const ClientEngine = require('lance-gg').ClientEngine;
 const MyRenderer = require('../client/MyRenderer');
 const Utils = require('./../common/Utils');
+const MobileControls = require('../client/MobileControls');
+const KeyboardControls = require('../client/KeyboardControls');
+
 
 class MyClientEngine extends ClientEngine {
 
@@ -81,6 +84,17 @@ class MyClientEngine extends ClientEngine {
             });
         });
 
+        //  Game input
+        if (Utils.isTouchDevice()){
+            this.controls = new MobileControls(this.renderer);
+        } else {
+            this.controls = new KeyboardControls(this.renderer);
+        }
+
+        this.controls.on('fire', () => {
+            this.sendInput('space');
+        });
+
         this.networkMonitor.on('RTTUpdate', (e) => {
             this.renderer.updateHUD(e);
         });
@@ -119,7 +133,7 @@ class MyClientEngine extends ClientEngine {
         //}
 
         if (this.pressedKeys.space) {
-            this.sendInput('space', { movement: true });
+            //this.sendInput('space', { movement: true });
         }
 
         if (this.pressedKeys.b) {

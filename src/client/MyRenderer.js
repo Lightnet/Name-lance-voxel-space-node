@@ -107,6 +107,14 @@ class MyRenderer extends AFrameRenderer {
         if (data.RTT){ qs('.latencyData').innerHTML = data.RTT;}
         if (data.RTTAverage){ qs('.averageLatencyData').innerHTML = truncateDecimals(data.RTTAverage, 2);}
     }
+
+    onKeyChange(e){
+        //if (this.playerShip) {
+            //if (e.keyName === 'up') {
+                //this.playerShip.actor.thrustEmitter.emit = e.isDown;
+            //}
+        //}
+    }
 }
 
 // convenience function

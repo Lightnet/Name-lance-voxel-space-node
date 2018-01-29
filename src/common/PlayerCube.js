@@ -95,10 +95,12 @@ class PlayerCube extends PhysicalObject {
             //console.log("right");
             this.turnright();
         }
-        if( (inputData.input === 'space') && (inputData.options.movement == true)) {
+        //if( (inputData.input === 'space') && (inputData.options.movement == true)) {
             //playerPaddle.position.y += 5;
             //console.log("space");
-        }
+            //this.fireweapon(inputData);
+        //}
+
 
         if( (inputData.input === 'b') && (inputData.options.movement == true)) {
             this.stopmovement();
@@ -230,6 +232,13 @@ class PlayerCube extends PhysicalObject {
                 this.el.setAttribute("camera3rd", '');
                 console.log(this);
             }
+        }
+    }
+
+    fireweapon(inputData){
+        if(this.gameEngine){
+            this.gameEngine.makeMissile(this, inputData.messageIndex);
+
         }
     }
 

@@ -13,38 +13,29 @@
 
 //const DynamicObject= require('lance-gg').serialize.DynamicObject;
 const PhysicalObject = require('lance-gg').serialize.PhysicalObject;
-const RADIUS = 4;
-
-const _width = 10;
-const _height = 10;
-const _depth = 10;
-const MASS = 0;
+const MASS = 1;
 let CANNON = null;
 
-//class PlayerAvatar extends DynamicObject {
-class BoxCannon extends PhysicalObject {
+class Missile extends PhysicalObject {
 
-    constructor(id,gameEngine, position) {
+    constructor(id, position) {
         super(id, position);
-        this.class = BoxCannon;
-        this.gameEngine = gameEngine;
+        this.class = Missile;
     };
 
     onAddToWorld(gameEngine) {
         //console.log("add to world scene BoxCannon.");
-
         // create the physics body
+        console.log("Missile ID:"+this.id);
         this.gameEngine = gameEngine;
-        //CANNON = this.gameEngine.physicsEngine.CANNON;
-        //console.log(gameEngine.physicsEngine);
-        this.physicsObj = gameEngine.physicsEngine.addBox(_width/2,_height/2,_depth/2,MASS,0);
+        this.physicsObj = gameEngine.physicsEngine.addBox(1, 1, 1, MASS, 0);
         this.physicsObj.position.set(this.position.x, this.position.y, this.position.z);
         this.physicsObj.angularDamping = 0.0;
+
         this.scene = gameEngine.renderer ? gameEngine.renderer.scene : null;
 
         if (this.scene) {
             let el = this.renderEl = document.createElement('a-entity');
-
             //el.addEventListener('physicscollided', function (event) { //nothing
                 //console.log('Entity collided with', event.detail.collidingEntity);
               //});
@@ -53,7 +44,7 @@ class BoxCannon extends PhysicalObject {
             let q = this.quaternion;
             el.setAttribute('position', `${p.x} ${p.y} ${p.z}`);
             //el.setAttribute('material', 'src: #ball');
-            el.setAttribute('geometry', `primitive: box; width: ${_width}; height: ${_height}; depth: ${_depth}; segmentsWidth: 32; segmentsHeight: 16`);
+            el.setAttribute('geometry', `primitive: box; width: 1; height: 1; depth: 1;`);
             el.setAttribute('game-object-id', this.id);
             //this.setupEmitters();
             //console.log("a-entity box");
@@ -61,9 +52,9 @@ class BoxCannon extends PhysicalObject {
     }
 
     toString() {
-        return `BoxCannon::${super.toString()}`;
+        return `Missile::${super.toString()}`;
     }
 
 }
 
-module.exports = BoxCannon;
+module.exports = Missile;

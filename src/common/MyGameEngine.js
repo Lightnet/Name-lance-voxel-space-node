@@ -13,12 +13,15 @@
 
 const GameEngine = require('lance-gg').GameEngine;
 const ThreeVector = require('lance-gg').serialize.ThreeVector;
+const Timer = require('./Timer');
 
 //game objects
 const PlayerAvatar = require('./PlayerAvatar');
-
 const PlayerController = require('./PlayerController');
 const PlayerCube = require('./PlayerCube');
+
+const Missile = require('./Missile');
+
 const SphereCannon = require('./SphereCannon');
 const PlaneCannon = require('./PlaneCannon');
 const BoxCannon = require('./BoxCannon');
@@ -31,6 +34,15 @@ class MyGameEngine extends GameEngine {
     constructor(options) {
         super(options);
         //CANNON = this.physicsEngine.CANNON;
+
+        this.timer = new Timer();
+        this.timer.play();
+
+        this.on('server__postStep', ()=>{
+            this.timer.tick();
+        });
+
+
     }
 
     start() {
@@ -66,6 +78,11 @@ class MyGameEngine extends GameEngine {
                 console.log("pawn found!");
                 let o = this.world.objects[playercontrol.pawn.id];
                 o.processInput(inputData);
+
+                if(inputData.input == 'space'){
+                    this.makeMissile(o, inputData.messageIndex);
+                }
+
             }else{
                 console.log("not pawn found!");
                 playercontrol.checkpawn();
@@ -92,10 +109,38 @@ class MyGameEngine extends GameEngine {
         //this.spawnship();
     }
 
-    makeprojectile(){
 
+    makeMissile(playerShip, inputId) {
+        let missile = new Missile(++this.world.idCount);
+        missile.position.copy(playerShip.position);
+        missile.velocity.copy(playerShip.velocity);
+        missile.angle = playerShip.yawrotation;
+        missile.playerId = playerShip.playerId;
+        missile.ownerId = playerShip.id;
+        missile.inputId = inputId;
+        missile.velocity.x += Math.cos(missile.angle * (Math.PI / 180)) * 10;
+        missile.velocity.y += Math.sin(missile.angle * (Math.PI / 180)) * 10;
 
+        this.trace.trace(`missile[${missile.id}] created vel=${missile.velocity}`);
+
+        this.addObjectToWorld(missile);
+        this.timer.add(40, this.destroyMissile, this, [missile.id]);
+
+        return missile;
     }
+
+
+    // destroy the missile if it still exists
+    destroyMissile(missileId) {
+        if (this.world.objects[missileId]) {
+            this.trace.trace(`missile[${missileId}] destroyed`);
+            this.removeObjectFromWorld(missileId);
+        }
+    }
+
+    //makeprojectile(){
+    //}
+
 
     makeShip(playerId) {
         console.log("make ship");
@@ -179,6 +224,8 @@ class MyGameEngine extends GameEngine {
         serializer.registerClass(require('../common/PlayerCube'));
         serializer.registerClass(require('../common/PlayerData'));
         serializer.registerClass(require('../common/PlayerController'));
+
+        serializer.registerClass(require('../common/Missile'));
 
         serializer.registerClass(require('../common/SphereCannon'));
         serializer.registerClass(require('../common/PlaneCannon'));
