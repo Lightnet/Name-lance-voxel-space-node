@@ -1,0 +1,179 @@
+<html>
+    <head>
+        <title></title>
+        <!--
+            //https://jsfiddle.net/cfe3990o/
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="dist/physicscannon.js" type="text/javascript"></script>
+        <script src="https://unpkg.com/aframe-physics-system@1.4.0/dist/aframe-physics-system.min.js"></script>
+        <script src="https://unpkg.com/aframe-physics-system@1.4.0/dist/aframe-physics-system.min.js"></script>
+        -->
+
+        <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
+        
+    </head>
+    <body>
+        <script>
+  AFRAME.registerComponent('playermove', {
+        schema: {
+            w: {type: 'boolean'},
+            a: {type: 'boolean'},
+            s: {type: 'boolean'},
+            d: {type: 'boolean'},
+            rotateAngle: {type: 'number'},
+        },
+      init: function () {
+        //var sceneEl = this.el;
+        //var box = document.querySelector('#modelmesh').object3D;
+        var cameraEL = document.querySelector('a-camera');
+        this.camera = cameraEL.components.camera.camera;
+        var self = this;
+        //window.addEventListener("keypress",function(event){
+            //console.log(event);
+        //});
+        window.addEventListener("keydown",function(event){
+            //console.log(event);
+            if(event.key == "w"){
+                self.data.w = true;
+            }
+            if(event.key == "a"){
+                self.data.a = true;
+            }
+            if(event.key == "s"){
+                self.data.s = true;
+            }
+            if(event.key == "d"){
+                self.data.d = true;
+            }
+        });
+
+        window.addEventListener("keyup",function(event){
+            //console.log(event);
+            if(event.key == "w"){
+                self.data.w = false;
+            }
+            if(event.key == "a"){
+                self.data.a = false;
+            }
+            if(event.key == "s"){
+                self.data.s = false;
+            }
+            if(event.key == "d"){
+                self.data.d = false;
+            }
+        });
+        //let mesh = this.el.object3D;
+        //this.camera.lookAt(mesh.position);
+        //this.el.object3D.add(this.camera);
+      },
+      tick: function (time, delta) {
+        if(this.data.w){
+            this.el.object3D.translateZ( 0.1 );
+        }
+        if(this.data.s){
+            this.el.object3D.translateZ( -0.1 );
+        }
+        if(this.data.a){
+            this.data.rotateAngle = this.data.rotateAngle + 0.1;
+            this.el.object3D.quaternion.setFromAxisAngle( new THREE.Vector3(0,1,0), this.data.rotateAngle);
+        }
+
+        if(this.data.d){
+            this.data.rotateAngle = this.data.rotateAngle - 0.1;
+            this.el.object3D.quaternion.setFromAxisAngle( new THREE.Vector3(0,1,0), this.data.rotateAngle);
+        }
+
+        if(this.camera !=null){
+            var relativeCameraOffset = new THREE.Vector3(0,5,-10);
+            var cameraOffset = relativeCameraOffset.applyMatrix4( this.el.object3D.matrixWorld );
+            console.log(cameraOffset);
+            var cameraEL = document.querySelector('#camera');
+            var pointEL = document.querySelector('#point');
+            //console.log(cameraEL);
+            //console.log(cameraEL.object3D);
+            //cameraEL.object3D.position.x = cameraOffset.x;
+            //cameraEL.object3D.position.y = cameraOffset.y;
+            //cameraEL.object3D.position.z = cameraOffset.z;
+            pointEL.object3D.position.x = cameraOffset.x;
+            pointEL.object3D.position.y = cameraOffset.y;
+            pointEL.object3D.position.z = cameraOffset.z;
+            //pointEL.object3D.lookAt(this.el.object3D.position);
+
+            //cameraEL.object3D.position.x = cameraOffset.x;
+            //cameraEL.object3D.position.y = cameraOffset.y;
+            //cameraEL.object3D.position.z = cameraOffset.z;
+
+            //cameraEL.components.camera.camera.lookAt(this.el.object3D.position);
+
+            if((this.data.a)||(this.data.d)){
+                //cameraEL.object3D.lookAt(new THREE.Vector3(0,1,0));
+                //cameraEL.components.camera.camera.lookAt(new THREE.Vector3(0,0,0));
+                //cameraEL.components.camera.camera.lookAt(this.el.object3D.position);
+                //cameraEL.object3D.lookAt(this.el.object3D.position);
+                //console.log(cameraOffset);
+                //cameraEL.object3D.lookAt(this.el.object3D.position);
+                //cameraEL.object3D.lookAt(new THREE.Vector3(0,0,0));
+                //console.log(cameraEL.object3D);
+                //cameraEL.object3D.position.z=0;
+                //cameraEL;
+                //cameraEL.object3D.position.x = cameraEL.object3D.position.x + 0.1;
+            }
+
+            //this.camera.lookAt( this.el.object3D.position );
+
+            //cameraEL.components.camera.camera.lookAt( new THREE.Vector3(0,0,0));
+            //cameraEL.object3D.lookAt( this.el.object3D.position );
+            //this.camera.lookAt( new THREE.Vector3(0,0,0) );
+            //this.camera.position.x = cameraOffset.x;
+            //this.camera.position.y = cameraOffset.y;
+            //this.camera.position.z = cameraOffset.z;
+            //console.log(this.camera.position);
+            //let targetdir = this.camera.position.clone().sub(this.el.object3D.position).normalize();
+            //let mx = new THREE.Matrix4().lookAt(targetdir,new THREE.Vector3(0,0,0),new THREE.Vector3(0,1,0));
+            //let mx = new THREE.Matrix4().lookAt(this.el.object3D.position,this.camera.position,new THREE.Vector3(0,1,0));
+            //let qt = new THREE.Quaternion().setFromRotationMatrix(mx);
+            //this.camera.quaternion.set(qt.x,qt.y,qt.z,qt.w);
+            //console.log(this.camera);
+            //let mesh = this.el.object3D;
+            //this.camera.position.x = mesh.position.x + Math.sin(mesh.rotation.y) * 5;
+            //this.camera.position.y = 5;
+            //this.camera.position.z = mesh.position.z + Math.cos(mesh.rotation.y) * 5;
+            //this.el.object3D.add(this.camera);
+            //this.camera.lookAt( mesh.position          );
+            //this.camera.lookAt( new THREE.Vector3(0, 0,0));
+            //this.el.object3D.add(this.camera);
+            //this.el.object3D.add(this.camera);
+            //console.log(this.el.object3D.position);
+            //this.camera.lookAt( this.el.getAttribute('position') );
+        }
+      }
+  });
+
+        </script>
+        <!--
+            physics="debug:true;gravity:0;"
+            <a-asset-item id="pointer" src="/assets/pointer.gltf" material="transparent: true; opacity: 0.5;" ></a-asset-item>
+        -->
+        <a-scene>
+            <a-assets>
+            </a-assets>
+            <a-sky color="#ECECEC"></a-sky>
+            <a-camera camera="active: false" position="0 5 10" look-controls-enabled="false" wasd-controls-enabled="false" rotation="0 0 0" ></a-camera>
+
+            <a-entity camera="active: true" id="camera" position="0 5 10" rotation="0 0 0"></a-entity>
+            <!--
+            <a-box id="point" width="1" height="1" depth="1" color="#4CC3D9" material="transparent: true; opacity: 0.5;"></a-box>
+            -->
+            <a-box  id="point" rotation="0 0 0" playermove color="red" position="0 0 0"></a-box>
+            <a-plane position="0 0 0" rotation="-90 0 0" width="100" height="100" color="#7BC8A4"></a-plane>
+            <a-box  id="modelmesh" color="red"  position="0 0 0"></a-box>
+            <!--
+            <a-camera id="camera" look-at="modelmesh" look-controls-enabled="false" wasd-controls-enabled="false" position="0 5 20"></a-camera>
+            <a-box id="point" width="0.1" height="0.1" depth="0.1" color="#4CC3D9" material="transparent: true; opacity: 0.5;"></a-box>
+            <a-box position="-1 4 -3" rotation="0 45 0" color="#4CC3D9" material="transparent: true; opacity: 0.5;" dynamic-body ></a-box>
+            <a-entity id="modelmesh" gltf-model="#pointer" position="0 2 -5" ></a-entity>
+            
+            -->
+        </a-scene>
+    </body>
+</html>

@@ -1,0 +1,129 @@
+<html>
+    <head>
+        <title></title>
+        <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
+    </head>
+    <body>
+        <script>
+  AFRAME.registerComponent('playermove', {
+        schema: {
+            w: {type: 'boolean'},
+            a: {type: 'boolean'},
+            s: {type: 'boolean'},
+            d: {type: 'boolean'},
+            rotateAngle: {type: 'number'},
+        },
+      init: function () {
+        var cameraEL = document.querySelector('a-camera');
+        this.camera = cameraEL.components.camera.camera;
+        var self = this;
+        window.addEventListener("keydown",function(event){
+            //console.log(event);
+            if(event.key == "w"){
+                self.data.w = true;
+            }
+            if(event.key == "a"){
+                self.data.a = true;
+            }
+            if(event.key == "s"){
+                self.data.s = true;
+            }
+            if(event.key == "d"){
+                self.data.d = true;
+            }
+        });
+
+        window.addEventListener("keyup",function(event){
+            //console.log(event);
+            if(event.key == "w"){
+                self.data.w = false;
+            }
+            if(event.key == "a"){
+                self.data.a = false;
+            }
+            if(event.key == "s"){
+                self.data.s = false;
+            }
+            if(event.key == "d"){
+                self.data.d = false;
+            }
+        });
+      },
+      tick: function (time, delta) {
+
+        let relativeCameraOffset = new THREE.Vector3(0,5,-10);
+        var cameraEL = document.querySelector('#camera');
+        var pointEL = document.querySelector('#point');
+
+
+        if(this.data.w){
+            this.el.object3D.translateZ( 0.1 );
+        }
+        if(this.data.s){
+            this.el.object3D.translateZ( -0.1 );
+        }
+
+        if(this.data.a){
+            this.data.rotateAngle = this.data.rotateAngle + 0.1;
+            this.el.object3D.quaternion.setFromAxisAngle( new THREE.Vector3(0,1,0), this.data.rotateAngle);
+        }
+
+        if(this.data.d){
+            this.data.rotateAngle = this.data.rotateAngle - 0.1;
+            this.el.object3D.quaternion.setFromAxisAngle( new THREE.Vector3(0,1,0), this.data.rotateAngle);
+        }
+
+        let cameraOffset = relativeCameraOffset.applyMatrix4( this.el.object3D.matrixWorld.clone() );
+        //console.log(cameraOffset);
+        pointEL.object3D.position.set(cameraOffset.x,cameraOffset.y,cameraOffset.z);
+        pointEL.object3D.lookAt(-this.el.object3D.position);
+
+        cameraEL.object3D.position.set(cameraOffset.x,cameraOffset.y,cameraOffset.z);
+        //cameraEL.object3D.lookAt(this.el.object3D.position);
+        //cameraEL.components.camera.camera.lookAt(this.el.object3D.position);
+
+        cameraEL.components.camera.camera.rotation.y = this.el.object3D.rotation.y + (180 * (Math.PI/180) );
+        console.log(cameraEL.components.camera.camera.rotation.y);
+
+
+        if(this.camera !=null){
+            if((this.data.a)||(this.data.d)){
+                
+                //cameraEL.object3D.lookAt(this.el.object3D.position);
+                //let q = pointEL.object3D.quaternion;
+
+                //q.inverse();
+                //q.setFromAxisAngle(new THREE.Vector3(0,1,0),-this.data.rotateAngle);
+                //console.log(q);
+                //cameraEL.object3D.quaternion.set(q.x,q.y,q.z,q.w);
+                //cameraEL.components.camera.camera.lookAt(this.el.object3D.position);
+                //cameraEL.components.camera.camera.quaternion.set(q.x,q.y,q.z,q.w);
+
+                let cam = cameraEL.components.camera.camera;
+
+                //console.log(cam);
+                //console.log(cam.position);
+                console.log(cameraEL.object3D.position);
+            }
+        }
+      }
+  });
+
+        </script>
+        <a-scene>
+            <a-assets>
+            </a-assets>
+            <a-sky color="#ECECEC"></a-sky>
+            <a-camera camera="active: false" position="0 5 10" look-controls-enabled="false" wasd-controls-enabled="false" rotation="0 0 0" ></a-camera>
+            <a-entity id="camera" camera="active: true" position="0 5 10" rotation="0 0 0"></a-entity>
+            <a-box  id="point" rotation="0 0 0" color="red"></a-box>
+            <a-plane position="0 0 0" rotation="-90 0 0" width="100" height="100" color="#7BC8A4"></a-plane>
+            <a-box  id="modelmesh" playermove color="green"></a-box>
+
+            <a-box color="blue" position="5 0 5"></a-box>
+            <a-box color="blue" position="-5 0 5"></a-box>
+            <a-box color="blue" position="5 0 -5"></a-box>
+            <a-box color="blue" position="-5 0 -5"></a-box>
+        </a-scene>
+    </body>
+</html>
