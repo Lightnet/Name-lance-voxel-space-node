@@ -76,14 +76,39 @@
         let cameraOffset = relativeCameraOffset.applyMatrix4( this.el.object3D.matrixWorld.clone() );
         //console.log(cameraOffset);
         pointEL.object3D.position.set(cameraOffset.x,cameraOffset.y,cameraOffset.z);
-        pointEL.object3D.lookAt(-this.el.object3D.position);
+        pointEL.object3D.lookAt(this.el.object3D.position);
 
         cameraEL.object3D.position.set(cameraOffset.x,cameraOffset.y,cameraOffset.z);
         //cameraEL.object3D.lookAt(this.el.object3D.position);
         //cameraEL.components.camera.camera.lookAt(this.el.object3D.position);
 
-        cameraEL.components.camera.camera.rotation.y = this.el.object3D.rotation.y + (180 * (Math.PI/180) );
-        console.log(cameraEL.components.camera.camera.rotation.y);
+        //cameraEL.object3D.lookAt(this.el.object3D.position.clone());//doesn't work
+        //cameraEL.components.camera.camera.lookAt(this.el.object3D.position.clone());
+
+        //cameraEL.object3D.lookAt(new THREE.Vector3(0,0,0));
+        //cameraEL.components.camera.camera.lookAt(new THREE.Vector3(0,0,0));
+
+        //cameraEL.components.camera.camera.lookAt(this.el);
+
+        //function lookat(vec){
+            // This method does not support objects with rotated and/or translated parent(s)
+            //var m1 = new Matrix4();
+            //m1.lookAt( this.position, vector, new THREE.Vector3(0,0,0) );
+        //}
+        //let m = lookat(this.el.object3D.position);
+
+        //console.log(this.el.object3D.position);
+        //copy from node_module\three\src\core\object3d.js
+        let m1 = new THREE.Matrix4();
+        m1.lookAt( cameraEL.object3D.position, this.el.object3D.position, new THREE.Vector3(0,1,0) );
+        //console.log(cameraEL.object3D.position);
+        cameraEL.object3D.quaternion.setFromRotationMatrix( m1 );
+        
+
+
+
+        //cameraEL.components.camera.camera.rotation.y = this.el.object3D.rotation.y + (180 * (Math.PI/180) );
+        //console.log(cameraEL.components.camera.camera.rotation.y);
 
 
         if(this.camera !=null){
@@ -103,7 +128,7 @@
 
                 //console.log(cam);
                 //console.log(cam.position);
-                console.log(cameraEL.object3D.position);
+                //console.log(cameraEL.object3D.position);
             }
         }
       }
@@ -115,9 +140,14 @@
             </a-assets>
             <a-sky color="#ECECEC"></a-sky>
             <a-camera camera="active: false" position="0 5 10" look-controls-enabled="false" wasd-controls-enabled="false" rotation="0 0 0" ></a-camera>
-            <a-entity id="camera" camera="active: true" position="0 5 10" rotation="0 0 0"></a-entity>
+            <a-entity id="camera" camera="active: true" position="0 5 10" rotation="0 45 0"></a-entity>
             <a-box  id="point" rotation="0 0 0" color="red"></a-box>
             <a-plane position="0 0 0" rotation="-90 0 0" width="100" height="100" color="#7BC8A4"></a-plane>
+<!--
+            <a-plane position="0 -100 0" rotation="-90 0 0" width="100" height="100" color="#7BC8A4"></a-plane>
+            <a-plane position="0 100 0" rotation="-90 0 0" width="100" height="100" color="#7BC8A4"></a-plane>
+            <a-plane position="0 0 10" rotation="0 0 0" width="100" height="100" color="#7BC8A4"></a-plane>
+        -->
             <a-box  id="modelmesh" playermove color="green"></a-box>
 
             <a-box color="blue" position="5 0 5"></a-box>
