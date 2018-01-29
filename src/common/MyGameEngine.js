@@ -15,6 +15,8 @@ const GameEngine = require('lance-gg').GameEngine;
 const ThreeVector = require('lance-gg').serialize.ThreeVector;
 const Timer = require('./Timer');
 
+const THREE = require('three');
+
 //game objects
 const PlayerAvatar = require('./PlayerAvatar');
 const PlayerController = require('./PlayerController');
@@ -112,18 +114,36 @@ class MyGameEngine extends GameEngine {
 
     makeMissile(playerShip, inputId) {
         let missile = new Missile(++this.world.idCount);
-        missile.position.copy(playerShip.position);
-        missile.velocity.copy(playerShip.velocity);
+        //missile.position.copy(playerShip.position);
+        //missile.velocity.copy(playerShip.velocity);
+        this.addObjectToWorld(missile);
+        //copy vector
+        let pos = playerShip.physicsObj.position.clone();
+        //threejs
+        let dir = new THREE.Vector3(0,0,5);
+        let angle = playerShip.yawrotation;
+        dir.applyAxisAngle(new THREE.Vector3(0,1,0), angle);
+        //apply face direction for make missile in world and scene
+        pos.x += dir.x;
+        pos.z += dir.z;
+        //copy setting from ship
+        missile.physicsObj.position.copy(pos);
+        missile.physicsObj.velocity.copy(playerShip.physicsObj.velocity);
+        //apply rotation y 
         missile.angle = playerShip.yawrotation;
         missile.playerId = playerShip.playerId;
         missile.ownerId = playerShip.id;
         missile.inputId = inputId;
-        missile.velocity.x += Math.cos(missile.angle * (Math.PI / 180)) * 10;
-        missile.velocity.y += Math.sin(missile.angle * (Math.PI / 180)) * 10;
+        //missile.physicsObj.velocity.x += Math.cos(missile.angle * (Math.PI / 180)) * 10;
+        //missile.physicsObj.velocity.z += Math.sin(missile.angle * (Math.PI / 180)) * 10;
+
+        missile.physicsObj.velocity.x += dir.x;
+        missile.physicsObj.velocity.z += dir.z;
+
 
         this.trace.trace(`missile[${missile.id}] created vel=${missile.velocity}`);
 
-        this.addObjectToWorld(missile);
+        
         this.timer.add(40, this.destroyMissile, this, [missile.id]);
 
         return missile;

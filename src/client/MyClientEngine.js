@@ -93,6 +93,7 @@ class MyClientEngine extends ClientEngine {
 
         this.controls.on('fire', () => {
             this.sendInput('space');
+            console.log("test spacebar...");
         });
 
         this.networkMonitor.on('RTTUpdate', (e) => {
