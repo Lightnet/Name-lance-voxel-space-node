@@ -15,9 +15,9 @@
 const PhysicalObject = require('lance-gg').serialize.PhysicalObject;
 const RADIUS = 4;
 
-const _width = 10;
-const _height = 10;
-const _depth = 10;
+const _width = 1;
+const _height = 1;
+const _depth = 1;
 const MASS = 0;
 let CANNON = null;
 
@@ -40,6 +40,10 @@ class BoxCannon extends PhysicalObject {
         this.physicsObj = gameEngine.physicsEngine.addBox(_width/2,_height/2,_depth/2,MASS,0);
         this.physicsObj.position.set(this.position.x, this.position.y, this.position.z);
         this.physicsObj.angularDamping = 0.0;
+        this.physicsObj.playerId = 0;
+        this.physicsObj.objectid = this.id;
+
+
         this.scene = gameEngine.renderer ? gameEngine.renderer.scene : null;
 
         if (this.scene) {

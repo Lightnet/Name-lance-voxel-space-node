@@ -53,6 +53,9 @@ class PlayerCube extends PhysicalObject {
         this.physicsObj = gameEngine.physicsEngine.addBox(1,1,1, MASS,0.1);
         this.physicsObj.position.set(this.position.x, this.position.y, this.position.z);
         this.physicsObj.angularDamping = 0.1;
+        this.physicsObj.playerId = this.playerId;
+
+
         this.scene = gameEngine.renderer ? gameEngine.renderer.scene : null;
         if (this.scene) {
             console.log("a-entity box");
@@ -72,7 +75,7 @@ class PlayerCube extends PhysicalObject {
             //console.log("player clientEngine id:" + gameEngine.renderer.clientEngine.playerId);
             //console.log("player object id:"+ this.playerId);
             if(this.playerId == gameEngine.renderer.clientEngine.playerId){
-                //el.setAttribute("camera3rd", '');
+                el.setAttribute("camera3rd", '');
             }
         }
     }

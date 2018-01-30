@@ -30,16 +30,34 @@ class MyServerEngine extends ServerEngine {
 
         this.gameEngine.initGame();
         this.playercontrollers = {};
-        //this.players = {
-            //player1: null,
-            //player2: null
-        //};
 
-        this.gameEngine.on('fire',function(data){
+        this.gameEngine.on('fire',(data)=>{
             console.log("data");
             console.log(data);
-            this.makeMissile(data);
+            //this.makeMissile(data);
+            this.gameEngine.makeMissile(data);
         });
+
+        this.gameEngine.on('missileHit', (e) => {
+            //this.gameEngine.removeObjectFromWorld(e.ship.id);
+            console.log("event > missilehit");
+        });
+
+        //this.gameEngine.on('destorymissile', (e) =>{
+            //this.gameEngine.destroyMissile(e);
+            //if (this.gameEngine.world.objects[e]) {
+                //console.log("event > destorymissile");
+                //console.log(e);
+                //setTimeout(()=>{
+                    //this.gameEngine.removeObjectFromWorld(e);
+                    //this.gameEngine.destroyMissile(e);
+                    //console.log(this.gameEngine.world.objects[e])
+                    //this.gameEngine.removeObjectFromWorld(this.gameEngine.world.objects[e].id);
+                //},100);
+                //this.gameEngine.removeObjectFromWorld(this.gameEngine.world.objects[e]);
+                //this.gameEngine.destroyMissile(e);
+            //}
+        //});
     }
 
     onPlayerConnected(socket) {

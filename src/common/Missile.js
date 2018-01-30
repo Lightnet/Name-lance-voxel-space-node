@@ -21,6 +21,7 @@ class Missile extends PhysicalObject {
     constructor(id, position) {
         super(id, position);
         this.class = Missile;
+        this.bdestroy = false;
     };
 
     onAddToWorld(gameEngine) {
@@ -31,8 +32,23 @@ class Missile extends PhysicalObject {
         this.physicsObj = gameEngine.physicsEngine.addBox(1, 1, 1, MASS, 0);
         this.physicsObj.position.set(this.position.x, this.position.y, this.position.z);
         this.physicsObj.angularDamping = 0.0;
+        this.physicsObj.playerId = 1;
+        var self = this;
+
+        this.physicsObj.addEventListener("collide", function(e){ 
+            console.log("collided");
+
+            if(!self.bdestroy){
+                //self.gameEngine.projectiles.push(self.physicsObj);
+                self.gameEngine.projectiles.push(self.id);
+                self.bdestroy = true;
+                console.log("trigger destroy?");
+            }
+        });
 
         this.scene = gameEngine.renderer ? gameEngine.renderer.scene : null;
+
+        //this.physicsObj.addEventListener("collide", function(e){ console.log("sphere collided"); } );
 
         if (this.scene) {
             let el = this.renderEl = document.createElement('a-entity');
@@ -57,6 +73,7 @@ class Missile extends PhysicalObject {
     }
 
     destroy() {
+        super.destroy();
         console.log("destroy physicsObj");
         if(this.physicsObj !=null){
             this.gameEngine.physicsEngine.removeObject(this.physicsObj);
@@ -68,9 +85,6 @@ class Missile extends PhysicalObject {
             let entity = this.el;
             entity.parentNode.removeChild(entity);
         }
-
     }
-
 }
-
 module.exports = Missile;

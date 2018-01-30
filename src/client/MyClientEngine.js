@@ -135,7 +135,7 @@ class MyClientEngine extends ClientEngine {
     onKeyChange(e, isDown) {
         e = e || window.event;
         //console.log(isDown);
-        console.log(e.keyCode);
+        //console.log(e.keyCode);
         if (e.keyCode == '38') {
             this.pressedKeys.up = isDown;
         } else if (e.keyCode == '40') {

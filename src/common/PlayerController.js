@@ -35,7 +35,7 @@ class PlayerController extends GameObject {
         this.state="spector";
         this.yawrotation = 0;
         this.bpress = false;
-        this.bspawn = false;
+        this.bspawn = false; //check create object player ship
         this.movespeed = 0.1;
     };
 
@@ -49,149 +49,31 @@ class PlayerController extends GameObject {
     processInput(inputData){
         //console.log(inputData);
         if ((inputData.input === 'up') && (inputData.options.movement == true)) {
-            //playerPaddle.position.y -= 5;
-            this.forwardthrust();
+            
         } else if ((inputData.input === 'down') && (inputData.options.movement == true)) {
-            //playerPaddle.position.y += 5;
-            //this.test();
-            this.reversethrust();
+            
         } else if ((inputData.input === 'left') && (inputData.options.movement == true)) {
-            //playerPaddle.position.y += 5;
-            //console.log("left");
-            this.turnleft();
+            
         } else if ((inputData.input === 'right') && (inputData.options.movement == true)) {
-            //playerPaddle.position.y += 5;
-            //console.log("right");
-            this.turnright();
+            
         }
-        //console.log(inputData.input);
         if( (inputData.input === 'space')) {
 
-            //this.gameEngine.emit('fire',{playerId:this.playerId});
-            //console.log("FIRE!");
-            //playerPaddle.position.y += 5;
-            //console.log("space");
-            //if(this.bpress == false){
-                //this.bpress = true;
-                //this.checkspawn();
-            //}else{
-
-            //}
         }
-    }
-
-    forwardthrust(){
-        if(this.pawn != null){
-            let playerpawn = this.pawn;
-            /*
-            let playerpawn = null;
-            for (let objId in this.gameEngine.world.objects) {
-                let o = this.gameEngine.world.objects[objId];
-                if (o.playerId == this.playerId && o.class == PlayerCube) {
-                    console.log("player controller found!");
-                    //o.pawn = pawn;
-                    //o.bspawn = true;
-                    //o.foucscamera();
-                    playerpawn = this.gameEngine.world.objects[objId];
-                    break;
-                }
-            }
-            */
-
-            playerpawn.physicsObj.velocity.setZero();
-            let pos = playerpawn.physicsObj.position;
-            pos.z = pos.z + this.movespeed;
-            playerpawn.physicsObj.position.set(pos.x,pos.y,pos.z);
-            //console.log("forward?");
-            console.log(this.pawn.position);
-        }
-    }
-
-    reversethrust(){
-        if(this.pawn != null){
-            console.log(this.pawn.position);
-            //this.pawn.physicsObj.position.x++;
-            this.pawn.physicsObj.velocity.setZero();
-            let pos = this.pawn.physicsObj.position;
-            pos.z = pos.z - this.movespeed;
-            this.pawn.physicsObj.position.set(pos.x,pos.y,pos.z);
-        }
-    }
-
-    turnleft(){
-        if(this.pawn != null){
-            //console.log(this.pawn);
-            console.log(this.pawn.quaternion);
-            let CANNON = this.gameEngine.physicsEngine.CANNON;
-            this.yawrotation = this.yawrotation - 0.1;
-            if(this.yawrotation < 0){
-                this.yawrotation = 360;
-            }
-            if(this.pawn.physicsObj !=null){
-                console.log("turn left?");
-                this.pawn.physicsObj.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), this.yawrotation);
-            }
-        }
-    }
-
-    turnright(){
-        if(this.pawn != null){
-            console.log(this.pawn.quaternion);
-            //console.log('turn right');
-            let CANNON = this.gameEngine.physicsEngine.CANNON;
-            //console.log(this.pawn.physicsObj);
-            //console.log(this.pawn);
-            this.yawrotation = this.yawrotation + 0.1;
-            if(this.yawrotation > 360){
-                this.yawrotation = 0;
-            }
-            //console.log(this.pawn.physicsObj);
-            if(this.pawn.physicsObj !=null){
-                this.pawn.physicsObj.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), this.yawrotation);
-            }
-        }
-        //console.log('turn right');
     }
 
     checkpawn(){
-        for (let objId in this.gameEngine.world.objects) {
-            var o = this.gameEngine.world.objects[objId];
-            if (o.playerId == this.playerId && o.class == PlayerCube) {
-                console.log("PlayerCube found! Assign");
-                //o.pawn = pawn;
-                //o.bspawn = true;
-                //o.foucscamera();
-                this.pawn = this.gameEngine.world.objects[objId];
-                this.pawn.foucscamera();
-                //console.log("objId:"+objId);
-                //console.log("Id:"+this.pawn.id);
-                break;
+        if(this.bspawn == false){
+            for (let objId in this.gameEngine.world.objects) {
+                var o = this.gameEngine.world.objects[objId];
+                if (o.playerId == this.playerId && o.class == PlayerCube) {
+                    console.log("PlayerCube found! Assign");
+                    this.pawn = this.gameEngine.world.objects[objId];
+                    //this.pawn.foucscamera();
+                    this.bspawn = true;
+                    break;
+                }
             }
-        }
-    }
-
-
-    checkspawn(){
-        //if(this.bspawn == false){
-            //this.bspawn = true;
-            //console.log("spawnning....");
-            //this.spawnship();
-        //}
-        //return this.this.bspawn;
-    }
-
-    spawnship(){
-        if(this.pawn == null){
-            //console.log("==================================");
-            //console.log("create player object...");
-            //this.pawn = this.gameEngine.spawnship();
-            //this.gameEngine.requestspawn();
-            //console.log(PlayerCube);
-            //this.pawn = this.gameEngine.addObjectToWorld(new PlayerCube(++this.gameEngine.world.idCount, new ThreeVector(0, 20, 0)));
-            //console.log(this.pawn);
-            //console.log(this.gameEngine.addObjectToWorld);
-        }else{
-            console.log("player object exist...");
         }
     }
 
@@ -211,48 +93,18 @@ class PlayerController extends GameObject {
         return `PlayerController::${super.toString()}`;
     }
 
-    jump(){
-
-    }
-
-    attack(){
-        
-    }
-
     test(){
-        //console.log("test log player");
-        //console.log(this.gameEngine);
-        this.scene = this.gameEngine.renderer ? this.gameEngine.renderer.scene : null;
-
-        if(this.gameEngine.renderer){//check if render is not null on client but on server is null I think.
-            this.gameEngine.renderer.toggle_login();
-        }
         
-        if (this.scene) {
-            //console.log(this.gameEngine);
-            //console.log(this.gameEngine.world.objects[2]);
-            let sphereobject = this.gameEngine.world.objects[2];
-            if(sphereobject !=null){
-                sphereobject.reset();
-            }
-            //console.log(this.scene);
-            //console.log(this.world);
-            //let sphereobject = this.gameEngine.world.getPlayerObject(2);
-            //console.log(sphereobject);
-            //
-        }
     }
 
     destroy(){
         super.destroy();
         console.log("destroy");
-        
-        if(this.pawn !=null){
-            this.gameEngine.removeObjectFromWorld(this.pawn.id);
-            this.pawn.destroy();
-        }
         //this.gameEngine.removeObjectFromWorld(this.id);
-
+        //if(this.pawn !=null){
+            //this.gameEngine.removeObjectFromWorld(this.pawn.id);
+            //this.pawn.destroy();
+        //}
     }
 
 }
