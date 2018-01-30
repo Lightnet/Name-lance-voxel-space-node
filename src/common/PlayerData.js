@@ -17,15 +17,13 @@
 //const MASS = 0.1;
 //let CANNON = null;
 
-const GameObject = require('lance-gg').serialize.ThreeVector;
+const DynamicObject = require('lance-gg').serialize.DynamicObject;
 
-//class PlayerAvatar extends DynamicObject {
-class PlayerData extends GameObject {
+class PlayerData extends DynamicObject {
 
-    constructor(id, gameEngine) {
+    constructor(id) {
         super(id);
         this.class = PlayerData;
-        this.gameEngine = gameEngine;
     };
 
     onAddToWorld(gameEngine) {

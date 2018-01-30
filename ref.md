@@ -62,7 +62,6 @@ document.querySelector('a-scene').systems['physics']
 
 * http://uiplay.jui.io/?p=win_1
 
-
 * https://github.com/schteppe/cannon.js/issues/215 cannon body reset functions
 
 * https://github.com/donmccurdy/aframe-extras
@@ -70,3 +69,8 @@ document.querySelector('a-scene').systems['physics']
 * https://stackoverflow.com/questions/43645425/how-to-implement-complex-models-in-aframe
 
 * https://github.com/tizzle/aframe-orbit-controls-component  orbit-controls
+
+# gundb
+ * https://jsfiddle.net/j8cxmoub/ test msg 
+ * https://jsfiddle.net/zs5h8bhe/ test map list
+ * https://jsfiddle.net/zs5h8bhe/1/

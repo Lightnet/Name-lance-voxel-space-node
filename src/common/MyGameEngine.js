@@ -22,8 +22,13 @@ const PlayerAvatar = require('./PlayerAvatar');
 const PlayerController = require('./PlayerController');
 const PlayerCube = require('./PlayerCube');
 
-const Missile = require('./Missile');
 
+//projectile
+const Missile = require('./Missile');
+const CubeProjectile = require('./CubeProjectile');
+
+
+//basic shapes
 const SphereCannon = require('./SphereCannon');
 const PlaneCannon = require('./PlaneCannon');
 const BoxCannon = require('./BoxCannon');
@@ -234,8 +239,51 @@ class MyGameEngine extends GameEngine {
         }
     }
 
-    //makeprojectile(){
-    //}
+    makeprojectile(data){
+        let objplayer;
+
+        for (let objId in this.world.objects) {
+            let o = this.world.objects[objId];
+            if (o.playerId == data.playerId && o.class == PlayerCube) {
+                objplayer = o;
+                break;
+            }
+        }
+
+        console.log("playerId" + objplayer.playerId);
+
+        if(objplayer == null){
+            console.log("null player ship!");
+            return;
+        }
+
+        let cubeprojectile = new CubeProjectile(++this.world.idCount);
+        this.addObjectToWorld(cubeprojectile);
+        //copy vector
+        let pos = objplayer.physicsObj.position.clone();
+        //threejs
+        let dir = new THREE.Vector3(0,0,5);
+        let angle = objplayer.yawrotation;
+        dir.applyAxisAngle(new THREE.Vector3(0,1,0), angle);
+        //apply face direction for make cubeprojectile in world and scene
+        pos.x += dir.x;
+        pos.z += dir.z;
+        //copy setting from ship
+        cubeprojectile.physicsObj.position.copy(pos);
+        cubeprojectile.physicsObj.velocity.copy(objplayer.physicsObj.velocity);
+        //apply rotation y 
+        cubeprojectile.angle = angle;
+        cubeprojectile.playerId = objplayer.playerId;
+        cubeprojectile.ownerId = objplayer.id;
+        //missile.inputId = inputId;
+        //missile.physicsObj.velocity.x += Math.cos(missile.angle * (Math.PI / 180)) * 10;
+        //missile.physicsObj.velocity.z += Math.sin(missile.angle * (Math.PI / 180)) * 10;
+        cubeprojectile.physicsObj.velocity.x += dir.x;
+        cubeprojectile.physicsObj.velocity.z += dir.z;
+        this.trace.trace(`cubeprojectile[${cubeprojectile.id}] created vel=${cubeprojectile.velocity}`);
+        this.timer.add(500, this.destroyMissile, this, [cubeprojectile.id]);
+        return cubeprojectile;
+    }
 
     //=======================
     // Create Ship Object
@@ -258,11 +306,17 @@ class MyGameEngine extends GameEngine {
     };
 
     registerClasses(serializer) {
+        //player objects
         serializer.registerClass(require('../common/PlayerAvatar'));
-        serializer.registerClass(require('../common/PlayerCube'));
         serializer.registerClass(require('../common/PlayerData'));
         serializer.registerClass(require('../common/PlayerController'));
+        serializer.registerClass(require('../common/PlayerCube'));
+
+        //projectiles
         serializer.registerClass(require('../common/Missile'));
+        serializer.registerClass(require('../common/CubeProjectile'));
+
+        //basic shapes
         serializer.registerClass(require('../common/SphereCannon'));
         serializer.registerClass(require('../common/PlaneCannon'));
         serializer.registerClass(require('../common/BoxCannon'));

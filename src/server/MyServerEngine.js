@@ -11,12 +11,12 @@
 
 'use strict';
 const ServerEngine = require('lance-gg').ServerEngine;
+const ThreeVector = require('lance-gg').serialize.ThreeVector;
 
 const PlayerController = require('../common/PlayerController');
 const PlayerCube = require('../common/PlayerCube');
-const ThreeVector = require('lance-gg').serialize.ThreeVector;
-
-const Missile = require('../common/Missile');
+//const Missile = require('../common/Missile');
+//const CubeProjectile = require('../common/CubeProjectile');
 
 class MyServerEngine extends ServerEngine {
 
@@ -32,32 +32,17 @@ class MyServerEngine extends ServerEngine {
         this.playercontrollers = {};
 
         this.gameEngine.on('fire',(data)=>{
-            console.log("data");
-            console.log(data);
+            //console.log("data");
+            //console.log(data);
             //this.makeMissile(data);
-            this.gameEngine.makeMissile(data);
+            //this.gameEngine.makeMissile(data);
+            this.gameEngine.makeprojectile(data);
         });
 
         this.gameEngine.on('missileHit', (e) => {
             //this.gameEngine.removeObjectFromWorld(e.ship.id);
             console.log("event > missilehit");
         });
-
-        //this.gameEngine.on('destorymissile', (e) =>{
-            //this.gameEngine.destroyMissile(e);
-            //if (this.gameEngine.world.objects[e]) {
-                //console.log("event > destorymissile");
-                //console.log(e);
-                //setTimeout(()=>{
-                    //this.gameEngine.removeObjectFromWorld(e);
-                    //this.gameEngine.destroyMissile(e);
-                    //console.log(this.gameEngine.world.objects[e])
-                    //this.gameEngine.removeObjectFromWorld(this.gameEngine.world.objects[e].id);
-                //},100);
-                //this.gameEngine.removeObjectFromWorld(this.gameEngine.world.objects[e]);
-                //this.gameEngine.destroyMissile(e);
-            //}
-        //});
     }
 
     onPlayerConnected(socket) {
@@ -98,9 +83,9 @@ class MyServerEngine extends ServerEngine {
     }
 
     //call gameengine to make object
-    makeMissile(data) {
-        this.gameEngine.makeMissile(data);
-    }
+    //makeMissile(data) {
+        //this.gameEngine.makeMissile(data);
+    //}
 }
 
 module.exports = MyServerEngine;

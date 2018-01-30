@@ -11,18 +11,11 @@
 
 'use strict';
 
-//const DynamicObject= require('lance-gg').serialize.DynamicObject;
-//const PhysicalObject = require('lance-gg').serialize.PhysicalObject;
-//const GameObject = require('lance-gg').serialize.ThreeVector;
-
-const PlayerCube = require('./PlayerCube');
 const ThreeVector = require('lance-gg').serialize.ThreeVector;
-const GameObject = require('lance-gg').serialize.DynamicObject;
+const DynamicObject = require('lance-gg').serialize.DynamicObject;
+const PlayerCube = require('./PlayerCube');
 
-//console.log(GameObject);
-
-//class PlayerAvatar extends DynamicObject {
-class PlayerController extends GameObject {
+class PlayerController extends DynamicObject {
 
     constructor(id, playerId) {
         super(id);
@@ -99,14 +92,8 @@ class PlayerController extends GameObject {
 
     destroy(){
         super.destroy();
-        console.log("destroy");
-        //this.gameEngine.removeObjectFromWorld(this.id);
-        //if(this.pawn !=null){
-            //this.gameEngine.removeObjectFromWorld(this.pawn.id);
-            //this.pawn.destroy();
-        //}
+        console.log("player controller destroy!");
     }
-
 }
 
 module.exports = PlayerController;

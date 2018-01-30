@@ -83,19 +83,12 @@ class PlayerCube extends PhysicalObject {
     processInput(inputData){
         //console.log(inputData);
         if ((inputData.input === 'up') && (inputData.options.movement == true)) {
-            //playerPaddle.position.y -= 5;
             this.forwardthrust();
         } else if ((inputData.input === 'down') && (inputData.options.movement == true)) {
-            //playerPaddle.position.y += 5;
-            //this.test();
             this.reversethrust();
         } else if ((inputData.input === 'left') && (inputData.options.movement == true)) {
-            //playerPaddle.position.y += 5;
-            //console.log("left");
             this.turnleft();
         } else if ((inputData.input === 'right') && (inputData.options.movement == true)) {
-            //playerPaddle.position.y += 5;
-            //console.log("right");
             this.turnright();
         }
 
@@ -105,7 +98,6 @@ class PlayerCube extends PhysicalObject {
                 console.log("FIRE!");
             }
         }
-
 
         if( (inputData.input === 'b') && (inputData.options.movement == true)) {
             this.stopmovement();
@@ -124,32 +116,12 @@ class PlayerCube extends PhysicalObject {
             var quaternion = new THREE.Quaternion(q.x,q.y,q.z,q.w);
             dirvector.applyQuaternion( quaternion );
             //console.log(dirvector);
-
             //pos.x = pos.x + dirvector.x;
             //pos.z = pos.z + dirvector.z;
-
             this.physicsObj.applyImpulse(
                 new CANNON.Vec3(dirvector.x, dirvector.y, dirvector.z), // impulse 
                 new CANNON.Vec3().copy(this.physicsObj.position) // world position
             );
-
-            //pos.z = pos.z + this.movespeed;
-            //this.physicsObj.position.set(pos.x,pos.y,pos.z);
-            //console.log(CANNON);
-            //let q = new CANNON.Quaternion();
-            //q.setFromAxisAngle(new CANNON.Vec3(0,1,0),this.yawrotation);
-            //console.log(q );
-            //let p = new CANNON.Vec3(0,0,1);
-            //console.log(p);
-            //let p = new ThreeVector(0,0,1);
-            //p.applyQuaternion( q );
-            //p.applyQuaternion( q );
-            //console.log(THREE);
-            //console.log(p);
-            //let q = new Quaternion();
-            //q.setFromAxisAngle ( axis, angle )
-            //console.log("forward?");
-            //console.log(this.position);
         }
     }
 
@@ -165,29 +137,18 @@ class PlayerCube extends PhysicalObject {
             let CANNON = this.gameEngine.physicsEngine.CANNON;
             //this.physicsObj.velocity.setZero();
             //let pos = this.physicsObj.position;
-
             let q = new CANNON.Quaternion();
             q.setFromAxisAngle(new CANNON.Vec3(0,1,0),this.yawrotation);
             let dirvector = new THREE.Vector3( 0, 0, -1 );
             var quaternion = new THREE.Quaternion(q.x,q.y,q.z,q.w);
             dirvector.applyQuaternion( quaternion );
             //console.log(dirvector);
-
             //pos.x = pos.x + dirvector.x;
             //pos.z = pos.z + dirvector.z;
-
             this.physicsObj.applyImpulse(
                 new CANNON.Vec3(dirvector.x, dirvector.y, dirvector.z), // impulse 
                 new CANNON.Vec3().copy(this.physicsObj.position) // world position
             );
-
-
-            //console.log(this.position);
-            //this.pawn.physicsObj.position.x++;
-            //this.physicsObj.velocity.setZero();
-            //let pos = this.physicsObj.position;
-            //pos.z = pos.z - this.movespeed;
-            //this.physicsObj.position.set(pos.x,pos.y,pos.z);
         }
     }
 
