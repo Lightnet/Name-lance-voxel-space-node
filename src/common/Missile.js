@@ -48,11 +48,27 @@ class Missile extends PhysicalObject {
             el.setAttribute('game-object-id', this.id);
             //this.setupEmitters();
             //console.log("a-entity box");
+            this.el = el;
         }
     }
 
     toString() {
         return `Missile::${super.toString()}`;
+    }
+
+    destroy() {
+        console.log("destroy physicsObj");
+        if(this.physicsObj !=null){
+            this.gameEngine.physicsEngine.removeObject(this.physicsObj);
+        }
+
+        if((this.scene !=null)&&(this.el)){
+            //this.scene.appendChild(this.el);
+            //console.log(this.scene);
+            let entity = this.el;
+            entity.parentNode.removeChild(entity);
+        }
+
     }
 
 }

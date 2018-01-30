@@ -95,11 +95,13 @@ class PlayerCube extends PhysicalObject {
             //console.log("right");
             this.turnright();
         }
-        //if( (inputData.input === 'space') && (inputData.options.movement == true)) {
-            //playerPaddle.position.y += 5;
-            //console.log("space");
-            //this.fireweapon(inputData);
-        //}
+
+        if( (inputData.input === 'space')) {
+            if(this.gameEngine !=null){
+                this.gameEngine.emit('fire',{playerId:this.playerId});
+                console.log("FIRE!");
+            }
+        }
 
 
         if( (inputData.input === 'b') && (inputData.options.movement == true)) {
@@ -228,7 +230,7 @@ class PlayerCube extends PhysicalObject {
                 //cameraEL.setAttribute("orbit-controls", "target",`#${this.id}`);
                 //cameraEL.components['orbit-controls'].target = this.position;
                 this.el.setAttribute("camera3rd", '');
-                console.log(this);
+                //console.log(this);
             }
         }
     }
@@ -237,6 +239,8 @@ class PlayerCube extends PhysicalObject {
         //if(this.gameEngine){
             //this.gameEngine.makeMissile(this, inputData.messageIndex);
         //}
+        this.gameEngine.emit('fire',{playerid:this.playerId});
+        //this.emit('fire',{playerid:playerId});
     }
 
     toString() {

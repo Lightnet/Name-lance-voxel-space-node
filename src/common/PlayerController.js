@@ -64,15 +64,19 @@ class PlayerController extends GameObject {
             //console.log("right");
             this.turnright();
         }
-        if( (inputData.input === 'space') && (inputData.options.movement == true)) {
+        //console.log(inputData.input);
+        if( (inputData.input === 'space')) {
+
+            //this.gameEngine.emit('fire',{playerId:this.playerId});
+            //console.log("FIRE!");
             //playerPaddle.position.y += 5;
             //console.log("space");
-            if(this.bpress == false){
-                this.bpress = true;
-                this.checkspawn();
-            }else{
+            //if(this.bpress == false){
+                //this.bpress = true;
+                //this.checkspawn();
+            //}else{
 
-            }
+            //}
         }
     }
 

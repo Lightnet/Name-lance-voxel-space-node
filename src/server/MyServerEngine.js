@@ -102,10 +102,7 @@ class MyServerEngine extends ServerEngine {
     makeMissile(data) {
         //let missile = new Missile(++this.gameEngine.world.idCount);
         //this.gameEngine.addObjectToWorld(missile);
-
-        this.gameEngine.makeMissile();
-
-
+        this.gameEngine.makeMissile(data);
     }
 }
 
