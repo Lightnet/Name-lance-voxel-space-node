@@ -92,8 +92,8 @@ class MyClientEngine extends ClientEngine {
         }
 
         this.controls.on('fire', () => {
+            console.log("send spacebar...");
             this.sendInput('space');
-            console.log("test spacebar...");
         });
 
         this.networkMonitor.on('RTTUpdate', (e) => {
@@ -108,30 +108,18 @@ class MyClientEngine extends ClientEngine {
         if (this.pressedKeys.up) {
             this.sendInput('up', { movement: true });
         }
-        //if(!this.pressedKeys.up) {
-            //this.sendInput('up', { movement: false });
-        //}
 
         if (this.pressedKeys.down) {
             this.sendInput('down', { movement: true });
         }
-        //if(!this.pressedKeys.down) {
-            //this.sendInput('down', { movement: false });
-        //}
 
         if (this.pressedKeys.left) {
             this.sendInput('left', { movement: true });
         }
-        //if (!this.pressedKeys.left) {
-            //this.sendInput('left', { movement: false });
-        //}
 
         if (this.pressedKeys.right) {
             this.sendInput('right', { movement: true });
         }
-        //if (!this.pressedKeys.right) {
-            //this.sendInput('right', { movement: false });
-        //}
 
         if (this.pressedKeys.space) {
             //this.sendInput('space', { movement: true });
@@ -182,7 +170,8 @@ class MyClientEngine extends ClientEngine {
     // extend ClientEngine connect to add own events
     connect() {
         return super.connect().then(() => {
-            console.log("client engine connected...")
+            console.log("client engine connected...");
+            document.querySelector('#reconnect').hidden = true;
             //this.socket.on('scoreUpdate', (e) => {
                 //this.renderer.updateScore(e);
             //});

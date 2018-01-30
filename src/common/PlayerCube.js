@@ -226,21 +226,13 @@ class PlayerCube extends PhysicalObject {
         if((this.scene !=null)&&(this.el !=null)){
             console.log("camera set scene client?");
             if(this.playerId == this.gameEngine.renderer.clientEngine.playerId){
-                //let cameraEL = document.querySelector('a-camera');
-                //cameraEL.setAttribute("orbit-controls", "target",`#${this.id}`);
-                //cameraEL.components['orbit-controls'].target = this.position;
                 this.el.setAttribute("camera3rd", '');
-                //console.log(this);
             }
         }
     }
 
     fireweapon(inputData){
-        //if(this.gameEngine){
-            //this.gameEngine.makeMissile(this, inputData.messageIndex);
-        //}
         this.gameEngine.emit('fire',{playerid:this.playerId});
-        //this.emit('fire',{playerid:playerId});
     }
 
     toString() {
@@ -249,7 +241,17 @@ class PlayerCube extends PhysicalObject {
 
     destroy() {
         console.log("destroy physicsObj");
-        this.gameEngine.physicsEngine.removeObject(this.physicsObj);
+        if(this.physicsObj !=null){
+            this.gameEngine.physicsEngine.removeObject(this.physicsObj);
+        }
+
+        if((this.scene !=null)&&(this.el)){
+            //this.scene.appendChild(this.el);
+            //console.log(this.scene);
+            let entity = this.el;
+            entity.parentNode.removeChild(entity);
+        }
+        
     }
 }
 module.exports = PlayerCube;

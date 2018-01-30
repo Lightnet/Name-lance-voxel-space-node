@@ -44,15 +44,8 @@ class MyServerEngine extends ServerEngine {
 
     onPlayerConnected(socket) {
         super.onPlayerConnected(socket);
-        //console.log(PlayerController);
-        //console.log(this.gameEngine);
-        //this.gameEngine.addObjectToWorld(new PlayerController(++this.gameEngine.world.idCount,this.gameEngine ,socket.playerId));
         let controller = new PlayerController(++this.gameEngine.world.idCount, socket.playerId);
         this.gameEngine.addObjectToWorld(controller);
-        //let pawn = new PlayerCube(++this.gameEngine.world.idCount,this.gameEngine, new ThreeVector(0, 0, 0));
-        //controller.pawn = pawn;
-        //this.gameEngine.addObjectToWorld(pawn);
-
         socket.on('keepAlive', ()=>{
             this.resetIdleTimeout(socket);
             //console.log("keepAlive");
@@ -73,20 +66,7 @@ class MyServerEngine extends ServerEngine {
 
     onPlayerDisconnected(socketId, playerId) {
         super.onPlayerDisconnected(socketId, playerId);
-        /*
-        if (this.players.player1 == socketId) {
-            console.log('Player 1 disconnected');
-            this.players.player1 = null;
-        } else if (this.players.player2 == socketId) {
-            console.log('Player 2 disconnected');
-            this.players.player2 = null;
-        }
-        */
-        //delete this.gameEngine.world.objects[playerId];
-        //console.log("=================================:");
-        //console.log(playerId);
-        //console.log("objects count:");
-        //console.log(this.gameEngine.world.objects);
+
         for (var key in this.gameEngine.world.objects){
             //console.log(key);
             //console.log(this.gameEngine.world.objects[key]);
@@ -99,9 +79,8 @@ class MyServerEngine extends ServerEngine {
         }
     }
 
+    //call gameengine to make object
     makeMissile(data) {
-        //let missile = new Missile(++this.gameEngine.world.idCount);
-        //this.gameEngine.addObjectToWorld(missile);
         this.gameEngine.makeMissile(data);
     }
 }

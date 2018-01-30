@@ -13,7 +13,7 @@
 require('aframe');
 require('aframe-physics-system');
 require('aframe-orbit-controls-component-2');
-//const Renderer = require('lance-gg').render.Renderer;
+
 const AFrameRenderer = require('lance-gg').render.AFrameRenderer;
 const PlayerController = require('../common/PlayerController');
 const PlayerCube = require('../common/PlayerCube');
@@ -68,8 +68,7 @@ class MyRenderer extends AFrameRenderer {
 
     draw() {
         super.draw();
-
-
+        //Aframe draw
     }
 
     toggle_login(){
@@ -119,7 +118,7 @@ class MyRenderer extends AFrameRenderer {
 
 // convenience function
 function qs(selector) { return document.querySelector(selector);}
-
+// average time
 function truncateDecimals(number, digits) {
     let multiplier = Math.pow(10, digits);
     let adjustedNum = number * multiplier;
