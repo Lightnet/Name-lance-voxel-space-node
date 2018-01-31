@@ -134,11 +134,12 @@ class MyGameEngine extends GameEngine {
         this.addObjectToWorld(new BoxCannon(++this.world.idCount,this, position));
         //position = new ThreeVector(0, -4, 0);
         //this.addObjectToWorld(new BoxCannon(++this.world.idCount,this, position));
-        //this.addObjectToWorld(new PlayerCube(++this.world.idCount, new ThreeVector(0, 0, 0)));
-        //position = new ThreeVector(0, 20, 0);
-        //this.addObjectToWorld(new PlayerCube(++this.world.idCount,this,position ));
-        //this.addObjectToWorld(new PlayerCube(++this.world.idCount,this, new ThreeVector(0, 20, 0)));
-        //this.spawnship();
+
+        let pawn = new PlayerCube(++this.world.idCount, new ThreeVector(3, 0, 3));
+        pawn.isBot = true;
+        //pawn.attachAI();
+
+        this.addObjectToWorld(pawn);
     }
 
     // Game Engine Step.
@@ -262,7 +263,7 @@ class MyGameEngine extends GameEngine {
         //copy vector
         let pos = objplayer.physicsObj.position.clone();
         //threejs
-        let dir = new THREE.Vector3(0,0,5);
+        let dir = new THREE.Vector3(0,0,3);
         let angle = objplayer.yawrotation;
         dir.applyAxisAngle(new THREE.Vector3(0,1,0), angle);
         //apply face direction for make cubeprojectile in world and scene

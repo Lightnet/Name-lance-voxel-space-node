@@ -15,6 +15,7 @@
 const PhysicalObject = require('lance-gg').serialize.PhysicalObject;
 const ThreeVector = require('lance-gg').serialize.ThreeVector;
 const Quaternion = require('lance-gg').serialize.Quaternion;
+const Utils = require('./Utils');
 
 const THREE = require('three');
 
@@ -26,19 +27,18 @@ let CANNON = null;
 class PlayerCube extends PhysicalObject {
 
     //constructor(id,gameEngine, position) {
-    constructor(id, gameEngine, position) {
+    constructor(id, position) {
         super(id, position);
-        this.id = id;
-        this.class = PlayerCube;
-        this.playerId = null;
-        this.gameEngine = gameEngine;
         //console.log("this.id");
         //console.log("add to world scene PlayerCube.");
-
+        this.class = PlayerCube;
+        this.playerId = null;
         this.yawrotation = 0;
         this.bpress = false;
         this.bspawn = false;
         this.movespeed = 0.1;
+
+        this.isBot = false;
     };
 
     onAddToWorld(gameEngine) {
@@ -77,6 +77,10 @@ class PlayerCube extends PhysicalObject {
             if(this.playerId == gameEngine.renderer.clientEngine.playerId){
                 el.setAttribute("camera3rd", '');
             }
+        }
+
+        if(this.isBot){
+            this.attachAI();
         }
     }
 
@@ -203,6 +207,65 @@ class PlayerCube extends PhysicalObject {
         return `PlayerCube::${super.toString()}`;
     }
 
+    //create AI 
+    attachAI() {
+        this.isBot = true;
+
+        this.onPreStep = () => {
+            this.steer();
+        };
+
+        this.gameEngine.on('preStep', this.onPreStep);
+
+        let fireLoopTime = Math.round(250 + Math.random() * 100);
+
+        this.fireLoop = this.gameEngine.timer.loop(fireLoopTime, () => {
+            if (this.target && this.distanceToTarget(this.target) < 400) {
+                //this.gameEngine.makeMissile(this);
+                this.gameEngine.emit('fire',{playerId:this.playerId});
+            }
+        });
+    }
+
+    distanceToTarget(target) {
+        let dx = this.position.x - target.position.x;
+        let dz = this.position.z - target.position.z;
+        return Math.sqrt(dx * dx + dz * dz);
+    }
+
+    steer() {
+        //console.log("steer?");
+        let closestTarget = null;
+        let closestDistance = Infinity;
+        for (let objId of Object.keys(this.gameEngine.world.objects)) {
+            let obj = this.gameEngine.world.objects[objId];
+            let distance = this.distanceToTarget(obj);
+            if (obj != this && distance < closestDistance) {
+                closestTarget = obj;
+                closestDistance = distance;
+            }
+        }
+        this.target = closestTarget;
+
+        if (this.target) {
+
+            let newVX = this.target.position.x - this.position.x;
+            let newVY = this.target.position.z - this.position.z
+
+            let turnRight = -Utils.shortestArc(Math.atan2(newVX, newVY), Math.atan2(Math.sin(this.angle*Math.PI/180), Math.cos(this.angle*Math.PI/180)));
+
+            if (turnRight > 0.05) {
+                this.isRotatingRight = true;
+            } else if (turnRight < -0.05) {
+                this.isRotatingLeft = true;
+            } else {
+                this.isAccelerating = true;
+                this.showThrust = 5;
+            }
+
+        }
+    }
+
     destroy() {
         console.log("destroy physicsObj");
         if(this.physicsObj !=null){
@@ -214,6 +277,11 @@ class PlayerCube extends PhysicalObject {
             //console.log(this.scene);
             let entity = this.el;
             entity.parentNode.removeChild(entity);
+        }
+
+        if (this.onPreStep){
+            this.gameEngine.removeListener('preStep', this.onPreStep);
+            this.onPreStep = null;
         }
         
     }
