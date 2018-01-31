@@ -153,8 +153,9 @@ class MyGameEngine extends GameEngine {
                 //console.log(this.projectiles[i]);
             //}
             //this.emit("destorymissile",_objid);
-            for (let objId in this.world.objects) {
+            for (let objId of Object.keys(this.world.objects)) {
                 let o = this.world.objects[objId];
+                //console.log(o);
                 if (o.id == _objid ) {
                     //objplayer = o;
                     if(o !=null){
@@ -177,9 +178,9 @@ class MyGameEngine extends GameEngine {
         let objplayer;
         console.log("create missile?");
 
-        for (let objId in this.world.objects) {
+        for (let objId of Object.keys(this.world.objects)) {
             let o = this.world.objects[objId];
-            if (o.playerId == data.playerId && o.class == PlayerCube) {
+            if ((o.id == data.id)&&(o.class == PlayerCube)) {
                 objplayer = o;
                 break;
             }
@@ -232,14 +233,13 @@ class MyGameEngine extends GameEngine {
     makeprojectile(data){
         let objplayer;
         //console.log("create projectile?");
-        for (let objId in this.world.objects) {
+        for (let objId  of Object.keys(this.world.objects)) {
             let o = this.world.objects[objId];
             if ((o.id == data.id)&&(o.class == PlayerCube)) {
                 objplayer = o;
                 break;
             }
         }
-
         console.log("playerId" + objplayer.playerId);
 
         if(objplayer == null){
@@ -259,8 +259,7 @@ class MyGameEngine extends GameEngine {
             //dir.addScalar(3);
             dir.x *= 3;
             dir.z *= 3;
-            console.log(dir);
-
+            //console.log(dir);
         }else{
             dir.applyAxisAngle(new THREE.Vector3(0,1,0), angle);
         }

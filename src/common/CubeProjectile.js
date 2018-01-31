@@ -13,7 +13,8 @@
 
 //const DynamicObject= require('lance-gg').serialize.DynamicObject;
 const PhysicalObject = require('lance-gg').serialize.PhysicalObject;
-const MASS = 1;
+const PlayerCube = require('./PlayerCube');
+const MASS = 0.1;
 let CANNON = null;
 
 class CubeProjectile extends PhysicalObject {
@@ -22,6 +23,7 @@ class CubeProjectile extends PhysicalObject {
         super(id, position);
         this.class = CubeProjectile;
         this.bdestroy = false;
+        this.damage = 1;
     };
 
     onAddToWorld(gameEngine) {
@@ -39,15 +41,42 @@ class CubeProjectile extends PhysicalObject {
             console.log("collided");
 
             if(!self.bdestroy){
-                //self.gameEngine.projectiles.push(self.physicsObj);
-                self.gameEngine.projectiles.push(self.id);
                 self.bdestroy = true;
                 console.log("trigger destroy?");
+                //console.log(e);
+                if(self.playerId == null){
+                    console.log("player id null");
+                    for(let objId of Object.keys(self.gameEngine.world.objects)){
+                        let obj = self.gameEngine.world.objects[objId];
+                        if(obj.class == PlayerCube){
+                            console.log("found playercube? obj?");
+                            obj.eventDamage(self.id, self.damage);
+
+                            break;
+                        }
+                    }
+                }
+                else{
+                    if(e.target.playerId !=null && e.target.playerId != self.playerId){
+                        for(let objId of Object.keys(self.gameEngine.world.objects)){
+                            let obj = self.gameEngine.world.objects[objId];
+                            if(obj.class == PlayerCube && obj.playerId == e.target.playerId){
+                                console.log("found playercube? obj?");
+                                obj.eventDamage(self.playerId, self.damage);
+
+                                break;
+                            }
+                        }
+                    }
+                }
+                
+                self.gameEngine.projectiles.push(self.id);
+                //self.gameEngine.removeObjectFromWorld(this); //doesn't work here
+                //self.gameEngine.removeObjectFromWorld(this.id); //doesn't work here
             }
         });
 
         this.scene = gameEngine.renderer ? gameEngine.renderer.scene : null;
-
         //this.physicsObj.addEventListener("collide", function(e){ console.log("sphere collided"); } );
 
         if (this.scene) {

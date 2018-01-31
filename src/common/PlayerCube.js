@@ -20,7 +20,7 @@ const Utils = require('./Utils');
 const THREE = require('three');
 
 const RADIUS = 4;
-const MASS = 0.1;
+const MASS = 1;
 let CANNON = null;
 
 //class PlayerAvatar extends DynamicObject {
@@ -38,6 +38,9 @@ class PlayerCube extends PhysicalObject {
         this.bpress = false;
         this.bspawn = false;
         this.movespeed = 0.1;
+
+        this.health = 100;
+        this.maxhealth = 100;
 
         this.isBot = false;
     };
@@ -198,6 +201,12 @@ class PlayerCube extends PhysicalObject {
 
     fireweapon(inputData){
         this.gameEngine.emit('fire',{playerid:this.playerId});
+    }
+
+    eventDamage(id, dmg){
+        console.log("============================================");
+        this.health -= dmg;
+        console.log("Health:"+this.health + "/" + this.maxhealth);
     }
 
     toString() {

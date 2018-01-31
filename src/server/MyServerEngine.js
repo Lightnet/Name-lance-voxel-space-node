@@ -31,6 +31,7 @@ class MyServerEngine extends ServerEngine {
         this.gameEngine.initGame();
         this.playercontrollers = {};
 
+        // fire event > projectile
         this.gameEngine.on('fire',(data)=>{
             console.log("serverengine > event > fire!");
             //this.makeMissile(data);
@@ -38,6 +39,7 @@ class MyServerEngine extends ServerEngine {
             this.gameEngine.makeprojectile(data);
         });
 
+        // create sound?
         this.gameEngine.on('missileHit', (e) => {
             //this.gameEngine.removeObjectFromWorld(e.ship.id);
             console.log("event > missilehit");
@@ -80,11 +82,6 @@ class MyServerEngine extends ServerEngine {
             }
         }
     }
-
-    //call gameengine to make object
-    //makeMissile(data) {
-        //this.gameEngine.makeMissile(data);
-    //}
 }
 
 module.exports = MyServerEngine;
