@@ -34,6 +34,7 @@ class PlayerCube extends PhysicalObject {
         this.class = PlayerCube;
         this.playerId = null;
         this.angle = 0;
+        this.dir = new ThreeVector();
         this.bpress = false;
         this.bspawn = false;
         this.movespeed = 0.1;
@@ -54,6 +55,9 @@ class PlayerCube extends PhysicalObject {
         this.physicsObj.position.set(this.position.x, this.position.y, this.position.z);
         this.physicsObj.angularDamping = 0.1;
         this.physicsObj.playerId = this.playerId;
+        this.physicsObj.fixedRotation = true;
+        //console.log(this.physicsObj);
+        //console.log(this);
 
 
         this.scene = gameEngine.renderer ? gameEngine.renderer.scene : null;
@@ -95,14 +99,12 @@ class PlayerCube extends PhysicalObject {
         } else if ((inputData.input === 'right') && (inputData.options.movement == true)) {
             this.turnright();
         }
-
         if( (inputData.input === 'space')) {
             if(this.gameEngine !=null){
-                this.gameEngine.emit('fire',{playerId:this.playerId});
+                this.gameEngine.emit('fire',{id:this.id});
                 console.log("FIRE!");
             }
         }
-
         if( (inputData.input === 'b') && (inputData.options.movement == true)) {
             this.stopmovement();
         }
@@ -113,9 +115,8 @@ class PlayerCube extends PhysicalObject {
             let CANNON = this.gameEngine.physicsEngine.CANNON;
             //this.physicsObj.velocity.setZero();
             //let pos = this.physicsObj.position;
-
             let q = new CANNON.Quaternion();
-            q.setFromAxisAngle(new CANNON.Vec3(0,1,0),this.yawrotation);
+            q.setFromAxisAngle(new CANNON.Vec3(0,1,0),this.angle);
             let dirvector = new THREE.Vector3( 0, 0, 1 );
             var quaternion = new THREE.Quaternion(q.x,q.y,q.z,q.w);
             dirvector.applyQuaternion( quaternion );
@@ -129,15 +130,8 @@ class PlayerCube extends PhysicalObject {
         }
     }
 
-    stopmovement(){
-        if(this.physicsObj != null){
-            this.physicsObj.velocity.setZero();
-        }
-    }
-
     reversethrust(){
         if(this.physicsObj != null){
-
             let CANNON = this.gameEngine.physicsEngine.CANNON;
             //this.physicsObj.velocity.setZero();
             //let pos = this.physicsObj.position;
@@ -153,6 +147,12 @@ class PlayerCube extends PhysicalObject {
                 new CANNON.Vec3(dirvector.x, dirvector.y, dirvector.z), // impulse 
                 new CANNON.Vec3().copy(this.physicsObj.position) // world position
             );
+        }
+    }
+
+    stopmovement(){
+        if(this.physicsObj != null){
+            this.physicsObj.velocity.setZero();
         }
     }
 
@@ -175,16 +175,13 @@ class PlayerCube extends PhysicalObject {
             //console.log(this.quaternion);
             let CANNON = this.gameEngine.physicsEngine.CANNON;
             this.angle = this.angle - 0.1;
-
             if(this.angle < 0){
                 this.angle = 360;
             }
-            
             if(this.physicsObj !=null){
                 this.physicsObj.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), this.angle);
             }
         }
-        //console.log('turn right');
     }
 
     //lock camera
@@ -209,21 +206,19 @@ class PlayerCube extends PhysicalObject {
 
     //create AI 
     attachAI() {
-        this.isBot = true;
-
+        //this.isBot = true;
         this.onPreStep = () => {
             this.steer();
         };
-
         this.gameEngine.on('preStep', this.onPreStep);
-
         let fireLoopTime = Math.round(250 + Math.random() * 100);
-
         this.fireLoop = this.gameEngine.timer.loop(fireLoopTime, () => {
             if (this.target && this.distanceToTarget(this.target) < 400) {
                 //this.gameEngine.makeMissile(this);
-                this.gameEngine.emit('fire',{playerId:this.playerId});
-                console.log("fire?");
+                console.log("Id:"+this.playerId);
+                //console.log(this.gameEngine);
+                console.log("PlayerCube > AI > fire!");
+                this.gameEngine.emit('fire', {id:this.id});
             }
         });
     }
@@ -249,13 +244,39 @@ class PlayerCube extends PhysicalObject {
         this.target = closestTarget;
 
         if (this.target) {
+            let CANNON = this.gameEngine.physicsEngine.CANNON;
+            //console.log("?");
             //console.log("id:"+this.id + "target?" + this.target.id);
+            let m1 = new THREE.Matrix4();
+            let q1 = new THREE.Quaternion();
+            let q2 = new THREE.Quaternion(this.physicsObj.quaternion.x,this.physicsObj.quaternion.y,this.physicsObj.quaternion.z,this.physicsObj.quaternion.w);
+            let c1 = new THREE.Vector3(this.position.x,this.position.y,this.position.z);
+            let t1 = new THREE.Vector3(this.target.position.x,this.target.position.y,this.target.position.z);
+            m1.lookAt( t1, c1, new THREE.Vector3(0,1,0) );
+            q1.setFromRotationMatrix( m1 );
+            q2.slerp(q1,0.01);
+            this.physicsObj.quaternion.set(q2.x,q2.y,q2.z,q2.w);
+            let c2 = new THREE.Vector3(0, 0, 1 ).applyQuaternion( q2 );
+            //console.log(c2);
+            this.dir = c2;
+            //let aa1 = this.physicsObj.quaternion.toAxisAngle(new CANNON.Vec3(0,1,0));
+            //console.log(aa1[1]);
+            //this.angle = aa1[1];
 
+            //let aa1 = this.quaternion.toAxisAngle();
+            //console.log(aa1);
+
+            //let q4 = q3.toAxisAngle();
+            //console.log(q4);
+            //this.angle = q4.angle;
+
+            //console.log(q2.conjugate().y);
+            //this.angle = angle;
+            //this.angle = this.physicsObj.rotation.y;
+            /*
             let newVX = this.target.position.x - this.position.x;
             let newVY = this.target.position.z - this.position.z;
-
             let turnRight = -Utils.shortestArc(Math.atan2(newVX, newVY), Math.atan2(Math.sin(this.angle*Math.PI/180), Math.cos(this.angle*Math.PI/180)));
-
             if (turnRight > 0.05) {
                 this.isRotatingRight = true;
                 this.turnright();
@@ -268,6 +289,7 @@ class PlayerCube extends PhysicalObject {
                 this.isAccelerating = true;
                 this.showThrust = 5;
             }
+            */
         }
     }
 

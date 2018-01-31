@@ -70,6 +70,10 @@ document.querySelector('a-scene').systems['physics']
 
 * https://github.com/tizzle/aframe-orbit-controls-component  orbit-controls
 
+
+# Rotation / quaternion 
+ * https://github.com/mrdoob/three.js/issues/1606
+
 # gundb
  * https://jsfiddle.net/j8cxmoub/ test msg 
  * https://jsfiddle.net/zs5h8bhe/ test map list

@@ -120,25 +120,13 @@ class MyGameEngine extends GameEngine {
     // Create object world/scene
     //=================================
     initGame() {
-        console.log("count:"+ this.world.idCount);
-        // create the paddle objects
-        //this.addObjectToWorld(new Paddle(++this.world.idCount, PADDING, 1));
-        //this.addObjectToWorld(new Paddle(++this.world.idCount, WIDTH - PADDING, 2));
-        //this.addObjectToWorld(new Ball(++this.world.idCount, WIDTH / 2, HEIGHT / 2));
-        let position;// = new ThreeVector(0, 0, 0);
-        //this.addObjectToWorld(new PlayerAvatar(++this.world.idCount,this, position,1));
-        position = new ThreeVector(0, 5, 0);
-        this.addObjectToWorld(new SphereCannon(++this.world.idCount,this, position));
+        //console.log("count:"+ this.world.idCount);
+        this.addObjectToWorld(new SphereCannon(++this.world.idCount,this, new ThreeVector(0, 6, 0)));
 
-        position = new ThreeVector(5, 0, 5);
-        this.addObjectToWorld(new BoxCannon(++this.world.idCount,this, position));
-        //position = new ThreeVector(0, -4, 0);
-        //this.addObjectToWorld(new BoxCannon(++this.world.idCount,this, position));
+        this.addObjectToWorld(new BoxCannon(++this.world.idCount,this, new ThreeVector(0, 0, -7)));
 
-        let pawn = new PlayerCube(++this.world.idCount, new ThreeVector(3, 0, 3));
+        let pawn = new PlayerCube(++this.world.idCount, new ThreeVector(-10, 0, -10));
         pawn.isBot = true;
-        //pawn.attachAI();
-
         this.addObjectToWorld(pawn);
     }
 
@@ -187,6 +175,7 @@ class MyGameEngine extends GameEngine {
     //=================================
     makeMissile(data) {
         let objplayer;
+        console.log("create missile?");
 
         for (let objId in this.world.objects) {
             let o = this.world.objects[objId];
@@ -242,10 +231,10 @@ class MyGameEngine extends GameEngine {
 
     makeprojectile(data){
         let objplayer;
-
+        //console.log("create projectile?");
         for (let objId in this.world.objects) {
             let o = this.world.objects[objId];
-            if (o.playerId == data.playerId && o.class == PlayerCube) {
+            if ((o.id == data.id)&&(o.class == PlayerCube)) {
                 objplayer = o;
                 break;
             }
@@ -265,7 +254,17 @@ class MyGameEngine extends GameEngine {
         //threejs
         let dir = new THREE.Vector3(0,0,3);
         let angle = objplayer.angle;
-        dir.applyAxisAngle(new THREE.Vector3(0,1,0), angle);
+        if(objplayer.isBot){
+            dir = objplayer.dir;
+            //dir.addScalar(3);
+            dir.x *= 3;
+            dir.z *= 3;
+            console.log(dir);
+
+        }else{
+            dir.applyAxisAngle(new THREE.Vector3(0,1,0), angle);
+        }
+
         //apply face direction for make cubeprojectile in world and scene
         pos.x += dir.x;
         pos.z += dir.z;

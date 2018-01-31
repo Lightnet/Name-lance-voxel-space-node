@@ -32,8 +32,7 @@ class MyServerEngine extends ServerEngine {
         this.playercontrollers = {};
 
         this.gameEngine.on('fire',(data)=>{
-            //console.log("data");
-            //console.log(data);
+            console.log("serverengine > event > fire!");
             //this.makeMissile(data);
             //this.gameEngine.makeMissile(data);
             this.gameEngine.makeprojectile(data);
