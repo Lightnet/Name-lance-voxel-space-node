@@ -33,7 +33,7 @@ class PlayerCube extends PhysicalObject {
         //console.log("add to world scene PlayerCube.");
         this.class = PlayerCube;
         this.playerId = null;
-        this.yawrotation = 0;
+        this.angle = 0;
         this.bpress = false;
         this.bspawn = false;
         this.movespeed = 0.1;
@@ -142,7 +142,7 @@ class PlayerCube extends PhysicalObject {
             //this.physicsObj.velocity.setZero();
             //let pos = this.physicsObj.position;
             let q = new CANNON.Quaternion();
-            q.setFromAxisAngle(new CANNON.Vec3(0,1,0),this.yawrotation);
+            q.setFromAxisAngle(new CANNON.Vec3(0,1,0),this.angle);
             let dirvector = new THREE.Vector3( 0, 0, -1 );
             var quaternion = new THREE.Quaternion(q.x,q.y,q.z,q.w);
             dirvector.applyQuaternion( quaternion );
@@ -161,12 +161,12 @@ class PlayerCube extends PhysicalObject {
             //console.log(this.pawn);
             //console.log(this.quaternion);
             let CANNON = this.gameEngine.physicsEngine.CANNON;
-            this.yawrotation = this.yawrotation + 0.1;
-            if(this.yawrotation > 360){
-                this.yawrotation = 0;
+            this.angle = this.angle + 0.1;
+            if(this.angle > 360){
+                this.angle = 0;
             }
             //console.log("turn left?");
-            this.physicsObj.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), this.yawrotation);
+            this.physicsObj.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), this.angle);
         }
     }
 
@@ -174,14 +174,14 @@ class PlayerCube extends PhysicalObject {
         if(this.physicsObj != null){
             //console.log(this.quaternion);
             let CANNON = this.gameEngine.physicsEngine.CANNON;
-            this.yawrotation = this.yawrotation - 0.1;
+            this.angle = this.angle - 0.1;
 
-            if(this.yawrotation < 0){
-                this.yawrotation = 360;
+            if(this.angle < 0){
+                this.angle = 360;
             }
             
             if(this.physicsObj !=null){
-                this.physicsObj.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), this.yawrotation);
+                this.physicsObj.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), this.angle);
             }
         }
         //console.log('turn right');
@@ -223,6 +223,7 @@ class PlayerCube extends PhysicalObject {
             if (this.target && this.distanceToTarget(this.target) < 400) {
                 //this.gameEngine.makeMissile(this);
                 this.gameEngine.emit('fire',{playerId:this.playerId});
+                console.log("fire?");
             }
         });
     }
@@ -240,7 +241,7 @@ class PlayerCube extends PhysicalObject {
         for (let objId of Object.keys(this.gameEngine.world.objects)) {
             let obj = this.gameEngine.world.objects[objId];
             let distance = this.distanceToTarget(obj);
-            if (obj != this && distance < closestDistance) {
+            if((obj != this && distance < closestDistance)&&(obj.class == PlayerCube)) {
                 closestTarget = obj;
                 closestDistance = distance;
             }
@@ -248,21 +249,25 @@ class PlayerCube extends PhysicalObject {
         this.target = closestTarget;
 
         if (this.target) {
+            //console.log("id:"+this.id + "target?" + this.target.id);
 
             let newVX = this.target.position.x - this.position.x;
-            let newVY = this.target.position.z - this.position.z
+            let newVY = this.target.position.z - this.position.z;
 
             let turnRight = -Utils.shortestArc(Math.atan2(newVX, newVY), Math.atan2(Math.sin(this.angle*Math.PI/180), Math.cos(this.angle*Math.PI/180)));
 
             if (turnRight > 0.05) {
                 this.isRotatingRight = true;
+                this.turnright();
+                //console.log("right turn?");
             } else if (turnRight < -0.05) {
                 this.isRotatingLeft = true;
+                this.turnleft();
+                //console.log("left turn?");
             } else {
                 this.isAccelerating = true;
                 this.showThrust = 5;
             }
-
         }
     }
 

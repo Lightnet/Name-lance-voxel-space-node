@@ -207,7 +207,7 @@ class MyGameEngine extends GameEngine {
         let pos = objplayer.physicsObj.position.clone();
         //threejs
         let dir = new THREE.Vector3(0,0,5);
-        let angle = objplayer.yawrotation;
+        let angle = objplayer.angle;
         dir.applyAxisAngle(new THREE.Vector3(0,1,0), angle);
         //apply face direction for make missile in world and scene
         pos.x += dir.x;
@@ -264,7 +264,7 @@ class MyGameEngine extends GameEngine {
         let pos = objplayer.physicsObj.position.clone();
         //threejs
         let dir = new THREE.Vector3(0,0,3);
-        let angle = objplayer.yawrotation;
+        let angle = objplayer.angle;
         dir.applyAxisAngle(new THREE.Vector3(0,1,0), angle);
         //apply face direction for make cubeprojectile in world and scene
         pos.x += dir.x;
