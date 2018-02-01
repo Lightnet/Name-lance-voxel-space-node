@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Another awesome Lance multiplayer network game</title>
+        <title>Lance Voxel Space Node</title>
         <script src="/socket.io/socket.io.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
         <!--
@@ -36,6 +36,12 @@
         <a-scene class="scene" physics vr-mode-ui="enabled:false;">
             <a-assets>
                 <a-asset-item id="pointer" src="/assets/pointer.gltf" material="transparent: true; opacity: 0.5;" ></a-asset-item>
+                <img id="iconkey" src="/assets/spaceship_icon_key.png">
+                <a-mixin
+                    id="marker"
+                    geometry="primitive: plane; width: 0.02; height: 0.02"
+                    material="color: red"
+                    ></a-mixin>
             </a-assets>
             <a-sky color="#ECECEC"></a-sky>
             <a-camera 
@@ -50,7 +56,17 @@
             minDistance:1;
             maxDistance:10;
             enableKeys:false;"
-            wasd-controls-enabled="false" position="0 0 20"></a-camera>
+            wasd-controls-enabled="false" position="0 0 20">
+            <a-entity position="0 0 -1" scale="0.08 0.08 0.08">
+                <a-image src="#iconkey" position="0 -9 0"></a-image>
+
+                <a-entity position="0 9 0" geometry="primitive: plane; width: auto; height: auto" material="color: #333"
+                  text="color: yellow; align: left; value:Prototype 3D Text ; width: 12; ">
+
+            </a-entity>
+            
+        
+            </a-camera>
 
             <a-box id="target" width="0.1" height="0.1" depth="0.1" position="0 0 0" rotation="0 0 0" color="#4CC3D9"></a-box>
         </a-scene>

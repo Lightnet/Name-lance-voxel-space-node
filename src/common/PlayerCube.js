@@ -88,18 +88,20 @@ class PlayerCube extends PhysicalObject {
             //el.setAttribute('geometry', `primitive: box;width:1;height:1;depth:1;`);
             el.setAttribute('gltf-model', `#pointer`);
             el.setAttribute('game-object-id', this.id);
-            el.setAttribute('id', this.id);
+            el.setAttribute('id', "game-object-id"+ this.id);
 
             this.texthealthel = document.createElement('a-text');
             this.texthealthel.setAttribute('value', `Health:${this.health} / ${this.maxhealth} `);
             this.texthealthel.setAttribute('color', `gray`);
             this.texthealthel.setAttribute('align', `center`);
             this.texthealthel.setAttribute('position', `0 2 0`);
-            this.texthealthel.setAttribute('cameraface', ``);
-            this.texthealthel.setAttribute('game-object-id', this.id);
+            let textid = "target=#"+this.id;
+            console.log(textid);
+            this.texthealthel.setAttribute('cameraface', "target:#game-object-id"+this.id);
+            //this.texthealthel.setAttribute('game-object-id', this.id);
 
-            //this.scene.appendChild(this.texthealthel);
-            el.appendChild(this.texthealthel);
+            this.scene.appendChild(this.texthealthel);
+            //el.appendChild(this.texthealthel);
 
             //this.setupEmitters();
             this.scene.appendChild(el);
