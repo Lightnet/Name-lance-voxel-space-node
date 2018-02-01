@@ -47,6 +47,7 @@ class SphereCannon extends PhysicalObject {
 
         this.physicsObj.position.set(this.position.x, this.position.y, this.position.z);
         this.physicsObj.angularDamping = 0.1;
+        this.physicsObj.fixedRotation = true;
         this.physicsObj.addEventListener("collide", function(e){
             //console.log("sphere collided");
         });

@@ -11,11 +11,24 @@
 
 'use strict';
 
+const Serializer = require('lance-gg').serialize.Serializer;
 const ThreeVector = require('lance-gg').serialize.ThreeVector;
 const DynamicObject = require('lance-gg').serialize.DynamicObject;
 const PlayerCube = require('./PlayerCube');
 
 class PlayerController extends DynamicObject {
+
+
+    static get netScheme() {
+        return Object.assign({
+            pawnId: { type: Serializer.TYPES.INT32 }
+        }, super.netScheme);
+    }
+
+    syncTo(other) {
+        super.syncTo(other);
+        this.pawnId = other.pawnId;
+    }
 
     constructor(id, playerId) {
         super(id);
@@ -30,6 +43,7 @@ class PlayerController extends DynamicObject {
         this.bpress = false;
         this.bspawn = false; //check create object player ship
         this.movespeed = 0.1;
+        this.pawnId = null;
     };
 
     onAddToWorld(gameEngine) {
@@ -60,7 +74,7 @@ class PlayerController extends DynamicObject {
             for (let objId in this.gameEngine.world.objects) {
                 var o = this.gameEngine.world.objects[objId];
                 if (o.playerId == this.playerId && o.class == PlayerCube) {
-                    console.log("PlayerCube found! Assign");
+                    //console.log("PlayerCube > pawn > Found! Assign");
                     this.pawn = this.gameEngine.world.objects[objId];
                     //this.pawn.foucscamera();
                     this.bspawn = true;
@@ -71,15 +85,17 @@ class PlayerController extends DynamicObject {
     }
 
     foucscamera(){
+        /*
         this.scene = this.gameEngine.renderer ? this.gameEngine.renderer.scene : null;
         if((this.scene !=null)&&(this.pawn !=null)){
-            console.log("camera set scene client?");
+            //console.log("camera set scene client?");
             if(this.playerId == this.gameEngine.renderer.clientEngine.playerId){
                 let cameraEL = document.querySelector('a-camera');
                 cameraEL.setAttribute("orbit-controls", "target",`#${this.pawn.id}`);
                 cameraEL.components['orbit-controls'].target = this.pawn.position;
             }
         }
+        */
     }
 
     toString() {

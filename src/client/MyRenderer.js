@@ -24,7 +24,7 @@ class MyRenderer extends AFrameRenderer {
 
     constructor(gameEngine, clientEngine) {
         super(gameEngine, clientEngine);
-        console.log("[init MyRenderer]");
+        //console.log("[init MyRenderer]");
         //this.sprites = {};
         //var self = this;
         //console.log(gameEngine);
@@ -37,11 +37,11 @@ class MyRenderer extends AFrameRenderer {
 
     // setup the 3D scene
     init() {
-        console.log("init scene...");
+        //console.log("init scene...");
         return super.init().then(() =>{
             // show cannon objects wire frame
             if (debugWireframes) {
-                console.log("Debug Cannon");
+                //console.log("Debug Cannon");
                 window.CANNON = this.gameEngine.physicsEngine.CANNON;
                 let head = document.getElementsByTagName('head')[0];
                 let script = document.createElement('script');
@@ -56,7 +56,7 @@ class MyRenderer extends AFrameRenderer {
             this.frameNum = 0;
             //assets
             document.querySelector('a-assets').addEventListener('loaded', ()=>{
-                console.log('assets loaded');
+                //console.log('assets loaded');
                 //document.body.classList.remove('loading');
                 this.emit('ready');
                 this.isReady = true;
@@ -72,7 +72,7 @@ class MyRenderer extends AFrameRenderer {
     }
 
     toggle_login(){
-        console.log("login...");
+        //console.log("login...");
     }
 
     addObject(objData, options) {
@@ -83,7 +83,7 @@ class MyRenderer extends AFrameRenderer {
             //check for client own object 
             if (this.clientEngine.isOwnedByPlayer(objData)) {
                 this.playercontroller = objData;  //// save reference to the player obj to client
-                console.log("player controller assign client");
+                //console.log("player controller assign client");
             }
         }
         //PlayerCube
@@ -96,7 +96,7 @@ class MyRenderer extends AFrameRenderer {
                 document.querySelector('#reconnect').hidden = true;
 
                 this.playership = objData;
-                console.log(this);
+                //console.log(this);
                 //document.querySelector('#guiContainer');
             }
         }
@@ -105,6 +105,10 @@ class MyRenderer extends AFrameRenderer {
     updateHUD(data){
         if (data.RTT){ qs('.latencyData').innerHTML = data.RTT;}
         if (data.RTTAverage){ qs('.averageLatencyData').innerHTML = truncateDecimals(data.RTTAverage, 2);}
+    }
+
+    updatePlayerCount(data){
+        if (data){ qs('.playerCountData').innerHTML = data;}
     }
 
     onKeyChange(e){

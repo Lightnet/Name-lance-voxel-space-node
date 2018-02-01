@@ -11,21 +11,35 @@
 
 'use strict';
 
-//const DynamicObject= require('lance-gg').serialize.DynamicObject;
+const Serializer = require('lance-gg').serialize.Serializer;
 const PhysicalObject = require('lance-gg').serialize.PhysicalObject;
-const MASS = 1;
+const PlayerCube = require('./PlayerCube');
+const MASS = 0.1;
 let CANNON = null;
 
 class CubeProjectile extends PhysicalObject {
+
+    static get netScheme() {
+        return Object.assign({
+            ownerId: { type: Serializer.TYPES.INT32 }
+        }, super.netScheme);
+    }
+
+    syncTo(other) {
+        super.syncTo(other);
+        this.ownerId = other.ownerId;
+    }
 
     constructor(id, position) {
         super(id, position);
         this.class = CubeProjectile;
         this.bdestroy = false;
+        this.ownerId = null;
+        this.damage = 1;
     };
 
     onAddToWorld(gameEngine) {
-        //console.log("add to world scene BoxCannon.");
+        //console.log("Created CubeProjectile.");
         // create the physics body
         console.log("CubeProjectile ID:"+this.id);
         this.gameEngine = gameEngine;
@@ -33,21 +47,32 @@ class CubeProjectile extends PhysicalObject {
         this.physicsObj.position.set(this.position.x, this.position.y, this.position.z);
         this.physicsObj.angularDamping = 0.0;
         this.physicsObj.playerId = 1;
+        this.physicsObj.ownerId = this.ownerId;
         var self = this;
 
-        this.physicsObj.addEventListener("collide", function(e){ 
-            console.log("collided");
-
-            if(!self.bdestroy){
-                //self.gameEngine.projectiles.push(self.physicsObj);
-                self.gameEngine.projectiles.push(self.id);
-                self.bdestroy = true;
-                console.log("trigger destroy?");
+        this.physicsObj.addEventListener("collide", (e)=>{ 
+            //console.log("//========================");
+            //console.log("collided");
+            //console.log("//========================");
+            if(!this.bdestroy){
+                this.bdestroy = true;
+                //console.log("trigger destroy?");
+                //console.log(e);
+                //console.log(e.target);
+                //console.log("===========================================!");
+                //console.log("Cubeprojectile >  bdestroy!");
+                //console.log("[ownerId]"+this.ownerId + "  [Target]" + e.target.ownerId + " [body]" + e.body.ownerId);
+                if(e.body.ownerId != this.ownerId ){
+                    //console.log("Cubeproejctile >  emit > ondamage!");
+                    this.gameEngine.emit('ondamage',{ownerId:this.ownerId, targetId:e.body.ownerId, damage:this.damage});
+                }
+                this.gameEngine.projectiles.push(this.id);
+                //self.gameEngine.removeObjectFromWorld(this); //doesn't work here
+                //self.gameEngine.removeObjectFromWorld(this.id); //doesn't work here
             }
         });
 
         this.scene = gameEngine.renderer ? gameEngine.renderer.scene : null;
-
         //this.physicsObj.addEventListener("collide", function(e){ console.log("sphere collided"); } );
 
         if (this.scene) {
@@ -74,7 +99,7 @@ class CubeProjectile extends PhysicalObject {
 
     destroy() {
         super.destroy();
-        console.log("destroy physicsObj");
+        //console.log("destroy physicsObj");
         if(this.physicsObj !=null){
             this.gameEngine.physicsEngine.removeObject(this.physicsObj);
         }

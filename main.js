@@ -17,6 +17,7 @@
 //main point entry
 
 const express = require('express');
+const csp = require('express-csp-header');
 const socketIO = require('socket.io');
 const path = require('path');
 
@@ -27,6 +28,22 @@ const INDEX = path.join(__dirname, './index.html');
 const server = express();
 server.get('/', function(req, res) { res.sendFile(INDEX); });
 server.use('/', express.static(path.join(__dirname, '.')));
+
+//Content-Security-Policy middleware for Express
+//This is for develop build and need to be config 
+server.use(csp({
+    policies: {
+        'default-src': [csp.NONE],
+		'script-src': [csp.NONCE],
+		'style-src': [csp.NONCE],
+		'img-src': [csp.SELF],
+		'font-src': [csp.NONCE, 'fonts.gstatic.com'],
+		'object-src': [csp.NONE],
+		'block-all-mixed-content': true,
+		'frame-ancestors': [csp.NONE]
+    }
+}));
+
 let requestHandler = server.listen(PORT, () => console.log(`Listening on ${ PORT }`));
 const io = socketIO(requestHandler);
 

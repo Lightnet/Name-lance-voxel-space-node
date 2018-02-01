@@ -19,6 +19,7 @@ const CannonPhysicsEngine = require('lance-gg').physics.CannonPhysicsEngine;
 // Load libs
 //===============================================
 require('./aframecamera3rd');
+require('./aframecameraface');
 
 // default options, overwritten by query-string options
 // is sent to both game engine and client engine

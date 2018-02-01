@@ -14,7 +14,6 @@
 const GameEngine = require('lance-gg').GameEngine;
 const ThreeVector = require('lance-gg').serialize.ThreeVector;
 const Timer = require('./Timer');
-
 const THREE = require('three');
 
 //game objects
@@ -48,18 +47,18 @@ class MyGameEngine extends GameEngine {
         this.timer = new Timer();
         this.timer.play();
 
-        this.objmissile = null;
-
         this.on('server__postStep', ()=>{
             this.timer.tick();
         });
-
         //this.on('fire',function(data){
             //console.log("data");
             //console.log(data);
             //this.makeMissile();
+            //this.makeprojectile(data);
         //});
-        //console.log(this);
+        //this.on('ondamage',(e)=>{
+            //this.onDamage(e);
+        //});
     }
 
     start() {
@@ -78,7 +77,7 @@ class MyGameEngine extends GameEngine {
         });
 
         this.on('objectAdded', (object) => {
-            console.log("object added");
+            //console.log("object added");
             //if (object.id == 1) {
                 //this.playeravatar = object;
             //}
@@ -87,10 +86,10 @@ class MyGameEngine extends GameEngine {
     }
 
     object_physics_handler(obj){
-        console.log("handle object...");
+        //console.log("handle object...");
         if(obj.class == Missile){
-            console.log("obj Missile found!");
-            obj.playerId = 0;
+            //console.log("obj Missile found!");
+            //obj.playerId = 0;
             //obj.physicsObj.addEventListener("collide", function(e){
                 //console.log(e);
                 //console.log("sphere collided");
@@ -103,15 +102,27 @@ class MyGameEngine extends GameEngine {
         //console.log(playerId);
         //console.log(this.world);
         let playercontrol = this.world.getPlayerObject(playerId);
+        let playership;
         
         if(playercontrol.class == PlayerController){
-            playercontrol.checkpawn();
-
-            if((playercontrol.pawn)){
-                //console.log(inputData);
-                //console.log("pawn found!");
-                let pawn = playercontrol.pawn;
-                pawn.processInput(inputData);
+            //playercontrol.checkpawn();
+            if(playercontrol.pawnId){
+                for (let objId of Object.keys(this.world.objects)) {
+                    let o = this.world.objects[objId];
+                    if(o.id == playercontrol.pawnId){
+                        playership = o;
+                        break;
+                    }
+                }
+                if(playership){
+                    playership.processInput(inputData);
+                    //if( (inputData.input === 'space')) {
+                        //if(this.gameEngine !=null){
+                            //this.gameEngine.emit('fire',{id:playership.id});
+                            //console.log("FIRE!");
+                        //}
+                    //}
+                }
             }
         }
     }
@@ -120,42 +131,24 @@ class MyGameEngine extends GameEngine {
     // Create object world/scene
     //=================================
     initGame() {
-        console.log("count:"+ this.world.idCount);
-        // create the paddle objects
-        //this.addObjectToWorld(new Paddle(++this.world.idCount, PADDING, 1));
-        //this.addObjectToWorld(new Paddle(++this.world.idCount, WIDTH - PADDING, 2));
-        //this.addObjectToWorld(new Ball(++this.world.idCount, WIDTH / 2, HEIGHT / 2));
-        let position;// = new ThreeVector(0, 0, 0);
-        //this.addObjectToWorld(new PlayerAvatar(++this.world.idCount,this, position,1));
-        position = new ThreeVector(0, 5, 0);
-        this.addObjectToWorld(new SphereCannon(++this.world.idCount,this, position));
+        //console.log("count:"+ this.world.idCount);
+        this.addObjectToWorld(new SphereCannon(++this.world.idCount,this, new ThreeVector(0, 6, 0)));
 
-        position = new ThreeVector(5, 0, 5);
-        this.addObjectToWorld(new BoxCannon(++this.world.idCount,this, position));
-        //position = new ThreeVector(0, -4, 0);
-        //this.addObjectToWorld(new BoxCannon(++this.world.idCount,this, position));
-        //this.addObjectToWorld(new PlayerCube(++this.world.idCount, new ThreeVector(0, 0, 0)));
-        //position = new ThreeVector(0, 20, 0);
-        //this.addObjectToWorld(new PlayerCube(++this.world.idCount,this,position ));
-        //this.addObjectToWorld(new PlayerCube(++this.world.idCount,this, new ThreeVector(0, 20, 0)));
-        //this.spawnship();
+        this.addObjectToWorld(new BoxCannon(++this.world.idCount,this, new ThreeVector(0, 0, -7)));
+
+        let pawn = new PlayerCube(++this.world.idCount, new ThreeVector(-10, 0, -10));
+        pawn.isBot = true;
+        this.addObjectToWorld(pawn);
     }
 
     // Game Engine Step.
-    // Check object physics to be remove from world
+    // Check object physics to be remove from world else cause error still work in progress
     step(isReenact) {
         super.step(isReenact);
-        //console.log("step");
-
-        //if(this.objmissile){
-            //this.physicsEngine.removeObject(this.objmissile);
-            //this.objmissile = null;
-            //this.gameEngine.physicsEngine.removeObject(this.physicsObj);
-        //}
 
         var i = this.projectiles.length
         while (i--) {
-            console.log("remove object?");
+            //console.log("remove object?");
             let _objid = this.projectiles[i];
             //this.physicsEngine.removeObject(_objid);
             //let obj = this.world.objects[objid];
@@ -164,12 +157,13 @@ class MyGameEngine extends GameEngine {
                 //console.log(this.projectiles[i]);
             //}
             //this.emit("destorymissile",_objid);
-            for (let objId in this.world.objects) {
+            for (let objId of Object.keys(this.world.objects)) {
                 let o = this.world.objects[objId];
+                //console.log(o);
                 if (o.id == _objid ) {
                     //objplayer = o;
                     if(o !=null){
-                        console.log("delete!?");
+                        //console.log("delete!");
                         this.removeObjectFromWorld(o.id);
                         //this.emit("destorymissile",o.id);
                     }
@@ -186,17 +180,18 @@ class MyGameEngine extends GameEngine {
     //=================================
     makeMissile(data) {
         let objplayer;
+        //console.log("create missile?");
 
-        for (let objId in this.world.objects) {
+        for (let objId of Object.keys(this.world.objects)) {
             let o = this.world.objects[objId];
-            if (o.playerId == data.playerId && o.class == PlayerCube) {
+            if ((o.id == data.id)&&(o.class == PlayerCube)) {
                 objplayer = o;
                 break;
             }
         }
 
         if(objplayer == null){
-            console.log("null player ship!");
+            //console.log("null player ship!");
             return;
         }
 
@@ -206,7 +201,7 @@ class MyGameEngine extends GameEngine {
         let pos = objplayer.physicsObj.position.clone();
         //threejs
         let dir = new THREE.Vector3(0,0,5);
-        let angle = objplayer.yawrotation;
+        let angle = objplayer.angle;
         dir.applyAxisAngle(new THREE.Vector3(0,1,0), angle);
         //apply face direction for make missile in world and scene
         pos.x += dir.x;
@@ -223,7 +218,7 @@ class MyGameEngine extends GameEngine {
         //missile.physicsObj.velocity.z += Math.sin(missile.angle * (Math.PI / 180)) * 10;
         missile.physicsObj.velocity.x += dir.x;
         missile.physicsObj.velocity.z += dir.z;
-        this.trace.trace(`missile[${missile.id}] created vel=${missile.velocity}`);
+        //this.trace.trace(`missile[${missile.id}] created vel=${missile.velocity}`);
         this.timer.add(500, this.destroyMissile, this, [missile.id]);
         return missile;
     }
@@ -241,46 +236,66 @@ class MyGameEngine extends GameEngine {
 
     makeprojectile(data){
         let objplayer;
-
-        for (let objId in this.world.objects) {
+        //console.log("create projectile?");
+        for (let objId of Object.keys(this.world.objects)) {
             let o = this.world.objects[objId];
-            if (o.playerId == data.playerId && o.class == PlayerCube) {
+            if ((o.id == data.id)&&(o.class == PlayerCube)) {
                 objplayer = o;
                 break;
             }
         }
-
-        console.log("playerId" + objplayer.playerId);
-
+        //console.log("playerId" + objplayer.playerId);
         if(objplayer == null){
-            console.log("null player ship!");
+            //console.log("null player ship!");
             return;
         }
-
-        let cubeprojectile = new CubeProjectile(++this.world.idCount);
-        this.addObjectToWorld(cubeprojectile);
         //copy vector
         let pos = objplayer.physicsObj.position.clone();
+        let angle = objplayer.angle;
+
         //threejs
-        let dir = new THREE.Vector3(0,0,5);
-        let angle = objplayer.yawrotation;
-        dir.applyAxisAngle(new THREE.Vector3(0,1,0), angle);
+        let dir = new THREE.Vector3(0,0,4);
+        
+        if(objplayer.isBot == true){
+            dir = objplayer.dir;
+            //dir.addScalar(3);
+            dir.x *= 3;
+            dir.z *= 3;
+            //console.log(dir);
+        }else{
+            console.log(angle);
+            dir.applyAxisAngle(new THREE.Vector3(0,1,0), objplayer.angle );
+            //console.log("Angle: "+angle);
+
+            //dir.x *= 3;
+            //dir.z *= 3;
+            //apply rotation y 
+        }
+
         //apply face direction for make cubeprojectile in world and scene
         pos.x += dir.x;
         pos.z += dir.z;
-        //copy setting from ship
-        cubeprojectile.physicsObj.position.copy(pos);
-        cubeprojectile.physicsObj.velocity.copy(objplayer.physicsObj.velocity);
-        //apply rotation y 
+
+        let cubeprojectile = new CubeProjectile(++this.world.idCount, pos);
+
         cubeprojectile.angle = angle;
-        cubeprojectile.playerId = objplayer.playerId;
         cubeprojectile.ownerId = objplayer.id;
-        //missile.inputId = inputId;
-        //missile.physicsObj.velocity.x += Math.cos(missile.angle * (Math.PI / 180)) * 10;
-        //missile.physicsObj.velocity.z += Math.sin(missile.angle * (Math.PI / 180)) * 10;
-        cubeprojectile.physicsObj.velocity.x += dir.x;
-        cubeprojectile.physicsObj.velocity.z += dir.z;
-        this.trace.trace(`cubeprojectile[${cubeprojectile.id}] created vel=${cubeprojectile.velocity}`);
+
+        //if(objplayer.playerId !=null ){
+            //cubeprojectile.playerId = objplayer.playerId;
+        //}
+
+        this.addObjectToWorld(cubeprojectile);
+        
+        //copy setting from ship
+        //cubeprojectile.physicsObj.position.copy(pos);
+        cubeprojectile.physicsObj.velocity.copy(objplayer.physicsObj.velocity);
+        
+        cubeprojectile.physicsObj.velocity.x = dir.x;
+        cubeprojectile.physicsObj.velocity.z = dir.z;
+        //cubeprojectile.physicsObj.velocity.x = 10;
+        //cubeprojectile.physicsObj.velocity.z += 3;
+        //this.trace.trace(`cubeprojectile[${cubeprojectile.id}] created vel=${cubeprojectile.velocity}`);
         this.timer.add(500, this.destroyMissile, this, [cubeprojectile.id]);
         return cubeprojectile;
     }
@@ -288,22 +303,49 @@ class MyGameEngine extends GameEngine {
     //=======================
     // Create Ship Object
     //=======================
-
     makeShip(playerId) {
-        console.log("call > makeship");
-        let playercontrol = this.world.getPlayerObject(playerId);
         let pawn;
-        //console.log(playercontrol);
-        if(!playercontrol.pawn){
-            pawn = this.addObjectToWorld(new PlayerCube(++this.world.idCount, new ThreeVector(0, 0, 0)));
-            pawn.playerId = playerId;
-            //playercontrol.pawn = pawn;
-            //console.log("created?");
-        }else{
-            pawn = playercontrol.pawn;
-        }
+        pawn = this.addObjectToWorld(new PlayerCube(++this.world.idCount, new ThreeVector(0, 0, 0)));
+        pawn.playerId = playerId;
         return pawn;
     };
+
+    onDamage(e){
+        console.log("gameengine > onDamage!");
+        //console.log(e);
+        if(e.targetId !=null){
+            for(let objId of Object.keys(this.world.objects)){
+            //for(let objId in this.world.objects){
+                let obj = this.world.objects[objId];
+                if(obj.id == e.targetId){
+                    //console.log("isbot? : "+obj.isBot);
+                    //console.log("game engine > onDamage > found!");
+                    obj.eventDamage(e);
+                }
+            }
+        }
+    }
+
+    destroyObject(e){
+        if(e.id !=null){
+            let obj_id = null;
+            for(let objId of Object.keys(this.world.objects)){
+            //for(let objId in this.world.objects){
+                let obj = this.world.objects[objId];
+                if(obj.id == e.id){
+                    //console.log("game engine > destroyObject > found!");
+                    obj_id = obj.id;
+                    break;
+                }
+            }
+            if(obj_id){
+                //this.removeObjectFromWorld(obj_id); //error physcis call order
+                this.projectiles.push(obj_id);
+            }
+            obj_id =null;
+        }
+    }
+
 
     registerClasses(serializer) {
         //player objects
