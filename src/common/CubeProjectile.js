@@ -39,9 +39,9 @@ class CubeProjectile extends PhysicalObject {
     };
 
     onAddToWorld(gameEngine) {
-        //console.log("add to world scene BoxCannon.");
+        //console.log("Created CubeProjectile.");
         // create the physics body
-        //console.log("CubeProjectile ID:"+this.id);
+        console.log("CubeProjectile ID:"+this.id);
         this.gameEngine = gameEngine;
         this.physicsObj = gameEngine.physicsEngine.addBox(1, 1, 1, MASS, 0);
         this.physicsObj.position.set(this.position.x, this.position.y, this.position.z);
@@ -86,7 +86,7 @@ class CubeProjectile extends PhysicalObject {
             el.setAttribute('position', `${p.x} ${p.y} ${p.z}`);
             //el.setAttribute('material', 'src: #ball');
             el.setAttribute('geometry', `primitive: box; width: 1; height: 1; depth: 1;`);
-            //el.setAttribute('game-object-id', this.id);
+            el.setAttribute('game-object-id', this.id);
             //this.setupEmitters();
             //console.log("a-entity box");
             this.el = el;

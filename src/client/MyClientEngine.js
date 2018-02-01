@@ -60,7 +60,7 @@ class MyClientEngine extends ClientEngine {
             console.log("==============================");
             console.log("renderer.ready");
             setTimeout(function(){ 
-                document.querySelector('#loadingscreen').hidden= true;
+                //document.querySelector('#loadingscreen').hidden= true;
             }, 1000);
 
             document.querySelector('#tryAgain').hidden = true;

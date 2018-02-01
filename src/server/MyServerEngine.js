@@ -39,8 +39,6 @@ class MyServerEngine extends ServerEngine {
         // fire event > projectile
         this.gameEngine.on('fire',(data)=>{
             //console.log("serverengine > event > fire!");
-            //this.makeMissile(data);
-            //this.gameEngine.makeMissile(data);
             this.gameEngine.makeprojectile(data);
         });
 
@@ -52,9 +50,9 @@ class MyServerEngine extends ServerEngine {
             for (let key in this.playercontrollers){
                 let obj = this.playercontrollers[key];
                 if(obj.pawn !=null){
-                    if(obj.pawn.id == e.id){
+                    if(obj.pawnId == e.id){
                         //console.log("serverengine > playercontroller > pawn > null");
-                        obj.pawn = null;
+                        obj.pawnId = null;
                         obj.bspawn = false;
                         break;
                     }
@@ -87,7 +85,7 @@ class MyServerEngine extends ServerEngine {
             let ship;
             if(controller.pawn == null){
                 ship = this.gameEngine.makeShip(socket.playerId);
-                controller.pawn = ship;
+                controller.pawnId = ship.id;
             }
             //this.scoreData[ship.id] = {
                 //kills: 0,

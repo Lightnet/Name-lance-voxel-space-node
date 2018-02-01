@@ -23,7 +23,6 @@ let CANNON = null;
 
 class PlayerCube extends PhysicalObject {
 
-    
     static get netScheme() {
         return Object.assign({
             health: { type: Serializer.TYPES.INT32 },
@@ -60,7 +59,7 @@ class PlayerCube extends PhysicalObject {
         super.onAddToWorld(gameEngine);
         this.gameEngine = gameEngine;
         // create the physics body
-        CANNON = this.gameEngine.physicsEngine.CANNON;
+        //CANNON = this.gameEngine.physicsEngine.CANNON;
         //console.log("add to world scene playercube.");
         //console.log("Player Id:" + this.id);
         //console.log("playerId:" + this.playerId);
@@ -116,7 +115,7 @@ class PlayerCube extends PhysicalObject {
     }
 
     processInput(inputData){
-        //console.log(inputData);
+        console.log(inputData);
         if ((inputData.input === 'up') && (inputData.options.movement == true)) {
             this.forwardthrust();
         } else if ((inputData.input === 'down') && (inputData.options.movement == true)) {
@@ -128,8 +127,7 @@ class PlayerCube extends PhysicalObject {
         }
         if( (inputData.input === 'space')) {
             if(this.gameEngine !=null){
-                this.gameEngine.emit('fire',{id:this.id});
-                //console.log("FIRE!");
+                this.fireweapon();
             }
         }
         if( (inputData.input === 'b') && (inputData.options.movement == true)) {
@@ -139,6 +137,7 @@ class PlayerCube extends PhysicalObject {
 
     forwardthrust(){
         if(this.physicsObj != null){
+            console.log("forward?");
             let CANNON = this.gameEngine.physicsEngine.CANNON;
             //this.physicsObj.velocity.setZero();
             //let pos = this.physicsObj.position;
@@ -224,18 +223,15 @@ class PlayerCube extends PhysicalObject {
         }
     }
 
-    fireweapon(inputData){
-        this.gameEngine.emit('fire',{id:this.id});
+    fireweapon(){
+        this.gameEngine.emit('fire', {id:this.id});
     }
 
     eventDamage(params){
         console.log("playercube > eventdamage!");
         if(params==null)return;
-
         ///this.scene = this.gameEngine.renderer ? this.gameEngine.renderer.scene : null;
-
         //console.log(this.gameEngine);
-
         if(params.damage != null){
             console.log("============================================");
             this.health -= params.damage;
@@ -245,13 +241,11 @@ class PlayerCube extends PhysicalObject {
                 //this.texthealthel.setAttribute('value', `Health:${this.health} / ${this.maxhealth} `);
             //}
         }
-
         if((this.health <= 0)&&(this.isDead == false)){
             this.isDead = true;
             console.log("Death");
             this.gameEngine.emit('destroyObject',{id:this.id, byid:null});
         }
-
         console.log("Health:"+this.health + "/" + this.maxhealth);
     }
 
@@ -269,11 +263,11 @@ class PlayerCube extends PhysicalObject {
         let fireLoopTime = Math.round(250 + Math.random() * 100);
         this.fireLoop = this.gameEngine.timer.loop(fireLoopTime, () => {
             if (this.target && this.distanceToTarget(this.target) < 400) {
+                //console.log("PlayerCube > AI > fire!");
                 //this.gameEngine.makeMissile(this);
                 //console.log("Id:"+this.playerId);
                 //console.log(this.gameEngine);
-                //console.log("PlayerCube > AI > fire!");
-                this.gameEngine.emit('fire', {id:this.id});
+                //this.fireweapon();
             }
         });
     }
