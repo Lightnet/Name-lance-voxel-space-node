@@ -107,6 +107,10 @@ class MyRenderer extends AFrameRenderer {
         if (data.RTTAverage){ qs('.averageLatencyData').innerHTML = truncateDecimals(data.RTTAverage, 2);}
     }
 
+    updatePlayerCount(data){
+        if (data){ qs('.playerCountData').innerHTML = data;}
+    }
+
     onKeyChange(e){
         //if (this.playerShip) {
             //if (e.keyName === 'up') {

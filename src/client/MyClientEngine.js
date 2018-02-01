@@ -172,9 +172,18 @@ class MyClientEngine extends ClientEngine {
         return super.connect().then(() => {
             console.log("client engine connected...");
             document.querySelector('#reconnect').hidden = true;
-            //this.socket.on('scoreUpdate', (e) => {
+
+
+            this.socket.on('updatePlayerCount', (e) => {
+                //console.log('updatePlayerCount');
+                //console.log(e);
+                this.renderer.updatePlayerCount(e);
+            });
+
+            this.socket.on('scoreUpdate', (e) => {
+                console.log('scoreUpdate');
                 //this.renderer.updateScore(e);
-            //});
+            });
             console.log(this.playerId);
 
             //console.log(this.gameEngine.world );
