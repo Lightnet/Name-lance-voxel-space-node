@@ -78,3 +78,8 @@ document.querySelector('a-scene').systems['physics']
  * https://jsfiddle.net/j8cxmoub/ test msg 
  * https://jsfiddle.net/zs5h8bhe/ test map list
  * https://jsfiddle.net/zs5h8bhe/1/
+
+
+# Content-Security-Policy
+ * https://www.twilio.com/blog/2017/11/securing-your-express-app.html
+ * https://stackoverflow.com/questions/21048252/nodejs-where-exactly-can-i-put-the-content-security-policy
