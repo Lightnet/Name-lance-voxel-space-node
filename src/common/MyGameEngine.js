@@ -60,6 +60,10 @@ class MyGameEngine extends GameEngine {
             //this.makeMissile();
         //});
         //console.log(this);
+
+        this.on('ondamage',(e)=>{
+            this.onDamage(e);
+        });
     }
 
     start() {
@@ -240,14 +244,16 @@ class MyGameEngine extends GameEngine {
                 break;
             }
         }
-        console.log("playerId" + objplayer.playerId);
-
+        //console.log("playerId" + objplayer.playerId);
         if(objplayer == null){
-            console.log("null player ship!");
+            //console.log("null player ship!");
             return;
         }
-
         let cubeprojectile = new CubeProjectile(++this.world.idCount);
+        cubeprojectile.ownerId = objplayer.id;
+        
+        cubeprojectile.playerId = objplayer.playerId;
+
         this.addObjectToWorld(cubeprojectile);
         //copy vector
         let pos = objplayer.physicsObj.position.clone();
@@ -272,8 +278,7 @@ class MyGameEngine extends GameEngine {
         cubeprojectile.physicsObj.velocity.copy(objplayer.physicsObj.velocity);
         //apply rotation y 
         cubeprojectile.angle = angle;
-        cubeprojectile.playerId = objplayer.playerId;
-        cubeprojectile.ownerId = objplayer.id;
+        
         //missile.inputId = inputId;
         //missile.physicsObj.velocity.x += Math.cos(missile.angle * (Math.PI / 180)) * 10;
         //missile.physicsObj.velocity.z += Math.sin(missile.angle * (Math.PI / 180)) * 10;
@@ -289,7 +294,7 @@ class MyGameEngine extends GameEngine {
     //=======================
 
     makeShip(playerId) {
-        console.log("call > makeship");
+        //console.log("call > makeship");
         let playercontrol = this.world.getPlayerObject(playerId);
         let pawn;
         //console.log(playercontrol);
@@ -303,6 +308,24 @@ class MyGameEngine extends GameEngine {
         }
         return pawn;
     };
+
+
+    onDamage(e){
+        console.log("gameengine > onDamage!");
+        //console.log(e);
+        if(e.targetId !=null){
+            //for(let objId of Object.keys(this.world.objects)){
+            for(let objId in this.world.objects){
+                let obj = this.world.objects[objId];
+                if(obj.id == e.targetId){
+                    console.log("isbot? : "+obj.isBot);
+                    console.log("game engine > onDamage > found!");
+                    obj.eventDamage(e);
+                }
+            }
+        }
+    }
+
 
     registerClasses(serializer) {
         //player objects

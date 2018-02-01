@@ -23,6 +23,7 @@ class CubeProjectile extends PhysicalObject {
         super(id, position);
         this.class = CubeProjectile;
         this.bdestroy = false;
+        this.ownerId = null;
         this.damage = 1;
     };
 
@@ -35,42 +36,27 @@ class CubeProjectile extends PhysicalObject {
         this.physicsObj.position.set(this.position.x, this.position.y, this.position.z);
         this.physicsObj.angularDamping = 0.0;
         this.physicsObj.playerId = 1;
+        this.physicsObj.ownerId = this.ownerId;
         var self = this;
 
-        this.physicsObj.addEventListener("collide", function(e){ 
+        this.physicsObj.addEventListener("collide", (e)=>{ 
+            console.log("//========================");
             console.log("collided");
+            console.log("//========================");
 
-            if(!self.bdestroy){
-                self.bdestroy = true;
-                console.log("trigger destroy?");
+            if(!this.bdestroy){
+                this.bdestroy = true;
+                //console.log("trigger destroy?");
                 //console.log(e);
-                if(self.playerId == null){
-                    console.log("player id null");
-                    for(let objId of Object.keys(self.gameEngine.world.objects)){
-                        let obj = self.gameEngine.world.objects[objId];
-                        if(obj.class == PlayerCube){
-                            console.log("found playercube? obj?");
-                            obj.eventDamage(self.id, self.damage);
-
-                            break;
-                        }
-                    }
+                //console.log(e.target);
+                console.log("===========================================!");
+                console.log("Cubeprojectile >  bdestroy!");
+                console.log("[ownerId]"+this.ownerId + "  [Target]" + e.target.ownerId + " [body]" + e.body.ownerId);
+                if(e.body.ownerId != this.ownerId ){
+                    //console.log("Cubeproejctile >  emit > ondamage!");
+                    this.gameEngine.emit('ondamage',{ownerId:this.ownerId, targetId:e.target.ownerId, damage:this.damage});
                 }
-                else{
-                    if(e.target.playerId !=null && e.target.playerId != self.playerId){
-                        for(let objId of Object.keys(self.gameEngine.world.objects)){
-                            let obj = self.gameEngine.world.objects[objId];
-                            if(obj.class == PlayerCube && obj.playerId == e.target.playerId){
-                                console.log("found playercube? obj?");
-                                obj.eventDamage(self.playerId, self.damage);
-
-                                break;
-                            }
-                        }
-                    }
-                }
-                
-                self.gameEngine.projectiles.push(self.id);
+                this.gameEngine.projectiles.push(this.id);
                 //self.gameEngine.removeObjectFromWorld(this); //doesn't work here
                 //self.gameEngine.removeObjectFromWorld(this.id); //doesn't work here
             }
@@ -103,7 +89,7 @@ class CubeProjectile extends PhysicalObject {
 
     destroy() {
         super.destroy();
-        console.log("destroy physicsObj");
+        //console.log("destroy physicsObj");
         if(this.physicsObj !=null){
             this.gameEngine.physicsEngine.removeObject(this.physicsObj);
         }

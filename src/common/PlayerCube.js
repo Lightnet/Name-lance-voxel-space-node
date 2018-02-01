@@ -16,11 +16,9 @@ const PhysicalObject = require('lance-gg').serialize.PhysicalObject;
 const ThreeVector = require('lance-gg').serialize.ThreeVector;
 const Quaternion = require('lance-gg').serialize.Quaternion;
 const Utils = require('./Utils');
-
 const THREE = require('three');
 
-const RADIUS = 4;
-const MASS = 1;
+const MASS = 10;
 let CANNON = null;
 
 //class PlayerAvatar extends DynamicObject {
@@ -43,6 +41,7 @@ class PlayerCube extends PhysicalObject {
         this.maxhealth = 100;
 
         this.isBot = false;
+        this.isDead = false;
     };
 
     onAddToWorld(gameEngine) {
@@ -51,7 +50,7 @@ class PlayerCube extends PhysicalObject {
         // create the physics body
         CANNON = this.gameEngine.physicsEngine.CANNON;
         console.log("add to world scene playercube.");
-        console.log("============id:" + this.id);
+        console.log("Player Id:" + this.id);
         //console.log("playerId:" + this.playerId);
         //console.log(gameEngine.physicsEngine);
         this.physicsObj = gameEngine.physicsEngine.addBox(1,1,1, MASS,0.1);
@@ -59,6 +58,7 @@ class PlayerCube extends PhysicalObject {
         this.physicsObj.angularDamping = 0.1;
         this.physicsObj.playerId = this.playerId;
         this.physicsObj.fixedRotation = true;
+        this.physicsObj.ownerId = this.id;
         //console.log(this.physicsObj);
         //console.log(this);
 
@@ -76,6 +76,16 @@ class PlayerCube extends PhysicalObject {
             el.setAttribute('gltf-model', `#pointer`);
             el.setAttribute('game-object-id', this.id);
             el.setAttribute('id', this.id);
+
+            this.texthealthel = document.createElement('a-text');
+            this.texthealthel.setAttribute('value', `Health:${this.health} / ${this.maxhealth} `);
+            this.texthealthel.setAttribute('color', `gray`);
+            this.texthealthel.setAttribute('align', `center`);
+            this.texthealthel.setAttribute('position', `0 2 0`);
+            this.texthealthel.setAttribute('cameraface', ``);
+            
+            el.appendChild(this.texthealthel);
+
             //this.setupEmitters();
             this.scene.appendChild(el);
             this.el = el; //assign var since it not in the lancegg
@@ -84,6 +94,7 @@ class PlayerCube extends PhysicalObject {
             if(this.playerId == gameEngine.renderer.clientEngine.playerId){
                 el.setAttribute("camera3rd", '');
             }
+
         }
 
         if(this.isBot){
@@ -200,12 +211,26 @@ class PlayerCube extends PhysicalObject {
     }
 
     fireweapon(inputData){
-        this.gameEngine.emit('fire',{playerid:this.playerId});
+        this.gameEngine.emit('fire',{id:this.id});
     }
 
-    eventDamage(id, dmg){
-        console.log("============================================");
-        this.health -= dmg;
+    eventDamage(params){
+        console.log("playercube > eventdamage!");
+        if(params==null)return;
+
+        this.scene = this.gameEngine.renderer ? this.gameEngine.renderer.scene : null;
+
+        console.log(this.scene);
+
+        if(params.damage != null){
+            console.log("============================================");
+            this.health -= params.damage;
+            console.log(this.texthealthel);
+            if(this.texthealthel !=null){
+                console.log("update health?");
+                this.texthealthel.setAttribute('value', `Health:${this.health} / ${this.maxhealth} `);
+            }
+        }
         console.log("Health:"+this.health + "/" + this.maxhealth);
     }
 
@@ -224,9 +249,9 @@ class PlayerCube extends PhysicalObject {
         this.fireLoop = this.gameEngine.timer.loop(fireLoopTime, () => {
             if (this.target && this.distanceToTarget(this.target) < 400) {
                 //this.gameEngine.makeMissile(this);
-                console.log("Id:"+this.playerId);
+                //console.log("Id:"+this.playerId);
                 //console.log(this.gameEngine);
-                console.log("PlayerCube > AI > fire!");
+                //console.log("PlayerCube > AI > fire!");
                 this.gameEngine.emit('fire', {id:this.id});
             }
         });
@@ -303,7 +328,7 @@ class PlayerCube extends PhysicalObject {
     }
 
     destroy() {
-        console.log("destroy physicsObj");
+        //console.log("destroy physicsObj");
         if(this.physicsObj !=null){
             this.gameEngine.physicsEngine.removeObject(this.physicsObj);
         }

@@ -18,6 +18,8 @@ const PlayerCube = require('../common/PlayerCube');
 //const Missile = require('../common/Missile');
 //const CubeProjectile = require('../common/CubeProjectile');
 
+const NUM_BOTS = 3;
+
 class MyServerEngine extends ServerEngine {
 
     constructor(io, gameEngine, inputOptions) {
@@ -31,9 +33,11 @@ class MyServerEngine extends ServerEngine {
         this.gameEngine.initGame();
         this.playercontrollers = {};
 
+        //for (let x = 0; x < NUM_BOTS; x++) this.makeBot();
+
         // fire event > projectile
         this.gameEngine.on('fire',(data)=>{
-            console.log("serverengine > event > fire!");
+            //console.log("serverengine > event > fire!");
             //this.makeMissile(data);
             //this.gameEngine.makeMissile(data);
             this.gameEngine.makeprojectile(data);
@@ -42,7 +46,7 @@ class MyServerEngine extends ServerEngine {
         // create sound?
         this.gameEngine.on('missileHit', (e) => {
             //this.gameEngine.removeObjectFromWorld(e.ship.id);
-            console.log("event > missilehit");
+            //console.log("event > missilehit");
         });
     }
 
@@ -81,6 +85,18 @@ class MyServerEngine extends ServerEngine {
                 break;
             }
         }
+    }
+
+    makeBot() {
+        let bot = this.gameEngine.makeShip(0);
+        bot.attachAI();
+
+        //this.scoreData[bot.id] = {
+            //kills: 0,
+            //name: nameGenerator('general') + 'Bot'
+        //};
+
+        //this.updateScore();
     }
 }
 
