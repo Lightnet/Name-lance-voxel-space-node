@@ -115,7 +115,7 @@ class PlayerCube extends PhysicalObject {
     }
 
     processInput(inputData){
-        console.log(inputData);
+        //console.log(inputData);
         if ((inputData.input === 'up') && (inputData.options.movement == true)) {
             this.forwardthrust();
         } else if ((inputData.input === 'down') && (inputData.options.movement == true)) {
@@ -267,7 +267,7 @@ class PlayerCube extends PhysicalObject {
                 //this.gameEngine.makeMissile(this);
                 //console.log("Id:"+this.playerId);
                 //console.log(this.gameEngine);
-                //this.fireweapon();
+                this.fireweapon();
             }
         });
     }

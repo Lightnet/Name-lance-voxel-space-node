@@ -80,12 +80,12 @@ class MyClientEngine extends ClientEngine {
                     this.renderer.enableFullScreen();
                 }
                 this.socket.emit('requestRestart');
-                console.log("#joinGame");
+                //console.log("#joinGame");
             });
 
             document.querySelector('#reconnect').addEventListener('click', () => {
                 window.location.reload();
-                console.log("#reconnect");
+                //console.log("#reconnect");
             });
         });
 
