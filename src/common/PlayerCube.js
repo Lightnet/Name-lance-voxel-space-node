@@ -11,7 +11,7 @@
 
 'use strict';
 
-//const DynamicObject= require('lance-gg').serialize.DynamicObject;
+const Serializer = require('lance-gg').serialize.Serializer;
 const PhysicalObject = require('lance-gg').serialize.PhysicalObject;
 const ThreeVector = require('lance-gg').serialize.ThreeVector;
 const Quaternion = require('lance-gg').serialize.Quaternion;
@@ -21,10 +21,23 @@ const THREE = require('three');
 const MASS = 10;
 let CANNON = null;
 
-//class PlayerAvatar extends DynamicObject {
 class PlayerCube extends PhysicalObject {
 
-    //constructor(id,gameEngine, position) {
+    /*
+    static get netScheme() {
+        return Object.assign({
+            health: { type: Serializer.TYPES.INT32 },
+            maxhealth: { type: Serializer.TYPES.INT32 }
+        }, super.netScheme);
+    }
+
+    syncTo(other) {
+        super.syncTo(other);
+        this.health = other.health;
+        this.maxhealth = other.maxhealth;
+    }
+    */
+
     constructor(id, position) {
         super(id, position);
         //console.log("this.id");
@@ -83,7 +96,9 @@ class PlayerCube extends PhysicalObject {
             this.texthealthel.setAttribute('align', `center`);
             this.texthealthel.setAttribute('position', `0 2 0`);
             this.texthealthel.setAttribute('cameraface', ``);
-            
+            this.texthealthel.setAttribute('game-object-id', this.id);
+
+            //this.scene.appendChild(this.texthealthel);
             el.appendChild(this.texthealthel);
 
             //this.setupEmitters();

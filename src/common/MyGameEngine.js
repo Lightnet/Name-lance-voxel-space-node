@@ -314,8 +314,8 @@ class MyGameEngine extends GameEngine {
         console.log("gameengine > onDamage!");
         //console.log(e);
         if(e.targetId !=null){
-            //for(let objId of Object.keys(this.world.objects)){
-            for(let objId in this.world.objects){
+            for(let objId of Object.keys(this.world.objects)){
+            //for(let objId in this.world.objects){
                 let obj = this.world.objects[objId];
                 if(obj.id == e.targetId){
                     console.log("isbot? : "+obj.isBot);

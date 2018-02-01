@@ -11,13 +11,24 @@
 
 'use strict';
 
-//const DynamicObject= require('lance-gg').serialize.DynamicObject;
+const Serializer = require('lance-gg').serialize.Serializer;
 const PhysicalObject = require('lance-gg').serialize.PhysicalObject;
 const PlayerCube = require('./PlayerCube');
 const MASS = 0.1;
 let CANNON = null;
 
 class CubeProjectile extends PhysicalObject {
+
+    static get netScheme() {
+        return Object.assign({
+            ownerId: { type: Serializer.TYPES.INT32 }
+        }, super.netScheme);
+    }
+
+    syncTo(other) {
+        super.syncTo(other);
+        this.ownerId = other.ownerId;
+    }
 
     constructor(id, position) {
         super(id, position);
@@ -54,7 +65,7 @@ class CubeProjectile extends PhysicalObject {
                 console.log("[ownerId]"+this.ownerId + "  [Target]" + e.target.ownerId + " [body]" + e.body.ownerId);
                 if(e.body.ownerId != this.ownerId ){
                     //console.log("Cubeproejctile >  emit > ondamage!");
-                    this.gameEngine.emit('ondamage',{ownerId:this.ownerId, targetId:e.target.ownerId, damage:this.damage});
+                    this.gameEngine.emit('ondamage',{ownerId:this.ownerId, targetId:e.body.ownerId, damage:this.damage});
                 }
                 this.gameEngine.projectiles.push(this.id);
                 //self.gameEngine.removeObjectFromWorld(this); //doesn't work here
