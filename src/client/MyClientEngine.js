@@ -14,6 +14,7 @@ const MyRenderer = require('../client/MyRenderer');
 const Utils = require('./../common/Utils');
 const MobileControls = require('../client/MobileControls');
 const KeyboardControls = require('../client/KeyboardControls');
+const PlayerCube = require('../common/PlayerCube');
 
 
 class MyClientEngine extends ClientEngine {
@@ -46,17 +47,21 @@ class MyClientEngine extends ClientEngine {
         super.start();
         // handle gui for game condition
         this.gameEngine.on('objectDestroyed', (obj) => {
-            console.log("objectDestroyed");
-            //if (obj.class == Ship && this.isOwnedByPlayer(obj)) {
+            //console.log("objectDestroyed");
+            if (obj.class == PlayerCube && this.isOwnedByPlayer(obj)) {
                 //document.body.classList.add('lostGame');
-                //document.querySelector('#tryAgain').disabled = false;
-            //}
+                document.querySelector('#tryAgain').disabled = false;
+                document.querySelector('#tryAgain').hidden = false;
+            }
             document.querySelector('#tryAgain').disabled = false;
         });
 
         this.gameEngine.once('renderer.ready', () => {
             console.log("==============================");
             console.log("renderer.ready");
+            setTimeout(function(){ 
+                document.querySelector('#loadingscreen').hidden= true;
+            }, 1000);
 
             document.querySelector('#tryAgain').hidden = true;
             document.querySelector('#reconnect').hidden = true;
@@ -170,7 +175,7 @@ class MyClientEngine extends ClientEngine {
     // extend ClientEngine connect to add own events
     connect() {
         return super.connect().then(() => {
-            console.log("client engine connected...");
+            //console.log("client engine connected...");
             document.querySelector('#reconnect').hidden = true;
 
 
@@ -184,7 +189,7 @@ class MyClientEngine extends ClientEngine {
                 console.log('scoreUpdate');
                 //this.renderer.updateScore(e);
             });
-            console.log(this.playerId);
+            //console.log(this.playerId);
 
             //console.log(this.gameEngine.world );
             //let playercontrol = this.world.getPlayerObject(playerId);

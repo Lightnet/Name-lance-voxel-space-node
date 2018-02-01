@@ -41,7 +41,7 @@ class CubeProjectile extends PhysicalObject {
     onAddToWorld(gameEngine) {
         //console.log("add to world scene BoxCannon.");
         // create the physics body
-        console.log("CubeProjectile ID:"+this.id);
+        //console.log("CubeProjectile ID:"+this.id);
         this.gameEngine = gameEngine;
         this.physicsObj = gameEngine.physicsEngine.addBox(1, 1, 1, MASS, 0);
         this.physicsObj.position.set(this.position.x, this.position.y, this.position.z);
@@ -51,18 +51,17 @@ class CubeProjectile extends PhysicalObject {
         var self = this;
 
         this.physicsObj.addEventListener("collide", (e)=>{ 
-            console.log("//========================");
-            console.log("collided");
-            console.log("//========================");
-
+            //console.log("//========================");
+            //console.log("collided");
+            //console.log("//========================");
             if(!this.bdestroy){
                 this.bdestroy = true;
                 //console.log("trigger destroy?");
                 //console.log(e);
                 //console.log(e.target);
-                console.log("===========================================!");
-                console.log("Cubeprojectile >  bdestroy!");
-                console.log("[ownerId]"+this.ownerId + "  [Target]" + e.target.ownerId + " [body]" + e.body.ownerId);
+                //console.log("===========================================!");
+                //console.log("Cubeprojectile >  bdestroy!");
+                //console.log("[ownerId]"+this.ownerId + "  [Target]" + e.target.ownerId + " [body]" + e.body.ownerId);
                 if(e.body.ownerId != this.ownerId ){
                     //console.log("Cubeproejctile >  emit > ondamage!");
                     this.gameEngine.emit('ondamage',{ownerId:this.ownerId, targetId:e.body.ownerId, damage:this.damage});
@@ -87,7 +86,7 @@ class CubeProjectile extends PhysicalObject {
             el.setAttribute('position', `${p.x} ${p.y} ${p.z}`);
             //el.setAttribute('material', 'src: #ball');
             el.setAttribute('geometry', `primitive: box; width: 1; height: 1; depth: 1;`);
-            el.setAttribute('game-object-id', this.id);
+            //el.setAttribute('game-object-id', this.id);
             //this.setupEmitters();
             //console.log("a-entity box");
             this.el = el;

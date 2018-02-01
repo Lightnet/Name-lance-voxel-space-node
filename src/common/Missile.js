@@ -27,7 +27,7 @@ class Missile extends PhysicalObject {
     onAddToWorld(gameEngine) {
         //console.log("add to world scene BoxCannon.");
         // create the physics body
-        console.log("Missile ID:"+this.id);
+        //console.log("Missile ID:"+this.id);
         this.gameEngine = gameEngine;
         this.physicsObj = gameEngine.physicsEngine.addBox(1, 1, 1, MASS, 0);
         this.physicsObj.position.set(this.position.x, this.position.y, this.position.z);
@@ -35,14 +35,13 @@ class Missile extends PhysicalObject {
         this.physicsObj.playerId = 1;
         var self = this;
 
-        this.physicsObj.addEventListener("collide", function(e){ 
-            console.log("collided");
-
-            if(!self.bdestroy){
+        this.physicsObj.addEventListener("collide", (e)=>{ 
+            //console.log("collided");
+            if(!this.bdestroy){
                 //self.gameEngine.projectiles.push(self.physicsObj);
-                self.gameEngine.projectiles.push(self.id);
-                self.bdestroy = true;
-                console.log("trigger destroy?");
+                this.gameEngine.projectiles.push(self.id);
+                this.bdestroy = true;
+                //console.log("trigger destroy?");
             }
         });
 
@@ -61,7 +60,7 @@ class Missile extends PhysicalObject {
             el.setAttribute('position', `${p.x} ${p.y} ${p.z}`);
             //el.setAttribute('material', 'src: #ball');
             el.setAttribute('geometry', `primitive: box; width: 1; height: 1; depth: 1;`);
-            el.setAttribute('game-object-id', this.id);
+            //el.setAttribute('game-object-id', this.id);
             //this.setupEmitters();
             //console.log("a-entity box");
             this.el = el;

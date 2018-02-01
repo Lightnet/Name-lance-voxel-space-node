@@ -48,22 +48,17 @@ class MyGameEngine extends GameEngine {
         this.timer = new Timer();
         this.timer.play();
 
-        this.objmissile = null;
-
         this.on('server__postStep', ()=>{
             this.timer.tick();
         });
-
         //this.on('fire',function(data){
             //console.log("data");
             //console.log(data);
             //this.makeMissile();
         //});
-        //console.log(this);
-
-        this.on('ondamage',(e)=>{
-            this.onDamage(e);
-        });
+        //this.on('ondamage',(e)=>{
+            //this.onDamage(e);
+        //});
     }
 
     start() {
@@ -82,7 +77,7 @@ class MyGameEngine extends GameEngine {
         });
 
         this.on('objectAdded', (object) => {
-            console.log("object added");
+            //console.log("object added");
             //if (object.id == 1) {
                 //this.playeravatar = object;
             //}
@@ -91,10 +86,10 @@ class MyGameEngine extends GameEngine {
     }
 
     object_physics_handler(obj){
-        console.log("handle object...");
+        //console.log("handle object...");
         if(obj.class == Missile){
-            console.log("obj Missile found!");
-            obj.playerId = 0;
+            //console.log("obj Missile found!");
+            //obj.playerId = 0;
             //obj.physicsObj.addEventListener("collide", function(e){
                 //console.log(e);
                 //console.log("sphere collided");
@@ -110,12 +105,14 @@ class MyGameEngine extends GameEngine {
         
         if(playercontrol.class == PlayerController){
             playercontrol.checkpawn();
-
-            if((playercontrol.pawn)){
+            if(playercontrol.pawn){
                 //console.log(inputData);
                 //console.log("pawn found!");
                 let pawn = playercontrol.pawn;
-                pawn.processInput(inputData);
+                if(pawn !=null){
+                    //console.log("gameengine > pawn input ");
+                    pawn.processInput(inputData);
+                }
             }
         }
     }
@@ -135,20 +132,13 @@ class MyGameEngine extends GameEngine {
     }
 
     // Game Engine Step.
-    // Check object physics to be remove from world
+    // Check object physics to be remove from world else cause error still work in progress
     step(isReenact) {
         super.step(isReenact);
-        //console.log("step");
-
-        //if(this.objmissile){
-            //this.physicsEngine.removeObject(this.objmissile);
-            //this.objmissile = null;
-            //this.gameEngine.physicsEngine.removeObject(this.physicsObj);
-        //}
 
         var i = this.projectiles.length
         while (i--) {
-            console.log("remove object?");
+            //console.log("remove object?");
             let _objid = this.projectiles[i];
             //this.physicsEngine.removeObject(_objid);
             //let obj = this.world.objects[objid];
@@ -163,7 +153,7 @@ class MyGameEngine extends GameEngine {
                 if (o.id == _objid ) {
                     //objplayer = o;
                     if(o !=null){
-                        console.log("delete!?");
+                        //console.log("delete!");
                         this.removeObjectFromWorld(o.id);
                         //this.emit("destorymissile",o.id);
                     }
@@ -180,7 +170,7 @@ class MyGameEngine extends GameEngine {
     //=================================
     makeMissile(data) {
         let objplayer;
-        console.log("create missile?");
+        //console.log("create missile?");
 
         for (let objId of Object.keys(this.world.objects)) {
             let o = this.world.objects[objId];
@@ -191,7 +181,7 @@ class MyGameEngine extends GameEngine {
         }
 
         if(objplayer == null){
-            console.log("null player ship!");
+            //console.log("null player ship!");
             return;
         }
 
@@ -218,7 +208,7 @@ class MyGameEngine extends GameEngine {
         //missile.physicsObj.velocity.z += Math.sin(missile.angle * (Math.PI / 180)) * 10;
         missile.physicsObj.velocity.x += dir.x;
         missile.physicsObj.velocity.z += dir.z;
-        this.trace.trace(`missile[${missile.id}] created vel=${missile.velocity}`);
+        //this.trace.trace(`missile[${missile.id}] created vel=${missile.velocity}`);
         this.timer.add(500, this.destroyMissile, this, [missile.id]);
         return missile;
     }
@@ -292,23 +282,12 @@ class MyGameEngine extends GameEngine {
     //=======================
     // Create Ship Object
     //=======================
-
     makeShip(playerId) {
-        //console.log("call > makeship");
-        let playercontrol = this.world.getPlayerObject(playerId);
         let pawn;
-        //console.log(playercontrol);
-        if(!playercontrol.pawn){
-            pawn = this.addObjectToWorld(new PlayerCube(++this.world.idCount, new ThreeVector(0, 0, 0)));
-            pawn.playerId = playerId;
-            //playercontrol.pawn = pawn;
-            //console.log("created?");
-        }else{
-            pawn = playercontrol.pawn;
-        }
+        pawn = this.addObjectToWorld(new PlayerCube(++this.world.idCount, new ThreeVector(0, 0, 0)));
+        pawn.playerId = playerId;
         return pawn;
     };
-
 
     onDamage(e){
         console.log("gameengine > onDamage!");
@@ -318,11 +297,31 @@ class MyGameEngine extends GameEngine {
             //for(let objId in this.world.objects){
                 let obj = this.world.objects[objId];
                 if(obj.id == e.targetId){
-                    console.log("isbot? : "+obj.isBot);
-                    console.log("game engine > onDamage > found!");
+                    //console.log("isbot? : "+obj.isBot);
+                    //console.log("game engine > onDamage > found!");
                     obj.eventDamage(e);
                 }
             }
+        }
+    }
+
+    destroyObject(e){
+        if(e.id !=null){
+            let obj_id = null;
+            for(let objId of Object.keys(this.world.objects)){
+            //for(let objId in this.world.objects){
+                let obj = this.world.objects[objId];
+                if(obj.id == e.id){
+                    //console.log("game engine > destroyObject > found!");
+                    obj_id = obj.id;
+                    break;
+                }
+            }
+            if(obj_id){
+                //this.removeObjectFromWorld(obj_id); //error physcis call order
+                this.projectiles.push(obj_id);
+            }
+            obj_id =null;
         }
     }
 

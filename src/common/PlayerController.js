@@ -60,7 +60,7 @@ class PlayerController extends DynamicObject {
             for (let objId in this.gameEngine.world.objects) {
                 var o = this.gameEngine.world.objects[objId];
                 if (o.playerId == this.playerId && o.class == PlayerCube) {
-                    console.log("PlayerCube found! Assign");
+                    //console.log("PlayerCube > pawn > Found! Assign");
                     this.pawn = this.gameEngine.world.objects[objId];
                     //this.pawn.foucscamera();
                     this.bspawn = true;
@@ -71,15 +71,17 @@ class PlayerController extends DynamicObject {
     }
 
     foucscamera(){
+        /*
         this.scene = this.gameEngine.renderer ? this.gameEngine.renderer.scene : null;
         if((this.scene !=null)&&(this.pawn !=null)){
-            console.log("camera set scene client?");
+            //console.log("camera set scene client?");
             if(this.playerId == this.gameEngine.renderer.clientEngine.playerId){
                 let cameraEL = document.querySelector('a-camera');
                 cameraEL.setAttribute("orbit-controls", "target",`#${this.pawn.id}`);
                 cameraEL.components['orbit-controls'].target = this.pawn.position;
             }
         }
+        */
     }
 
     toString() {

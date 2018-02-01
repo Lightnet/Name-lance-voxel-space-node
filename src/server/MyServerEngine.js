@@ -44,6 +44,25 @@ class MyServerEngine extends ServerEngine {
             this.gameEngine.makeprojectile(data);
         });
 
+        this.gameEngine.on('ondamage',(e)=>{
+            this.gameEngine.onDamage(e);
+        });
+
+        this.gameEngine.on('destroyObject',(e)=>{
+            for (let key in this.playercontrollers){
+                let obj = this.playercontrollers[key];
+                if(obj.pawn !=null){
+                    if(obj.pawn.id == e.id){
+                        //console.log("serverengine > playercontroller > pawn > null");
+                        obj.pawn = null;
+                        obj.bspawn = false;
+                        break;
+                    }
+                }
+            }
+            this.gameEngine.destroyObject(e);
+        });
+
         // create sound?
         this.gameEngine.on('missileHit', (e) => {
             //this.gameEngine.removeObjectFromWorld(e.ship.id);
@@ -53,7 +72,7 @@ class MyServerEngine extends ServerEngine {
 
     onPlayerConnected(socket) {
         super.onPlayerConnected(socket);
-        let controller = new PlayerController(++this.gameEngine.world.idCount, socket.playerId);
+        var controller = new PlayerController(++this.gameEngine.world.idCount, socket.playerId);
         this.gameEngine.addObjectToWorld(controller);
 
         this.playercontrollers[controller.id] = controller;
@@ -64,8 +83,12 @@ class MyServerEngine extends ServerEngine {
         });
 
         let makePlayerShip = () => {
-            console.log("requestRestart > makePlayerShip");
-            let ship = this.gameEngine.makeShip(socket.playerId);
+            //console.log("requestRestart > makePlayerShip");
+            let ship;
+            if(controller.pawn == null){
+                ship = this.gameEngine.makeShip(socket.playerId);
+                controller.pawn = ship;
+            }
             //this.scoreData[ship.id] = {
                 //kills: 0,
                 //name: nameGenerator('general')

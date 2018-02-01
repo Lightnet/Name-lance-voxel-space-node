@@ -23,11 +23,12 @@ let CANNON = null;
 
 class PlayerCube extends PhysicalObject {
 
-    /*
+    
     static get netScheme() {
         return Object.assign({
             health: { type: Serializer.TYPES.INT32 },
-            maxhealth: { type: Serializer.TYPES.INT32 }
+            maxhealth: { type: Serializer.TYPES.INT32 },
+            angle: { type: Serializer.TYPES.INT32 }
         }, super.netScheme);
     }
 
@@ -35,9 +36,9 @@ class PlayerCube extends PhysicalObject {
         super.syncTo(other);
         this.health = other.health;
         this.maxhealth = other.maxhealth;
+        this.angle = other.angle;
     }
-    */
-
+    
     constructor(id, position) {
         super(id, position);
         //console.log("this.id");
@@ -49,10 +50,8 @@ class PlayerCube extends PhysicalObject {
         this.bpress = false;
         this.bspawn = false;
         this.movespeed = 0.1;
-
-        this.health = 100;
+        this.health = 3;
         this.maxhealth = 100;
-
         this.isBot = false;
         this.isDead = false;
     };
@@ -62,8 +61,8 @@ class PlayerCube extends PhysicalObject {
         this.gameEngine = gameEngine;
         // create the physics body
         CANNON = this.gameEngine.physicsEngine.CANNON;
-        console.log("add to world scene playercube.");
-        console.log("Player Id:" + this.id);
+        //console.log("add to world scene playercube.");
+        //console.log("Player Id:" + this.id);
         //console.log("playerId:" + this.playerId);
         //console.log(gameEngine.physicsEngine);
         this.physicsObj = gameEngine.physicsEngine.addBox(1,1,1, MASS,0.1);
@@ -73,12 +72,10 @@ class PlayerCube extends PhysicalObject {
         this.physicsObj.fixedRotation = true;
         this.physicsObj.ownerId = this.id;
         //console.log(this.physicsObj);
-        //console.log(this);
-
 
         this.scene = gameEngine.renderer ? gameEngine.renderer.scene : null;
         if (this.scene) {
-            console.log("a-entity box");
+            //console.log("a-entity box");
             let el = this.renderEl = document.createElement('a-entity');
             let p = this.position;
             let q = this.quaternion;
@@ -96,7 +93,7 @@ class PlayerCube extends PhysicalObject {
             this.texthealthel.setAttribute('align', `center`);
             this.texthealthel.setAttribute('position', `0 2 0`);
             let textid = "target=#"+this.id;
-            console.log(textid);
+            //console.log(textid);
             this.texthealthel.setAttribute('cameraface', "target:#game-object-id"+this.id);
             //this.texthealthel.setAttribute('game-object-id', this.id);
 
@@ -111,7 +108,6 @@ class PlayerCube extends PhysicalObject {
             if(this.playerId == gameEngine.renderer.clientEngine.playerId){
                 el.setAttribute("camera3rd", '');
             }
-
         }
 
         if(this.isBot){
@@ -133,7 +129,7 @@ class PlayerCube extends PhysicalObject {
         if( (inputData.input === 'space')) {
             if(this.gameEngine !=null){
                 this.gameEngine.emit('fire',{id:this.id});
-                console.log("FIRE!");
+                //console.log("FIRE!");
             }
         }
         if( (inputData.input === 'b') && (inputData.options.movement == true)) {
@@ -184,6 +180,7 @@ class PlayerCube extends PhysicalObject {
     stopmovement(){
         if(this.physicsObj != null){
             this.physicsObj.velocity.setZero();
+            this.physicsObj.angularVelocity.setZero();
         }
     }
 
@@ -235,19 +232,26 @@ class PlayerCube extends PhysicalObject {
         console.log("playercube > eventdamage!");
         if(params==null)return;
 
-        this.scene = this.gameEngine.renderer ? this.gameEngine.renderer.scene : null;
+        ///this.scene = this.gameEngine.renderer ? this.gameEngine.renderer.scene : null;
 
-        console.log(this.scene);
+        //console.log(this.gameEngine);
 
         if(params.damage != null){
             console.log("============================================");
             this.health -= params.damage;
-            console.log(this.texthealthel);
-            if(this.texthealthel !=null){
-                console.log("update health?");
-                this.texthealthel.setAttribute('value', `Health:${this.health} / ${this.maxhealth} `);
-            }
+            //console.log(this.texthealthel);
+            //if(this.texthealthel !=null){
+                //console.log("update health?");
+                //this.texthealthel.setAttribute('value', `Health:${this.health} / ${this.maxhealth} `);
+            //}
         }
+
+        if((this.health <= 0)&&(this.isDead == false)){
+            this.isDead = true;
+            console.log("Death");
+            this.gameEngine.emit('destroyObject',{id:this.id, byid:null});
+        }
+
         console.log("Health:"+this.health + "/" + this.maxhealth);
     }
 
@@ -346,19 +350,17 @@ class PlayerCube extends PhysicalObject {
 
     destroy() {
         //console.log("destroy physicsObj");
-        if(this.physicsObj !=null){
-            this.gameEngine.physicsEngine.removeObject(this.physicsObj);
+        if(this.physicsObj !=null){//server check if physics exist
+            this.gameEngine.physicsEngine.removeObject(this.physicsObj);//remove physics object
         }
 
-        if((this.scene !=null)&&(this.el)){
-            //this.scene.appendChild(this.el);
-            //console.log(this.scene);
-            let entity = this.el;
-            entity.parentNode.removeChild(entity);
+        if((this.scene !=null)&&(this.el)){//check if client for remove node
+            this.el.parentNode.removeChild(this.el);//remove mesh object
+            this.texthealthel.parentNode.removeChild(this.texthealthel);//remove text
         }
 
         if (this.onPreStep){
-            this.gameEngine.removeListener('preStep', this.onPreStep);
+            this.gameEngine.removeListener('preStep', this.onPreStep); //remove tick AI Bot
             this.onPreStep = null;
         }
         
