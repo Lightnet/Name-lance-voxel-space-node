@@ -54,8 +54,5 @@ Notes:
  * Master -Stable build.
  * Pong -Simple 3D Pong but buggy.
 
-
 # Multiples Licenses:
- * None at the moment.
-
  * jui.io ( UI  )

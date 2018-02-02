@@ -83,3 +83,8 @@ document.querySelector('a-scene').systems['physics']
 # Content-Security-Policy
  * https://www.twilio.com/blog/2017/11/securing-your-express-app.html
  * https://stackoverflow.com/questions/21048252/nodejs-where-exactly-can-i-put-the-content-security-policy
+
+
+# lance-gg
+ * ServerEngine
+    * this.connectedPlayers

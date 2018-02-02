@@ -12,7 +12,6 @@
 const qsOptions = require('query-string').parse(location.search);
 const MyClientEngine = require('../client/MyClientEngine');
 const MyGameEngine = require('../common/MyGameEngine');
-//const SimplePhysicsEngine = require('lance-gg').physics.SimplePhysicsEngine;
 const CannonPhysicsEngine = require('lance-gg').physics.CannonPhysicsEngine;
 //require('../../assets/sass/main.scss');
 //===============================================
@@ -24,7 +23,7 @@ require('./aframecameraface');
 // default options, overwritten by query-string options
 // is sent to both game engine and client engine
 const defaults = {
-    traceLevel: 1,
+    traceLevel: 1000,//1 = debug, 1000= no debug
     delayInputCount: 3,
     clientIDSpace: 1000000,
     syncOptions: {
@@ -38,7 +37,6 @@ let options = Object.assign(defaults, qsOptions);
 
 // extrapolate mode requires a physics engine on the client
 if (options.syncOptions.sync === 'extrapolate')
-    //options.physicsEngine = new SimplePhysicsEngine();
     options.physicsEngine = new CannonPhysicsEngine();
 
 // create a client engine and a game engine

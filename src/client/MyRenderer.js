@@ -69,6 +69,13 @@ class MyRenderer extends AFrameRenderer {
     draw() {
         super.draw();
         //Aframe draw
+        //for(let objId of Object.keys(this.gameEngine.world.objects)){
+            //let o = this.gameEngine.world.objects[objId];
+            //if(o.class == PlayerCube){
+                //o.updateHealthText();
+            //}
+        //}
+        //console.log(this.gameEngine.world);
     }
 
     toggle_login(){

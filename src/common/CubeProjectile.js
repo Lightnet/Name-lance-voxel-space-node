@@ -50,27 +50,7 @@ class CubeProjectile extends PhysicalObject {
         this.physicsObj.ownerId = this.ownerId;
         var self = this;
 
-        this.physicsObj.addEventListener("collide", (e)=>{ 
-            //console.log("//========================");
-            //console.log("collided");
-            //console.log("//========================");
-            if(!this.bdestroy){
-                this.bdestroy = true;
-                //console.log("trigger destroy?");
-                //console.log(e);
-                //console.log(e.target);
-                //console.log("===========================================!");
-                //console.log("Cubeprojectile >  bdestroy!");
-                //console.log("[ownerId]"+this.ownerId + "  [Target]" + e.target.ownerId + " [body]" + e.body.ownerId);
-                if(e.body.ownerId != this.ownerId ){
-                    //console.log("Cubeproejctile >  emit > ondamage!");
-                    this.gameEngine.emit('ondamage',{ownerId:this.ownerId, targetId:e.body.ownerId, damage:this.damage});
-                }
-                this.gameEngine.projectiles.push(this.id);
-                //self.gameEngine.removeObjectFromWorld(this); //doesn't work here
-                //self.gameEngine.removeObjectFromWorld(this.id); //doesn't work here
-            }
-        });
+        this.physicsObj.addEventListener("collide", this.collisionDetect.bind(this));
 
         this.scene = gameEngine.renderer ? gameEngine.renderer.scene : null;
         //this.physicsObj.addEventListener("collide", function(e){ console.log("sphere collided"); } );
@@ -90,6 +70,29 @@ class CubeProjectile extends PhysicalObject {
             //this.setupEmitters();
             //console.log("a-entity box");
             this.el = el;
+        }
+    }
+
+    collisionDetect(e){
+        //console.log("//========================");
+        //console.log("collided");
+        //console.log("//========================");
+        if(!this.bdestroy){
+            this.bdestroy = true;
+            //console.log("trigger destroy?");
+            //console.log(e);
+            //console.log(e.target);
+            //console.log("===========================================!");
+            //console.log("Cubeprojectile >  bdestroy!");
+            //console.log("[ownerId]"+this.ownerId + "  [Target]" + e.target.ownerId + " [body]" + e.body.ownerId);
+            if(e.body.ownerId != this.ownerId ){
+                //console.log("Cubeproejctile >  emit > ondamage!");
+                this.gameEngine.emit('ondamage',{ownerId:this.ownerId, targetId:e.body.ownerId, damage:this.damage});
+                //this.gameEngine.onDamage({ownerId:this.ownerId, targetId:e.body.ownerId, damage:this.damage});
+            }
+            this.gameEngine.projectiles.push(this.id);
+            //self.gameEngine.removeObjectFromWorld(this); //doesn't work here
+            //self.gameEngine.removeObjectFromWorld(this.id); //doesn't work here
         }
     }
 
