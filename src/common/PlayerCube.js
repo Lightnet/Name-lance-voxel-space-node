@@ -49,7 +49,7 @@ class PlayerCube extends PhysicalObject {
         this.bpress = false;
         this.bspawn = false;
         this.movespeed = 0.1;
-        this.health = 3;
+        this.health = 10;
         this.maxhealth = 100;
         this.isBot = false;
         this.isDead = false;
@@ -72,6 +72,11 @@ class PlayerCube extends PhysicalObject {
         this.physicsObj.ownerId = this.id;
         //console.log(this.physicsObj);
 
+        this.physicsObj.addEventListener("collide", (e)=>{
+            //console.log("object collided");
+            this.updateHealthText();//update text
+        });
+
         this.scene = gameEngine.renderer ? gameEngine.renderer.scene : null;
         if (this.scene) {
             //console.log("a-entity box");
@@ -87,7 +92,7 @@ class PlayerCube extends PhysicalObject {
             el.setAttribute('id', "game-object-id"+ this.id);
 
             this.texthealthel = document.createElement('a-text');
-            this.texthealthel.setAttribute('value', `Health:${this.health} / ${this.maxhealth} `);
+            this.texthealthel.setAttribute('value', `Health:${this.health}/${this.maxhealth}`);
             this.texthealthel.setAttribute('color', `gray`);
             this.texthealthel.setAttribute('align', `center`);
             this.texthealthel.setAttribute('position', `0 2 0`);
@@ -137,7 +142,7 @@ class PlayerCube extends PhysicalObject {
 
     forwardthrust(){
         if(this.physicsObj != null){
-            console.log("forward?");
+            //console.log("forward?");
             let CANNON = this.gameEngine.physicsEngine.CANNON;
             //this.physicsObj.velocity.setZero();
             //let pos = this.physicsObj.position;
@@ -227,19 +232,18 @@ class PlayerCube extends PhysicalObject {
         this.gameEngine.emit('fire', {id:this.id});
     }
 
+    //server side no client?
     eventDamage(params){
+        //this.scene = this.gameEngine.renderer ? this.gameEngine.renderer.scene : null;
         console.log("playercube > eventdamage!");
         if(params==null)return;
-        ///this.scene = this.gameEngine.renderer ? this.gameEngine.renderer.scene : null;
-        //console.log(this.gameEngine);
+        //console.log(this);
+        console.log(this.texthealthel);
+        console.log(this.el);
         if(params.damage != null){
             console.log("============================================");
             this.health -= params.damage;
             //console.log(this.texthealthel);
-            //if(this.texthealthel !=null){
-                //console.log("update health?");
-                //this.texthealthel.setAttribute('value', `Health:${this.health} / ${this.maxhealth} `);
-            //}
         }
         if((this.health <= 0)&&(this.isDead == false)){
             this.isDead = true;
@@ -249,8 +253,22 @@ class PlayerCube extends PhysicalObject {
         console.log("Health:"+this.health + "/" + this.maxhealth);
     }
 
+    updateHealthText(){
+        //console.log(this.texthealthel);
+        if(this.texthealthel !=null){
+            //console.log("update health?");
+            //console.log(this.texthealthel);
+            //console.log(this.health + "/" + this.maxhealth);
+            this.texthealthel.setAttribute('value', `Health:${this.health} / ${this.maxhealth} `);
+        }
+    }
+
     toString() {
         return `PlayerCube::${super.toString()}`;
+    }
+
+    attachUpdate() {
+
     }
 
     //create AI 
@@ -258,6 +276,7 @@ class PlayerCube extends PhysicalObject {
         //this.isBot = true;
         this.onPreStep = () => {
             this.steer();
+            //this.updateHealthText();
         };
         this.gameEngine.on('preStep', this.onPreStep);
         let fireLoopTime = Math.round(250 + Math.random() * 100);

@@ -24,6 +24,8 @@ class MyClientEngine extends ClientEngine {
 
         //this.serializer.registerClass(require('../common/PlayerAvatar'));
         this.gameEngine.on('client__preStep', this.preStep.bind(this));
+        //this.gameEngine.on('client__syncReceived', this.syncReceived.bind(this));
+        this.gameEngine.on('syncReceived', this.ssyncReceived.bind(this));
         // keep a reference for key press state
         this.pressedKeys = {
             down: false,
@@ -41,6 +43,11 @@ class MyClientEngine extends ClientEngine {
         let that = this;
         document.onkeydown = (e) => { that.onKeyChange(e, true); };
         document.onkeyup = (e) => { that.onKeyChange(e, false); };
+    }
+
+    ssyncReceived(e){
+        console.log("syncReceived?");
+        console.log(e);
     }
 
     start() {
@@ -109,7 +116,6 @@ class MyClientEngine extends ClientEngine {
     // our pre-step is to process all inputs
     preStep() {
         //need to fixed this later...
-
         if (this.pressedKeys.up) {
             this.sendInput('up', { movement: true });
         }
@@ -133,7 +139,6 @@ class MyClientEngine extends ClientEngine {
         if (this.pressedKeys.b) {
             this.sendInput('b', { movement: true });
         }
-
         //console.log(this.pressedKeys);
     }
 
@@ -169,7 +174,6 @@ class MyClientEngine extends ClientEngine {
         if (e.keyCode == '66') {//b
             this.pressedKeys.b = isDown;
         }
-        
     }
 
     // extend ClientEngine connect to add own events

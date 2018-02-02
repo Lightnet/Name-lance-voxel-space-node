@@ -11,11 +11,9 @@
 
 */
 
-
 'use strict';
 
 //main point entry
-
 const express = require('express');
 const csp = require('express-csp-header');
 const socketIO = require('socket.io');
@@ -54,13 +52,11 @@ const MyGameEngine = require(path.join(__dirname, 'src/common/MyGameEngine.js'))
 const CannonPhysicsEngine = require('lance-gg').physics.CannonPhysicsEngine;
 
 // Game Instances
-//const physicsEngine = new SimplePhysicsEngine();
 const physicsEngine = new CannonPhysicsEngine();
 //const gameEngine = new MyGameEngine({ physicsEngine, traceLevel: 1 });
 const gameEngine = new MyGameEngine({ physicsEngine, traceLevel: 1000 });
-//const gameEngine = new MyGameEngine({ physicsEngine });
 
-const serverEngine = new MyServerEngine(io, gameEngine, { debug: {}, updateRate: 6,tracesPath: './logs' });
+const serverEngine = new MyServerEngine(io, gameEngine, { debug: {}, updateRate: 6, tracesPath: './logs' });
 //const serverEngine = new MyServerEngine(io, gameEngine, { updateRate: 6 });
 
 // start the game

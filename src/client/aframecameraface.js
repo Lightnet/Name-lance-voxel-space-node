@@ -15,7 +15,7 @@ AFRAME.registerComponent('cameraface', {
     schema: {
         enabled: {type: 'boolean',default:true},
         cameraid: {type: 'string',default:"a-camera"},
-        target: {type: 'string',default:null},
+        target: {type: 'string',default:""},
         offset: {type: 'vec3', default:{x:0,y:3,z:0}}
     },
     init: function () {
@@ -44,7 +44,9 @@ AFRAME.registerComponent('cameraface', {
             this.el.object3D.quaternion.setFromRotationMatrix( m1 );
 
             if(this.targetEL == null){
-                this.targetEL = document.querySelector(this.data.target);
+                if(this.data.target != ""){
+                    this.targetEL = document.querySelector(this.data.target);
+                }
             }
 
             if(this.targetEL != null){

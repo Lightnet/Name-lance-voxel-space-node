@@ -44,12 +44,21 @@ class MyGameEngine extends GameEngine {
 
         this.projectiles = [];
 
+        this.ships = [];
+
         this.timer = new Timer();
         this.timer.play();
 
         this.on('server__postStep', ()=>{
             this.timer.tick();
+            this.postStepHandle();
         });
+
+        this.on('collisionStart', function(e) {
+            console.log("collision????????????????????????????????");
+
+        });
+
         //this.on('fire',function(data){
             //console.log("data");
             //console.log(data);
@@ -59,6 +68,16 @@ class MyGameEngine extends GameEngine {
         //this.on('ondamage',(e)=>{
             //this.onDamage(e);
         //});
+    }
+
+    postStepHandle(){
+        for(let objId of Object.keys(this.world.objects)){
+            let o = this.world.objects[objId];
+            if(o.class == PlayerCube){
+                o.updateHealthText();
+            }
+        }
+        //console.log("postStepHandle");
     }
 
     start() {

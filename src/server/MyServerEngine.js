@@ -29,12 +29,16 @@ class MyServerEngine extends ServerEngine {
         this.scoreData = {};
         this.playercontrollers = {};
         this.currentNumberPlayers = 0;
+
+        
     }
 
     start() {
         super.start();
         this.gameEngine.initGame();
         //for (let x = 0; x < NUM_BOTS; x++) this.makeBot();
+
+        this.gameEngine.on('scoreChange', this.updateMetaData, this);
 
         // fire event > projectile
         this.gameEngine.on('fire',(data)=>{
@@ -137,6 +141,18 @@ class MyServerEngine extends ServerEngine {
         setTimeout(() => {
             this.io.sockets.emit('updatePlayerCount', this.currentNumberPlayers);
         }, 1000);
+    }
+
+    updateMetaData(socket){
+        if (socket){
+            socket.emit('metaDataUpdate', this.gameEngine.metaData);
+        } else{
+            //emit to all
+            // delay so player socket can catch up
+            setTimeout(() => {
+                this.io.sockets.emit('metaDataUpdate', this.gameEngine.metaData);
+            }, 100);
+        }
     }
 
     updateScore() {
