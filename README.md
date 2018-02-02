@@ -37,19 +37,22 @@ Notes:
  * Script part and ship controls system.
  * Multiplayer builds tests.
 
-# Programs / Packages / Libs:
- * [nodejs](https://nodejs.org) 
- * Visual Studio Code (Quick debug builds, auto lanuch web server, auto compile script from gulp scripts.)
- * [aframe](https://aframe.io/) A-Frame 3D Render.
-  * aframe-extras
-  * aframe-orbit-controls-component-2
-  * aframe-physics-system
- * [lance-gg](https://github.com/lance-gg/lance)  (lance-gg multi-player network)
+# Programs
+ * [Nodejs](https://nodejs.org) 
+ * [Visual Studio Code](https://code.visualstudio.com/) 1.19.3
 
+# Npm Packages:
+ * [Aframe](https://aframe.io/) A-Frame 3D Render. 1.70.0
+ * Aframe-extras
+ * Aframe-orbit-controls-component-2
+ * Aframe-physics-system
+ * [lance-gg](https://github.com/lance-gg/lance)  (lance-gg multi-player network)
+ * [Gulp](https://gulpjs.com/) Auto build and compile for development browser builds.
 
 # Branches:
-  * Master -Dev Build.
-  * Pong -Simple 3D Pong but buggy.
+ * Dev -Dev Build.
+ * Master -Stable build.
+ * Pong -Simple 3D Pong but buggy.
 
 
 # Multiples Licenses:
