@@ -49,7 +49,7 @@ class PlayerCube extends PhysicalObject {
         this.bpress = false;
         this.bspawn = false;
         this.movespeed = 0.1;
-        this.health = 2;
+        this.health = 10;
         this.maxhealth = 100;
         this.isBot = false;
         this.isDead = false;
@@ -71,6 +71,11 @@ class PlayerCube extends PhysicalObject {
         this.physicsObj.fixedRotation = true;
         this.physicsObj.ownerId = this.id;
         //console.log(this.physicsObj);
+
+        this.physicsObj.addEventListener("collide", (e)=>{
+            //console.log("object collided");
+            this.updateHealthText();//update text
+        });
 
         this.scene = gameEngine.renderer ? gameEngine.renderer.scene : null;
         if (this.scene) {
@@ -251,12 +256,10 @@ class PlayerCube extends PhysicalObject {
     updateHealthText(){
         //console.log(this.texthealthel);
         if(this.texthealthel !=null){
-            console.log("update health?");
+            //console.log("update health?");
             //console.log(this.texthealthel);
-            //if(this.isBot == false){
-                console.log(this.health + "/" + this.maxhealth);
-                this.texthealthel.setAttribute('value', `Health:${this.health} / ${this.maxhealth} `);
-            //}
+            //console.log(this.health + "/" + this.maxhealth);
+            this.texthealthel.setAttribute('value', `Health:${this.health} / ${this.maxhealth} `);
         }
     }
 
@@ -283,7 +286,7 @@ class PlayerCube extends PhysicalObject {
                 //this.gameEngine.makeMissile(this);
                 //console.log("Id:"+this.playerId);
                 //console.log(this.gameEngine);
-                //this.fireweapon();
+                this.fireweapon();
             }
         });
     }
