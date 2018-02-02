@@ -50,8 +50,8 @@ Notes:
  * [Gulp](https://gulpjs.com/) Auto build and compile for development browser builds.
 
 # Branches:
- * Dev -Dev Build.
- * Master -Stable build.
+ * Dev -Development Unstable Build.
+ * Master -Stable development build.
  * Pong -Simple 3D Pong but buggy.
 
 # Multiples Licenses:
