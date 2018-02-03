@@ -16,16 +16,11 @@ const MobileControls = require('../client/MobileControls');
 const KeyboardControls = require('../client/KeyboardControls');
 const PlayerCube = require('../common/PlayerCube');
 
-
 class MyClientEngine extends ClientEngine {
 
     constructor(gameEngine, options) {
         super(gameEngine, options, MyRenderer);
-
-        //this.serializer.registerClass(require('../common/PlayerAvatar'));
         this.gameEngine.on('client__preStep', this.preStep.bind(this));
-        //this.gameEngine.on('client__syncReceived', this.syncReceived.bind(this));
-        this.gameEngine.on('syncReceived', this.ssyncReceived.bind(this));
         // keep a reference for key press state
         this.pressedKeys = {
             down: false,
@@ -45,11 +40,6 @@ class MyClientEngine extends ClientEngine {
         document.onkeyup = (e) => { that.onKeyChange(e, false); };
     }
 
-    ssyncReceived(e){
-        console.log("syncReceived?");
-        console.log(e);
-    }
-
     start() {
         super.start();
         // handle gui for game condition
@@ -66,22 +56,20 @@ class MyClientEngine extends ClientEngine {
         this.gameEngine.once('renderer.ready', () => {
             console.log("==============================");
             console.log("renderer.ready");
-            setTimeout(function(){ 
-                //document.querySelector('#loadingscreen').hidden= true;
-            }, 1000);
-
+            //setTimeout(function(){ 
+                document.querySelector('#loadingscreen').hidden= true;
+            //}, 1000);
             document.querySelector('#tryAgain').hidden = true;
             document.querySelector('#reconnect').hidden = true;
-
+            document.querySelector('#joinGame').hidden = false;
             // click event for "try again" button
             document.querySelector('#tryAgain').addEventListener('click', () => {
                 if (Utils.isTouchDevice()){
                     this.renderer.enableFullScreen();
                 }
                 this.socket.emit('requestRestart');
-                console.log("#tryAgain");
+                //console.log("#tryAgain");
             });
-
             document.querySelector('#joinGame').addEventListener('click', () => {
                 if (Utils.isTouchDevice()){
                     this.renderer.enableFullScreen();
@@ -89,11 +77,11 @@ class MyClientEngine extends ClientEngine {
                 this.socket.emit('requestRestart');
                 //console.log("#joinGame");
             });
-
             document.querySelector('#reconnect').addEventListener('click', () => {
                 window.location.reload();
                 //console.log("#reconnect");
             });
+
         });
 
         //  Game input
@@ -104,7 +92,7 @@ class MyClientEngine extends ClientEngine {
         }
 
         this.controls.on('fire', () => {
-            console.log("send spacebar...");
+            //console.log("send spacebar...");
             this.sendInput('space');
         });
 
@@ -181,24 +169,25 @@ class MyClientEngine extends ClientEngine {
         return super.connect().then(() => {
             //console.log("client engine connected...");
             document.querySelector('#reconnect').hidden = true;
-
-
+            //document.querySelector('#joinGame').hidden = false;
             this.socket.on('updatePlayerCount', (e) => {
                 //console.log('updatePlayerCount');
                 //console.log(e);
                 this.renderer.updatePlayerCount(e);
             });
-
             this.socket.on('scoreUpdate', (e) => {
                 console.log('scoreUpdate');
                 //this.renderer.updateScore(e);
             });
             //console.log(this.playerId);
-
             //console.log(this.gameEngine.world );
             //let playercontrol = this.world.getPlayerObject(playerId);
             //console.log(this.gameEngine.world.getPlayerObject(this.playerId) );
-
+            this.socket.on('reconnect', function() { //well it need to reload since out sync?
+                //console.log('reconnect fired!');
+                document.querySelector('#reconnect').hidden = false;
+                document.querySelector('#joinGame').hidden = true;
+            });
             this.socket.on('disconnect', (e) => {
                 console.log('disconnected');
                 //document.body.classList.add('disconnected');
@@ -207,11 +196,9 @@ class MyClientEngine extends ClientEngine {
                 document.querySelector('#reconnect').hidden = false;
                 document.querySelector('#joinGame').hidden = true;
             });
-
             //if ('autostart' in Utils.getUrlVars()) {
                 //this.socket.emit('requestRestart');
             //}
-
             //in presentation mode make sure to not idle
             //if ('presentation' in Utils.getUrlVars()) {
                 setInterval(() =>{

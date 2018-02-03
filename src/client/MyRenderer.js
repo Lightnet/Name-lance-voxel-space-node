@@ -54,15 +54,21 @@ class MyRenderer extends AFrameRenderer {
             }
             //frame counter
             this.frameNum = 0;
+
+            document.querySelector('#tryAgain').hidden = true;
+            document.querySelector('#reconnect').hidden = true;
+            document.querySelector('#joinGame').hidden = true;
+
             //assets
             document.querySelector('a-assets').addEventListener('loaded', ()=>{
                 //console.log('assets loaded');
                 //document.body.classList.remove('loading');
-                this.emit('ready');
+                //this.emit('ready');
+                this.gameEngine.emit('renderer.ready');
                 this.isReady = true;
             });
 
-            this.gameEngine.emit('renderer.ready');
+            //this.gameEngine.emit('renderer.ready');
         });
     }
 
@@ -98,7 +104,7 @@ class MyRenderer extends AFrameRenderer {
             if (this.clientEngine.isOwnedByPlayer(objData)) {
                 console.log("client player cube");
                 //hide the hud
-                document.querySelector('#joinGame').hidden = true;
+                //document.querySelector('#joinGame').hidden = true;
                 document.querySelector('#tryAgain').hidden = true;
                 document.querySelector('#reconnect').hidden = true;
 

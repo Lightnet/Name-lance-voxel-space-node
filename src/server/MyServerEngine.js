@@ -29,8 +29,6 @@ class MyServerEngine extends ServerEngine {
         this.scoreData = {};
         this.playercontrollers = {};
         this.currentNumberPlayers = 0;
-
-        
     }
 
     start() {
@@ -71,6 +69,19 @@ class MyServerEngine extends ServerEngine {
             //console.log("event > missilehit");
         });
     }
+
+    // every server step starts here
+    step() {
+        super.step();
+        //console.log("step server?");
+    }
+
+    //
+    //serializeUpdate(options) {
+        //super.serializeUpdate(options);
+        //return this.networkTransmitter.serializePayload();
+    //}
+
 
     onPlayerConnected(socket) {
         super.onPlayerConnected(socket);

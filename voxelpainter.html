@@ -21,12 +21,8 @@
                     <a-mixin id="checkpoint-hovered" color="#6CEEB5"></a-mixin>
             </a-assets>
             <a-sky color="#ECECEC"></a-sky>
-
             <a-entity mixin="marker" position="-2.5 1 0.01"></a-entity>
-
-            <a-entity position="-2.5 1 0" text="anchor: left; width: 1.5; color: white; value: [LEFT ANCHOR] Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam">
-            </a-entity>
-            
+            <a-entity position="-2.5 1 0" text="anchor: left; width: 1.5; color: white; value: [LEFT ANCHOR] Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam"></a-entity>
             <a-camera universal-controls="movementControls: checkpoint" look-controls position="0 0 5" raycaster="recursive: false; interval: 1000">
                 <a-text text="anchor: left; width: 1.5; color: white; value:Build Mode: Create" position="-1.2 0.5 -1" ></a-text>
                 <a-entity cursor="fuse: false; fuseTimeout: 100; rayOrigin: mouse;"
@@ -35,14 +31,11 @@
                     material="color: black; shader: flat">
                 </a-entity>
             </a-camera>
-
             <a-entity id="box" cursor-listener geometry="primitive: box" position="0 0 0" material="color: blue"></a-entity>
-        
             <!--
             <a-box position="-1 4 -3" rotation="0 45 0" color="#4CC3D9" ></a-box>
             <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>    
             -->
-
         </a-scene>
     </body>
 </html>

@@ -244,10 +244,21 @@ class PlayerCube extends PhysicalObject {
             console.log("============================================");
             this.health -= params.damage;
             //console.log(this.texthealthel);
+
+            /*
+            for(let objId of Object.keys(this.gameEngine.world.objects)){
+                let o = this.gameEngine.world.objects[objId];
+                if(o.id == this.id){
+                    console.log("update?");
+                    o.health = this.health;
+                }
+            }
+            */
         }
         if((this.health <= 0)&&(this.isDead == false)){
             this.isDead = true;
             console.log("Death");
+            
             this.gameEngine.emit('destroyObject',{id:this.id, byid:null});
         }
         console.log("Health:"+this.health + "/" + this.maxhealth);
